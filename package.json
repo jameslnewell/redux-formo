@@ -1,0 +1,10 @@
+{
+  "name": "redux-react-form",
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "mocha": "^2.3.3"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel/register"
+  }
+}
