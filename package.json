@@ -15,5 +15,8 @@
     "test": "mocha --compilers js:babel/register",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js",
     "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js"
+  },
+  "dependencies": {
+    "invariant": "^2.1.1"
   }
 }
