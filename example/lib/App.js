@@ -6,8 +6,9 @@ import decorator from '../../lib/react';
 const formName = 'personal-details';
 
 class App extends React.Component {
+
   render() {
-    let {fields: {name, phone}} = this.props;
+    let {fields: {name, phone}, onSubmit} = this.props;
     return <div>
 
       <h1>Form</h1>
@@ -34,13 +35,23 @@ class App extends React.Component {
       <br/>
       <br/>
 
-      <input type="submit"/>
+      <input type="submit" onClick={onSubmit}/>
 
     </div>;
   }
+
 }
 
-App = decorator('personal-details')(App);
+function validate(data) {
+
+}
+
+App = decorator({
+  form: 'personal-details',
+  fields: ['name', 'phone'],
+  validate: validate
+})(App);
+
 App = connect(state => state)(App);
 
 export default App;
