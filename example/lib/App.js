@@ -42,14 +42,24 @@ class App extends React.Component {
 
 }
 
-function validate(data) {
+function validator(data) {
+  let errors = {};
 
+  if (data.name == null) {
+    errors.name = 'Please enter your name so we can contact you.';
+  }
+
+  if (data.phone == null) {
+    errors.phone = 'Please enter your phone number so we can contact you.';
+  }
+
+  return errors;
 }
 
 App = decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
-  validate: validate
+  validator: validator
 })(App);
 
 App = connect(state => state)(App);
