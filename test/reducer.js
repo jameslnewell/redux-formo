@@ -1,6 +1,6 @@
 import assert from 'assert';
-import * as actions from '../lib/actions';
-import * as creators from '../lib/creators';
+import * as actions from '../lib/types';
+import * as creators from '../lib/actions';
 import {default as formReducer} from '../lib/reducer';
 
 describe('reducer', () => {
@@ -27,11 +27,11 @@ describe('reducer', () => {
 
   });
 
-  describe(actions.CHANGE_FORM, () => {
+  describe(actions.UPDATE_FORM, () => {
 
     it('should update the value of the phone field without changing whether the field is valid', () => {
       let reducer = formReducer('about', ['name', 'phone']);
-      let state = reducer(reducer(), creators.changeForm('about', 'phone', '0466'));
+      let state = reducer(reducer(), creators.update('about', 'phone', '0466'));
 
       //shouldn't change the name field
       assert(!state.fields.name.valid);

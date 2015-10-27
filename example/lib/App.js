@@ -42,7 +42,16 @@ class App extends React.Component {
 
 }
 
-function validator(data) {
+function filter(field, value) {
+
+  if (field === 'phone') {
+    return value.replace(/[^0-9]/g, '');
+  }
+
+  return value;
+}
+
+function validate(data) {
   let errors = {};
 
   if (data.name == null) {
@@ -59,7 +68,8 @@ function validator(data) {
 App = decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
-  validator: validator
+  filter: filter,
+  validate: validate
 })(App);
 
 App = connect(state => state)(App);
