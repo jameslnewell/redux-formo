@@ -1,24 +1,25 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
-import decorator from '../../lib/react';
-
-const formName = 'personal-details';
+import {decorator as formDecorator} from '../..';
 
 class App extends React.Component {
 
-  render() {
-    let {fields: {name, phone}, onSubmit} = this.props;
-    return <div>
+  handleSubmit(data) {
+    console.log('Submitting', data);
+  }
 
-      <h1>Form</h1>
+  render() {
+    let {reset, submit, fields: {name, phone}} = this.props;
+    return <form onSubmit={(event) => {event.preventDefault(); submit(this.handleSubmit.bind(this))}}>
+
+      <h1>About You</h1>
 
       {name.active ? 'name: '+name.value : ''}
       <div className="control">
         <label className="control__label">
           Name: <input className="control__input" {...name}/>
         </label>
-        {!name.valid ? <p className="control__error">Error!</p> : ''}
+        {name.error ? <p className="control__error">{name.error}</p> : null}
       </div>
 
       <br/>
@@ -29,15 +30,16 @@ class App extends React.Component {
         <label className="control__label">
           Phone: <input className="control__input" {...phone}/>
         </label>
-        {!phone.valid ? <p className="control__error">Error!</p> : ''}
+        {phone.error ? <p className="control__error">{phone.error}</p> : null}
       </div>
 
       <br/>
       <br/>
 
-      <input type="submit" onClick={onSubmit}/>
+      <input type="submit" onClick={() => submit(this.handleSubmit.bind(this))} value="Submit"/>
+      <input type="button" onClick={() => reset()} value="Reset"/>
 
-    </div>;
+    </form>;
   }
 
 }
@@ -51,27 +53,45 @@ function filter(field, value) {
   return value;
 }
 
-function validate(data) {
-  let errors = {};
+function validate(field, value) {
 
-  if (data.name == null) {
-    errors.name = 'Please enter your name so we can contact you.';
+  switch (field) {
+
+    case 'name':
+
+      if (value == '') {
+        return 'Please enter your name so we can contact you.';
+      }
+
+      break;
+
+    case 'phone':
+
+      if (value == '') {
+        return 'Please enter your phone number so we can contact you.';
+      }
+
+      if (!/^0[0-9]{9}$/.test(value)) {
+        return 'Your phone number must consist of 10 digits starting with a 0';
+      }
+
+      break;
+
+    default:
+      break;
+
   }
 
-  if (data.phone == null) {
-    errors.phone = 'Please enter your phone number so we can contact you.';
-  }
-
-  return errors;
+  return true;
 }
 
-App = decorator({
+App = formDecorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
   filter: filter,
   validate: validate
 })(App);
 
-App = connect(state => state)(App);
+App = connect(state => state.form['personal-details'])(App);
 
 export default App;
