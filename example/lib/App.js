@@ -36,7 +36,7 @@ class App extends React.Component {
       <br/>
       <br/>
 
-      <input type="submit" onClick={() => submit(this.handleSubmit.bind(this))} value="Submit"/>
+      <input type="submit" value="Submit"/>
       <input type="button" onClick={() => reset()} value="Reset"/>
 
     </form>;
