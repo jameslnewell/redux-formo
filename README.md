@@ -57,6 +57,7 @@
 
 2. Decorate your app component:
 
+
     App = formDecorator({
       form: 'personal-details',
       fields: ['name', 'phone'],
@@ -68,6 +69,7 @@
 
 3. Create your store:
 
+
     import {createStore, applyMiddleware, combineReducers} from 'redux';
     import thunk from 'redux-thunk';
     import {reducer as formReducer} from 'redux-form';
@@ -77,6 +79,7 @@
     }));
 
 4. Connect your store to your app component:
+
 
     import React from 'react';
     import {render} from 'react-dom';
@@ -89,6 +92,25 @@
       document.getElementById('app')
     );
 
-//TODO: async filtering and validation
-//TODO: must be mounted at `form` at the top level - can we configure the actions somehow?
-//TODO: don't require fields
+## The redux-form-react higher-order component injects the following properties into your component
+
+- valid : bool
+- submitting : bool
+- validating : bool
+- fields : object
+    - &lt;name&gt; : object
+        - value : string
+        - valid : bool
+        - validating : bool
+        - active : bool
+        - initialValue : string
+        - error : string|null
+        - defaultValue : string
+        - defaultChecked : bool
+
+## TODO: 
+- async filtering and validation
+- must be mounted at `form` at the top level - can we configure the actions somehow?
+- don't require fields
+- submitting, submitted, validating and validated properties
+- dynamically add fields

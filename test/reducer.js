@@ -21,13 +21,13 @@ describe('reducer', () => {
 
   });
 
-  describe(actions.RESET_FORM, () => {
+  describe(actions.RESET, () => {
 
     it('should return the initial state');
 
   });
 
-  describe(actions.UPDATE_FORM, () => {
+  describe(actions.UPDATE, () => {
 
     it('should update the value of the phone field without changing whether the field is valid', () => {
       let reducer = formReducer('about', ['name', 'phone']);
