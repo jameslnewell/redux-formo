@@ -6,7 +6,7 @@ import validate from './validate';
 class App extends React.Component {
 
   render() {
-    let {submitted, fields: {name, phone}, onReset, onSubmit} = this.props;
+    let {submitting, submitted, fields: {name, phone}, onReset, onSubmit} = this.props;
     return (
       <form onSubmit={onSubmit}>
 
@@ -34,7 +34,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <input type="submit" value="Submit" disabled={submitted}/>
+        <input type="submit" value={submitting ? 'Saving...' : submitted ? 'Saved.' : 'Save'} disabled={submitting || submitted}/>
         <input type="button" onClick={onReset} value="Reset"/>
 
       </form>
@@ -49,6 +49,11 @@ export default decorator({
   filter: filter,
   validate: validate,
   submit: function(values) {
-    console.log('Submitted:', values);
+
+    console.log('Submitting:', values);
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 3000);
+    });
+
   }
 })(App);
