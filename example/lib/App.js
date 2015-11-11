@@ -6,9 +6,9 @@ import validate from './validate';
 class App extends React.Component {
 
   render() {
-    let {reset, fields: {name, phone}, handleSubmit} = this.props;
+    let {submitted, fields: {name, phone}, onReset, onSubmit} = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
 
         <h1>About You</h1>
 
@@ -34,8 +34,8 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <input type="submit" value="Submit"/>
-        <input type="button" onClick={() => reset()} value="Reset"/>
+        <input type="submit" value="Submit" disabled={submitted}/>
+        <input type="button" onClick={onReset} value="Reset"/>
 
       </form>
     );

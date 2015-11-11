@@ -27,11 +27,11 @@ describe('reducer', () => {
 
   });
 
-  describe(actions.UPDATE, () => {
+  describe(actions.CHANGE, () => {
 
     it('should update the value of the phone field without changing whether the field is valid', () => {
       let reducer = formReducer('about', ['name', 'phone']);
-      let state = reducer(reducer(), creators.update('about', 'phone', '0466'));
+      let state = reducer(reducer(), creators.change('about', 'phone', '0466'));
 
       //shouldn't change the name field
       assert(!state.fields.name.valid);
@@ -44,7 +44,7 @@ describe('reducer', () => {
 
   });
 
-  describe(actions.VALIDATE_FORM, () => {
+  describe(actions.VALIDATE, () => {
 
     it('be valid');
     it('be invalid');
