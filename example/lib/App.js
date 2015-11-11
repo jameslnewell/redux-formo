@@ -6,11 +6,13 @@ import validate from './validate';
 class App extends React.Component {
 
   render() {
-    let {submitting, submitted, fields: {name, phone}, onReset, onSubmit} = this.props;
+    let {submitting, submitted, error, fields: {name, phone}, onReset, onSubmit} = this.props;
     return (
       <form onSubmit={onSubmit}>
 
         <h1>About You</h1>
+
+        {error ? <p className="control__error">{error}</p> : null}
 
         {name.active ? 'name: '+name.value : ''}
         <div className="control">
@@ -34,7 +36,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <input type="submit" value={submitting ? 'Saving...' : submitted ? 'Saved.' : 'Save'} disabled={submitting || submitted}/>
+        <input type="submit" value={submitting ? 'Saving...' : (submitted ? 'Saved.' : 'Save')} disabled={submitting || submitted}/>
         <input type="button" onClick={onReset} value="Reset"/>
 
       </form>
@@ -51,6 +53,16 @@ export default decorator({
   submit: function(values) {
 
     console.log('Submitting:', values);
+
+    //sync errors are handled
+    //throw new Error('Uh oh!');
+
+    //async errors are handled
+    //return new Promise((resolve, reject) => {
+    //  setTimeout(reject.bind(null, new Error('Uh oh!')), 3000);
+    //});
+
+    //async completion is handled
     return new Promise((resolve, reject) => {
       setTimeout(resolve, 3000);
     });
