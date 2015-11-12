@@ -9,7 +9,7 @@ An alternate forms framework for Redux+React.
 
 ## Installation
 
-    npm install --save redux-form
+    npm install --save the-other-redux-form redux-thunk
 
 ## Usage
 
@@ -97,9 +97,10 @@ An alternate forms framework for Redux+React.
 ## The redux-form-react higher-order component injects the following properties into your component
 
 - valid : bool
+- filtering : bool
+- filtered : bool
 - validating : bool
 - validated : bool
-
 - submitting : bool
 - submitted : bool
 
@@ -107,6 +108,7 @@ An alternate forms framework for Redux+React.
     - &lt;name&gt; : object
         - name : string
         - active : bool
+        - touched : bool
         - filtering : bool
         - filtered : bool
         - validating : bool
@@ -117,7 +119,6 @@ An alternate forms framework for Redux+React.
         - checked : bool
         - defaultValue : string
         - defaultChecked : bool
-        
 
 ## TODO: 
 - async filtering and validation

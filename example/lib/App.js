@@ -53,8 +53,8 @@ export default decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
   values: {name: 'James'},
-  filter: filter,
-  validate: validate,
+  filter,
+  validate,
   submit: function(values) {
 
     console.log('Submitting:', values);

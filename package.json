@@ -1,6 +1,7 @@
 {
   "name": "the-other-redux-form",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "main": "./dist/index.js",
   "dependencies": {
     "invariant": "^2.1.1"
   },
@@ -19,7 +20,10 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel/register",
+    "build": "babel ./index.js ./lib/*.js ./lib/**/*.js -d ./dist --source-maps",
+    "watch": "babel ./index.js ./lib/*.js ./lib/**/*.js -d ./dist --watch --source-maps",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js",
-    "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js"
+    "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js",
+    "prepublish": "npm run build"
   }
 }
