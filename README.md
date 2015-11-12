@@ -95,22 +95,30 @@
 ## The redux-form-react higher-order component injects the following properties into your component
 
 - valid : bool
-- submitting : bool
 - validating : bool
+- validated : bool
+
+- submitting : bool
+- submitted : bool
+
 - fields : object
     - &lt;name&gt; : object
-        - value : string
-        - valid : bool
-        - validating : bool
+        - name : string
         - active : bool
-        - initialValue : string
-        - error : string|null
+        - filtering : bool
+        - filtered : bool
+        - validating : bool
+        - validated : bool
+        - valid : bool
+        - error : string
+        - value : string
+        - checked : bool
         - defaultValue : string
         - defaultChecked : bool
+        
 
 ## TODO: 
 - async filtering and validation
+- filtering and validating properties
+- dynamically adding/removing fields?
 - must be mounted at `form` at the top level - can we configure the actions somehow?
-- don't require fields
-- submitting, submitted, validating and validated properties
-- dynamically add fields

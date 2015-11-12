@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {decorator} from '../..';
 import filter from './filter';
 import validate from './validate';
@@ -6,9 +7,12 @@ import validate from './validate';
 class App extends React.Component {
 
   render() {
-    let {submitting, submitted, error, fields: {name, phone}, onReset, onSubmit} = this.props;
+    let {valid, submitting, submitted, error, fields: {name, phone}, onReset, onSubmit} = this.props;
+
+    let formClassNames = classNames('form', {'form--valid': valid, 'form--invalid': !valid});
+
     return (
-      <form onSubmit={onSubmit}>
+      <form className={formClassNames} onSubmit={onSubmit}>
 
         <h1>About You</h1>
 
@@ -48,6 +52,7 @@ class App extends React.Component {
 export default decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
+  values: {name: 'James'},
   filter: filter,
   validate: validate,
   submit: function(values) {
@@ -62,10 +67,13 @@ export default decorator({
     //  setTimeout(reject.bind(null, new Error('Uh oh!')), 3000);
     //});
 
+    //sync completion is handled
+    //return;
+
     //async completion is handled
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 3000);
-    });
+    //return new Promise((resolve, reject) => {
+    //  setTimeout(resolve, 3000);
+    //});
 
   }
 })(App);

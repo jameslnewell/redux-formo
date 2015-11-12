@@ -7,6 +7,7 @@
     "babel": "^5.8.29",
     "babelify": "^6.4.0",
     "browserify": "^11.2.0",
+    "classnames": "^2.2.0",
     "mocha": "^2.3.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
