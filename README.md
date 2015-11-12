@@ -98,30 +98,32 @@ An alternate forms framework for Redux+React.
 
 - valid : bool
 - filtering : bool
-- filtered : bool
 - validating : bool
-- validated : bool
 - submitting : bool
 - submitted : bool
 
 - fields : object
-    - &lt;name&gt; : object
-        - name : string
-        - active : bool
-        - touched : bool
-        - filtering : bool
-        - filtered : bool
-        - validating : bool
-        - validated : bool
-        - valid : bool
-        - error : string
-        - value : string
-        - checked : bool
-        - defaultValue : string
-        - defaultChecked : bool
+    - &lt;name&gt; - `object`
+        - **name** - `string`
+        - **active** - `bool` - whether the field is currently active (i.e. focussed)
+        - **filtering** - `bool` - whether the filter fn is currently running on the field
+        - **validating** - `bool` - whether the validation fn is currently running on the field
+        - **filtered** - `bool` - whether the field has been filtered at least once since initialisation
+        - **validated** - `bool` - whether the field has been validated at least once since initialisation
+        - **valid** - `bool` - whether the current value is valid 
+        - **error** - `string` - the error message from the previous validation
+        - **value** - `string` - the current value
+        - **checked** - `bool`
+        - **defaultValue** `string`
+        - **defaultChecked** `bool`
 
-## TODO: 
+## To do
 - async filtering and validation
 - filtering and validating properties
 - dynamically adding/removing fields?
 - must be mounted at `form` at the top level - can we configure the actions somehow?
+
+## Bugs
+
+- blur without changing then the value is undefined and should be the initial value - 
+  should we pass the value from the form on filter+validate instead of pulling it from the state? that solves the mounting problem too.
