@@ -1,4 +1,6 @@
-# redux-form
+# the-other-redux-form
+
+An alternate forms framework for Redux+React. 
 
 ## Why not `redux-form`?
 
