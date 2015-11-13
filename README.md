@@ -125,5 +125,5 @@ An alternate forms framework for Redux+React.
 
 ## Bugs
 
-- blur without changing then the value is undefined and should be the initial value - 
-  should we pass the value from the form on filter+validate instead of pulling it from the state? that solves the mounting problem too.
+- on blur of the field without changing the value, then the value is undefined and should be the value of the initial value 
+  - should we pass the value from the DecoratedForm on filter()+validate() instead of pulling it out the state which could be undefined? that solves the mounting problem too.
