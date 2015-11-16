@@ -1,6 +1,6 @@
 {
   "name": "the-other-redux-form",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./dist/index.js",
   "dependencies": {
     "invariant": "^2.1.1"
