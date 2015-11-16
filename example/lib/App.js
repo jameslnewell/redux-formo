@@ -52,7 +52,7 @@ class App extends React.Component {
 export default decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
-  values: {name: 'James'},
+  values: {},
   filter,
   validate,
   submit: function(values) {
