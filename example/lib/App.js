@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {decorator} from '../..';
 import filter from './filter';
 import validate from './validate';
+import submit from './submit';
 
 class App extends React.Component {
 
@@ -52,28 +53,5 @@ class App extends React.Component {
 export default decorator({
   form: 'personal-details',
   fields: ['name', 'phone'],
-  values: {},
-  filter,
-  validate,
-  submit: function(values) {
-
-    console.log('Submitting:', values);
-
-    //sync errors are handled
-    //throw new Error('Uh oh!');
-
-    //async errors are handled
-    //return new Promise((resolve, reject) => {
-    //  setTimeout(reject.bind(null, new Error('Uh oh!')), 3000);
-    //});
-
-    //sync completion is handled
-    //return;
-
-    //async completion is handled
-    //return new Promise((resolve, reject) => {
-    //  setTimeout(resolve, 3000);
-    //});
-
-  }
+  filter, validate, submit
 })(App);
