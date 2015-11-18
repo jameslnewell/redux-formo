@@ -7,7 +7,7 @@ import validate from './validate';
 class App extends React.Component {
 
   render() {
-    let {valid, submitting, submitted, error, fields: {name, phone}, onReset, onSubmit} = this.props;
+    let {form: {valid, submitting, submitted, error, fields: {name, phone}, onReset, onSubmit}} = this.props;
 
     let formClassNames = classNames('form', {'form--valid': valid, 'form--invalid': !valid});
 
