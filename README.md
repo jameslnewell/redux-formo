@@ -11,8 +11,13 @@ An alternate forms framework for Redux+React.
 
 ## Installation
 
-    npm install --save the-other-redux-form redux-thunk
+    npm install --save the-other-redux-form
 
+## Methods
+
+### decorate(config : object) : function
+
+Returns a function to decorate your React Component to provide the form state and and some helper methods (e.g. `onSubmit`, `onChange`, `onBlur`) for handling form events.
 
 ## The redux-form-react higher-order component injects the following properties into your component
 

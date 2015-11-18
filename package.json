@@ -18,6 +18,11 @@
     "redux-thunk": "^1.0.0",
     "watchify": "^3.5.0"
   },
+  "peerDependencies":{
+    "react": "*",
+    "react-redux": "*",
+    "redux-thunk": "*"
+  },
   "scripts": {
     "test": "mocha --compilers js:babel/register",
     "build": "babel ./index.js ./lib/*.js ./lib/**/*.js -d ./dist --source-maps",
