@@ -15,21 +15,21 @@ An alternate forms framework for Redux+React.
 
 ## Methods
 
-### decorate(config : object, mapStateToProps : function) : function
+### decorate(config, mapStateToProps?)
 
 Returns a function to decorate your React Component to provide the form state and and some helper methods (e.g. `onSubmit`, `onChange`, `onBlur`) for handling form events.
 
-#### config
+#### config : Object
 
-##### form
+##### form : String
 
 The name of the form
 
-##### fields 
+##### fields : Array<String>
 
 The names of each of the form fields
 
-##### filter 
+##### filter : Function(fieldName, )
  
 A function used to filter a field value.
 
