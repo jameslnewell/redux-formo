@@ -9,6 +9,7 @@
     "babel": "^5.8.29",
     "babelify": "^6.4.0",
     "browserify": "^11.2.0",
+    "chai": "^3.4.1",
     "classnames": "^2.2.0",
     "mocha": "^2.3.3",
     "react": "^0.14.0",
@@ -18,13 +19,18 @@
     "redux-thunk": "^1.0.0",
     "watchify": "^3.5.0"
   },
-  "peerDependencies":{
+  "peerDependencies": {
     "react": "*",
     "react-redux": "*",
     "redux-thunk": "*"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jameslnewell/the-other-redux-form.git"
+  },
   "scripts": {
-    "test": "mocha --compilers js:babel/register",
+    "test": "mocha --recursive --compilers js:babel/register --require test/boot.js",
+    "test.watch": "npm run test -- --watch",
     "build": "babel ./index.js ./lib/*.js ./lib/**/*.js -d ./dist --source-maps",
     "watch": "babel ./index.js ./lib/*.js ./lib/**/*.js -d ./dist --watch --source-maps",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js",
