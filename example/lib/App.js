@@ -19,7 +19,7 @@ class App extends React.Component {
 
         {error ? <p className="control__error">{error}</p> : null}
 
-        {name.active ? 'name: '+name.value : ''}
+        {name.active ? 'Valid value: ' + name.validValue + ' Value: ' + name.value : ''}
         <div className="control">
           <label className="control__label">
             Name: <input className="control__input" {...name}/>
@@ -30,7 +30,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        {phone.active ? 'phone: '+phone.value : ''}
+        {phone.active ? 'Valid value: ' + phone.validValue + ' Value: ' + phone.value : ''}
         <div className="control">
           <label className="control__label">
             Phone: <input className="control__input" {...phone}/>

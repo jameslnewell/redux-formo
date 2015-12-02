@@ -106,7 +106,8 @@ The properties to pass to your component.
         - **validating** - `bool` - whether the validation fn is currently running on the field
         - **filtered** - `bool` - whether the field has been filtered at least once since initialisation
         - **validated** - `bool` - whether the field has been validated at least once since initialisation
-        - **valid** - `bool` - whether the current value is valid 
+        - **valid** - `bool` - whether the current value is valid
+        - **validValue** `string` - the most recent valid value
         - **error** - `string` - the error message from the previous validation
         - **value** - `string` - the current value
         - **checked** - `bool`
