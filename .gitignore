@@ -1,4 +1,6 @@
 .idea
+.DS_Store
+Thumbs.db
 node_modules
 dist/
 example/index.bundle.js
