@@ -1,26 +1,13 @@
 import {FOCUS} from '../../lib/constants';
-import {focus as reducer} from '../../lib/reducer';
-
-const initialState = {fields: {}};
+import {focus} from '../../lib/reducer';
 
 describe('reducer', () => {
-  describe('focus', () => {
+  describe('focus()', () => {
 
     it('should set .active to true', () => {
 
-      const state = reducer(initialState, {
-        type: FOCUS,
-        form: 'profile',
-        field: 'firstName'
-      });
-
-      expect(state).to.deep.equal({
-        fields: {
-          firstName: {
-            active: true
-          }
-        }
-      });
+      const state = focus({});
+      expect(state).to.have.property('active', true);
 
     });
 

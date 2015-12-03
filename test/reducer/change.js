@@ -1,27 +1,12 @@
-import {CHANGE} from '../../lib/constants';
-import {change as reducer} from '../../lib/reducer';
-
-const initialState = {fields: {}};
+import {change} from '../../lib/reducer';
 
 describe('reducer', () => {
-  describe('change', () => {
+  describe('change()', () => {
 
-    it('should update the value', () => {
+    it('should set .value', () => {
 
-      const state = reducer(initialState, {
-        type: CHANGE,
-        form: 'profile',
-        field: 'firstName',
-        value: 'John'
-      });
-
-      expect(state).to.deep.equal({
-        fields: {
-          firstName: {
-            value: 'John'
-          }
-        }
-      });
+      const state = change({}, {value: 'John'});
+      expect(state).to.have.property('value', 'John');
 
     });
 

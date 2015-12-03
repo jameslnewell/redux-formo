@@ -5,9 +5,9 @@ import {
 
 describe('reducer', () => {
 
-  describe('startFiltering', () => {
+  describe('startFiltering()', () => {
 
-    it('should start filtering', () => {
+    it('should set .filtering to true', () => {
 
       const state = startFiltering({});
       expect(state).to.have.property('filtering', true);
@@ -16,19 +16,26 @@ describe('reducer', () => {
 
   });
 
-  describe('finishFiltering', () => {
+  describe('finishFiltering()', () => {
 
-    it('should finish filtering', () => {
+    it('should set .value', () => {
+
+      const state = finishFiltering({}, {value: 'John'});
+      expect(state).to.have.property('value', 'John');
+
+    });
+
+    it('should set .filtering to false', () => {
 
       const state = finishFiltering({}, {value: 'John'});
       expect(state).to.have.property('filtering', false);
 
     });
 
-    it('should update the value', () => {
+    it('should set .filtered to true', () => {
 
       const state = finishFiltering({}, {value: 'John'});
-      expect(state).to.have.property('value', 'John');
+      expect(state).to.have.property('filtered', true);
 
     });
 

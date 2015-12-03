@@ -1,22 +1,13 @@
-import {blur as action} from '../../lib/actions';
-import {blur as reducer} from '../../lib/reducer';
-
-const initialState = {fields: {}};
+import {blur} from '../../lib/reducer';
 
 describe('reducer', () => {
-  describe('blur', () => {
+  describe('blur()', () => {
 
     it('should set .active to false', () => {
 
-      const state = reducer(initialState, action('profile', 'firstName'));
+      const state = blur({});
 
-      expect(state).to.deep.equal({
-        fields: {
-          firstName: {
-            active: false
-          }
-        }
-      });
+      expect(state).to.have.property('active', false);
 
     });
 
