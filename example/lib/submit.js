@@ -1,5 +1,5 @@
 
-export default function(values) {
+export default function({values}) {
 
   console.log('Submitting:', values);
 

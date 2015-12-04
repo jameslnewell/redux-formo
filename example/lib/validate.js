@@ -1,5 +1,5 @@
 
-export default function(field, value) {
+export default function({field, value}) {
 
   switch (field) {
 

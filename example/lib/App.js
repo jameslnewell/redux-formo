@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {decorator} from '../..';
+import {decorate} from '../..';
 import filter from './filter';
 import validate from './validate';
 import submit from './submit';
@@ -50,7 +50,7 @@ class App extends React.Component {
 
 }
 
-export default decorator({
+export default decorate({
   form: 'personal-details',
   fields: ['name', 'phone'],
   filter, validate, submit

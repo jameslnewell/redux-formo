@@ -1,5 +1,5 @@
-import reducer from './lib/reducer';
-import decorator from './lib/react';
+import reducer from './lib/redux/reducer';
+import decorate from './lib/react/decorate';
 
 export {reducer};
-export {decorator};
+export {decorate};

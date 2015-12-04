@@ -2,12 +2,12 @@
 import {
   FOCUS, BLUR, CHANGE,
   FILTER, VALIDATE, SUBMIT
-} from '../lib/constants';
+} from '../lib/redux/constants';
 
 import {
   focus, blur, change,
   filter, validate, submit
-} from '../lib/actions';
+} from '../lib/redux/actions';
 
 const FORM = 'profile';
 const FIELD = 'firstName';
@@ -92,7 +92,7 @@ describe('actions', () => {
 
         expect(dispatch).to.be.calledWith({
           type: FILTER,
-          status: 'finished',
+          status: 'finish',
           payload: 'John',
           meta: {
             form: FORM,
@@ -133,7 +133,7 @@ describe('actions', () => {
 
         expect(dispatch).to.be.calledWith({
           type: VALIDATE,
-          status: 'finished',
+          status: 'finish',
           payload: true,
           meta: {
             form: FORM,
@@ -151,7 +151,7 @@ describe('actions', () => {
 
         expect(dispatch).to.be.calledWith({
           type: VALIDATE,
-          status: 'finished',
+          status: 'finish',
           payload: 'Error!',
           meta: {
             form: FORM,
