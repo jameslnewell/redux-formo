@@ -20,17 +20,18 @@ const defaults = {
  * @param   {function}  [mapStateToProps]
  * @returns {function}
  */
-export default function(config, mapStateToProps) {
-  const {form, mountPoint} = {...defaults, ...config};
+export default function connectForm(config, mapStateToProps) {
+
+  //merge the default properties
+  config = {...defaults, ...config};
+  mapStateToProps = mapStateToProps || (state => ({}));
 
   //assertions
+  const {form, mountPoint} = config;
   invariant(form != null, 'A form must have a name.');
 
-  if (!mapStateToProps) {
-    mapStateToProps = state => {};
-  }
 
-  return ConnectedComponent => {
+  return WrappedComponent => {
 
     /**
      * A connected form
@@ -46,20 +47,25 @@ export default function(config, mapStateToProps) {
         super(props, ...args);
 
         //bind/cache all of the form actions
-        this.actions = Object.assign.apply(null, Object.keys(actions).map(
-          (name) => ({[name]: (...args) => props.dispatch(actions[name](form, ...args))})
-        ));
+        this.actions = Object.keys(actions).reduce(
+          (boundActions, action) => {
+            boundActions[action] =
+              (...args) => props.dispatch(actions[action](form, ...args))
+            ;
+            return boundActions;
+          },
+          {}
+        );
 
       }
 
       /**
        * Render the form
-       * @returns {React.Component}
+       * @returns {ReactElement}
        */
       render() {
         const {form, ...props} = this.props;
-        const actions = this.actions;
-        return <ConnectedComponent {...props} form={{actions, ...form}}/>
+        return <WrappedComponent {...props} form={{...(this.actions), ...form}}/>
       }
 
     }
@@ -72,7 +78,7 @@ export default function(config, mapStateToProps) {
     const formMapStateToProps = state => {
 
       if (!state[mountPoint]) {
-        throw new Error ('The form reducer is not mounted at ${mountPoint}');
+        throw new Error (`The form reducer is not mounted at ${mountPoint}`);
       }
 
       if (!state[mountPoint][form]) {

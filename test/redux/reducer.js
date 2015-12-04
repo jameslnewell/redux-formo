@@ -1,8 +1,8 @@
-import reducer from '../lib/redux/reducer';
+import reducer from '../../lib/redux/reducer';
 import {
   FOCUS, BLUR, CHANGE,
   FILTER, VALIDATE, SUBMIT
-} from '../lib/redux/constants';
+} from '../../lib/redux/constants';
 
 const FORM = 'profile';
 const FIELD = 'firstName';

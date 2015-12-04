@@ -3,7 +3,7 @@ import invariant from 'invariant';
 import connect from './connect';
 
 import * as actions from '../redux/actions';
-import getValues from './getValues';
+import getValues from './getValidValues';
 
 const defaultConfig = {
 
@@ -58,7 +58,7 @@ const defaultFieldProps = {
  * @param   {function}  [mapStateToProps]       A function to map extra state to props
  * @returns {function}
  */
-export default function(config, mapStateToProps) {
+export default function decorateForm(config, mapStateToProps) {
   let {
     form: formName,
     fields: fieldNames,
@@ -100,29 +100,29 @@ export default function(config, mapStateToProps) {
           return {[fieldName]: {
 
             onFocus: () => {
-              props.form.actions.focus(fieldName)
+              props.form.focus(fieldName)
             },
 
             onBlur: () => {
-              props.form.actions.blur(fieldName);
+              props.form.blur(fieldName);
 
               //this is pretty hacky?
               let fieldValues = getValues(fieldNames, this.props.form.fields, initialFieldValues);
 
               if (filterOnBlur) {
-                fieldValues[fieldName] = props.form.actions.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
+                fieldValues[fieldName] = props.form.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
               }
 
               if (validateOnBlur) {
                 //field values might be different due to filter
-                props.form.actions.validate(fieldName, fieldValues[fieldName], fieldValues, validate);
+                props.form.validate(fieldName, fieldValues[fieldName], fieldValues, validate);
               }
 
             },
 
             onChange: (event) => {
               const fieldValue = event.target.value;
-              props.form.actions.change(fieldName, fieldValue)
+              props.form.change(fieldName, fieldValue)
             }
 
           }};
@@ -163,18 +163,18 @@ export default function(config, mapStateToProps) {
         fieldNames.forEach(fieldName => {
 
           if (filterOnSubmit)  {
-            fieldValues[fieldName] = props.form.actions.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
+            fieldValues[fieldName] = props.form.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
           }
 
           if (validateOnSubmit) {
-            valid = props.form.actions.validate(fieldName, fieldValues[fieldName], fieldValues, validate) && valid;
+            valid = props.form.validate(fieldName, fieldValues[fieldName], fieldValues, validate) && valid;
           }
 
         });
 
         //let the user submit the values
         if (valid && submit) {
-          props.form.actions.submit(fieldValues, submit);
+          props.form.submit(fieldValues, submit);
         }
 
       }
