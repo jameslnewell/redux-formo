@@ -1,6 +1,6 @@
 # the-other-redux-form
 
-An alternate forms framework for Redux+React. 
+An alternate forms framework for Redux+React.
 
 > Warning: This project is a work in progress
 
@@ -30,7 +30,7 @@ The name of the form
 The names of each of the form fields
 
 ##### filter : Function(fieldName, )
- 
+
 A function used to filter a field value.
 
 Optional.
@@ -45,7 +45,7 @@ Returns:
 
 The filtered value.
 
-##### validate 
+##### validate
 
 A function used to validate a field value.
 
@@ -61,9 +61,11 @@ Returns:
 
 True if the value is valid. An error string if the value is not valid.
 
-##### submit 
+##### submit
 
 A function used to submit the field values.
+If the submit function resolves to a [flux standard action](https://github.com/acdlite/flux-standard-action) error,
+then a submit error is dispatched.
 
 Optional.
 
