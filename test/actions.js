@@ -169,4 +169,150 @@ describe('actions', () => {
 
   });
 
+  describe('submit()', () => {
+
+    describe('=> synchronous', () => {
+
+      it('should call the fn', () => {
+
+        const fn = sinon.stub();
+        const dispatch = sinon.spy();
+        const values = {};
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(fn).to.be.calledWith({dispatch, values});
+
+        });
+
+      });
+
+      it('should dispatch an action on success', () => {
+
+        const fn = sinon.stub();
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'finish',
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+      it('should dispatch an action on failure', () => {
+
+        const fn = sinon.stub().throws(new Error('Submit failed.'));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'error',
+            payload: new Error('Submit failed.'),
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+    });
+
+    describe('=> asynchronous', () => {
+
+      it('should call the fn', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(resolve, 100);
+        }));
+        const dispatch = sinon.spy();
+        const values = {};
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+          expect(fn).to.be.calledWith({dispatch, values});
+        });
+
+      });
+
+      it('should dispatch an action on start', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(resolve, 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'start',
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+      it('should dispatch an action on success', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(resolve, 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'finish',
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+      it('should dispatch an action on failure', () => {
+
+        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Submit failed.')), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch)
+          .then(
+            () => {
+
+              expect(dispatch).to.be.calledWith({
+                type: SUBMIT,
+                status: 'error',
+                payload: new Error('Submit failed.'),
+                meta: {
+                  form: FORM
+                }
+              });
+
+            }
+          )
+        ;
+
+      });
+
+    });
+
+  });
 });
