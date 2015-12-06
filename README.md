@@ -76,6 +76,14 @@ Returns:
 
 Void or a promise.
 
+### formStateKey
+
+The name of the property where the form reducer is mounted on the state.
+
+### formPropKey
+
+The name of the property where the form state is passed to a react component.
+
 #### mapStateToProps
 
 A function to map properties on your state to properties on your component.

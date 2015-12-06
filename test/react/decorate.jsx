@@ -1,4 +1,4 @@
-import decorate from '../../lib/react/decorate';
+import decorate from '../../src/react/decorate';
 
 describe('decorate()', () => {
 

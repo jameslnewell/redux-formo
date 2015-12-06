@@ -107,7 +107,7 @@ export function submit(form, values, fn) {
   return (dispatch) => {
 
     //enter the submitting state when promise doesn't resolve immediately
-    var timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       dispatch({
         type: actions.SUBMIT,
         status: 'start',
@@ -121,7 +121,7 @@ export function submit(form, values, fn) {
     let result = null;
     try {
       result = fn({values, dispatch});
-    } catch(error) {
+    } catch (error) {
 
       //don't bother entering the submitting state when the promise resolves instantly
       clearTimeout(timeout);
@@ -136,44 +136,44 @@ export function submit(form, values, fn) {
         }
       });
 
-      //most of the time the user won't be using the promise so don't let the promise throw
-      // because there's no .catch() method registered
-      return Promise.reject(error).catch(error => error);
+      return Promise.resolve();
     }
 
     //resolve the result of the user's submit function
     return Promise.resolve(result)
-      .then(() => {
+      .then(
+        () => {
 
-        //don't bother entering the submitting state when the promise resolves instantly
-        clearTimeout(timeout);
+          //don't bother entering the submitting state when the promise resolves instantly
+          clearTimeout(timeout);
 
-        //complete the submission
-        dispatch({
-          type: actions.SUBMIT,
-          status: 'finish',
-          meta: {
-            form
-          }
-        });
+          //complete the submission
+          dispatch({
+            type: actions.SUBMIT,
+            status: 'finish',
+            meta: {
+              form
+            }
+          });
 
-      })
-      .catch((error) => {
+        },
+        (error) => {
 
-        //don't bother entering the submitting state when the promise resolves instantly
-        clearTimeout(timeout);
+          //don't bother entering the submitting state when the promise resolves instantly
+          clearTimeout(timeout);
 
-        //complete the submission
-        dispatch({
-          type: actions.SUBMIT,
-          status: 'error',
-          payload: error,
-          meta: {
-            form
-          }
-        });
+          //complete the submission
+          dispatch({
+            type: actions.SUBMIT,
+            status: 'error',
+            payload: error,
+            meta: {
+              form
+            }
+          });
 
-      })
+        }
+      )
     ;
 
   };

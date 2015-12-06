@@ -12,6 +12,9 @@
     "browserify": "^11.2.0",
     "chai": "^3.4.1",
     "classnames": "^2.2.0",
+    "deep-freeze-strict": "^1.1.1",
+    "eslint": "^1.10.3",
+    "eslint-config-jameslnewell": "^0.3.4",
     "mocha": "^2.3.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
@@ -31,9 +34,10 @@
     "url": "git@github.com:jameslnewell/the-other-redux-form.git"
   },
   "scripts": {
+    "lint": "eslint ./index.js ./src/**/*.{js,jsx}",
     "test": "mocha --recursive test/**/*.{js,jsx} --compilers js:babel/register --require test/boot.js",
     "test.watch": "npm run test -- --watch",
-    "build": "babel ./index.js ./lib/**/*.{js,jsx} -d ./dist --source-maps",
+    "build": "babel ./index.js ./src/**/*.{js,jsx} -d ./dist --source-maps",
     "watch": "npm run build -- --watch",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js",
     "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js",

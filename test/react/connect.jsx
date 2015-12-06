@@ -1,4 +1,4 @@
-import connect from '../../lib/react/connect';
+import connect from '../../src/react/connect';
 
 describe('connect()', () => {
 

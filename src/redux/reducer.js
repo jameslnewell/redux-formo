@@ -9,7 +9,7 @@ function focus(state) {
   return {
     ...state,
     active: true
-  }
+  };
 }
 
 /**
@@ -21,7 +21,7 @@ function blur(state) {
   return {
     ...state,
     active: false
-  }
+  };
 }
 
 /**
@@ -35,7 +35,7 @@ function change(state, action) {
   return {
     ...state,
     value: action.payload || ''
-  }
+  };
 }
 
 /**
@@ -131,7 +131,7 @@ function finishValidating(state, action) {
     validating: false,
     validated: true,
     error: valid ? '' : action.payload || '',
-    valid: valid,
+    valid,
     validValue: valid ? state.value || '' : state.validValue || ''
   };
 }
@@ -269,7 +269,7 @@ const reducers = {
  * @param   {object} action
  * @returns {object}
  */
-export default function(state = {}, action = {}) {
+export default function reducer(state = {}, action = {}) {
   const {type} = action;
 
   if (reducers.hasOwnProperty(type)) {

@@ -2,12 +2,12 @@
 import {
   FOCUS, BLUR, CHANGE,
   FILTER, VALIDATE, SUBMIT
-} from '../../lib/redux/constants';
+} from '../../src/redux/constants';
 
 import {
   focus, blur, change,
   filter, validate, submit
-} from '../../lib/redux/actions';
+} from '../../src/redux/actions';
 
 const FORM = 'profile';
 const FIELD = 'firstName';

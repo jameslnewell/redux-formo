@@ -27,13 +27,13 @@ const defaultConfig = {
 };
 
 const defaultFormProps = {
-  error: '',
-  valid: false,
+  fields: {},
+  filtering: false,
   validating: false,
-  validated: false,
   submitting: false,
   submitted: false,
-  fields: {}
+  valid: false,
+  error: ''
 };
 
 const defaultFieldProps = {
