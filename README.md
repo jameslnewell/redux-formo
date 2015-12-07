@@ -1,5 +1,7 @@
 # redux-formo
 
+[![Build Status](https://travis-ci.org/jameslnewell/redux-formo.svg)](https://travis-ci.org/jameslnewell/redux-formo)
+
 An alternate forms framework for Redux+React.
 
 ## Why not `redux-form`?
