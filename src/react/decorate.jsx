@@ -85,7 +85,8 @@ export default function decorateForm(config, mapStateToProps) {
 
               const
                 props = formPropKey ? this.props[formPropKey] : this.props,
-                validValues = getValues({formPropKey, props})
+                values = getValues({props, prop: 'value'}),
+                validValues = getValues({props, prop: 'validValue'})
               ;
 
               props.blur(fieldName);
@@ -94,11 +95,10 @@ export default function decorateForm(config, mapStateToProps) {
 
                 //filter and validate
                 props.filter(
-                  fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+                  fieldName, values[fieldName], validValues, filter
                 ).then(value => {
-                  validValues[fieldName] = value;
                   return props.validate(
-                    fieldName, value, validValues, validate //FIXME: pass validValues as fieldValues arg?
+                    fieldName, value, validValues, validate
                   );
                 })
 
@@ -106,16 +106,14 @@ export default function decorateForm(config, mapStateToProps) {
 
                 //filter
                 validValues[fieldName] = props.filter(
-                  fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
-                ).then(value => {
-                  validValues[fieldName] = value;
-                });
+                  fieldName, values[fieldName], validValues, filter
+                );
 
               } else if (validateOnBlur) {
 
                 //validate
                 props.validate(
-                  fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
+                  fieldName, values[fieldName], validValues, validate
                 );
 
               }
@@ -149,7 +147,8 @@ export default function decorateForm(config, mapStateToProps) {
 
         let
           formIsValid = true,
-          validValues = getValues({formPropKey, props})
+          values = getValues({props, prop: 'value'}),
+          validValues = getValues({props, prop: 'validValue'})
         ;
 
         //filter and validate each of the fields
@@ -157,11 +156,10 @@ export default function decorateForm(config, mapStateToProps) {
 
           if (filterOnSubmit && validateOnSubmit)  {
             return props.filter(
-              fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+              fieldName, values[fieldName], validValues, filter
             ).then(value => {
-              validValues[fieldName] = value;
               return props.validate(
-                fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
+                fieldName, value, validValues, validate
               );
             }).then(valid => {
               formIsValid = formIsValid && valid;
@@ -170,17 +168,15 @@ export default function decorateForm(config, mapStateToProps) {
           } else if (filterOnSubmit)  {
 
             //filter
-            return validValues[fieldName] = props.filter(
-              fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
-            ).then(value => {
-              validValues[fieldName] = value;
-            });
+            return values[fieldName] = props.filter(
+              fieldName, values[fieldName], validValues, filter
+            );
 
           } else if (validateOnSubmit) {
 
             //validate
             return props.validate(
-              fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
+              fieldName, values[fieldName], validValues, validate
             ).then(valid => {
               formIsValid = formIsValid && valid;
             });
