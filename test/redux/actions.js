@@ -226,6 +226,26 @@ describe('actions', () => {
 
       });
 
+      it('should dispatch an action on flux standard action error', () => {
+
+        const fn = sinon.stub().returns({type: 'ERR', payload: new Error('Submit failed.'), error: true});
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'error',
+            payload: new Error('Submit failed.'),
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
     });
 
     describe('=> asynchronous', () => {

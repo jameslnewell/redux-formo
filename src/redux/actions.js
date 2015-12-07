@@ -1,3 +1,5 @@
+import {isFSA, isError} from 'flux-standard-action';
+
 import * as actions from './constants';
 
 export function focus(form, field) {
@@ -142,7 +144,11 @@ export function submit(form, values, fn) {
     //resolve the result of the user's submit function
     return Promise.resolve(result)
       .then(
-        () => {
+        (submitResult) => {
+
+          //throw error if the result is a flux standard action error
+          if (isFSA(submitResult) && isError(submitResult))
+            throw submitResult.payload || new Error();
 
           //don't bother entering the submitting state when the promise resolves instantly
           clearTimeout(timeout);

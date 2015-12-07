@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "./dist/index.js",
   "dependencies": {
+    "flux-standard-action": "^0.6.0",
     "invariant": "^2.1.1",
     "sinon-chai": "^2.8.0"
   },
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "lint": "eslint ./index.js ./src/**/*.{js,jsx}",
-    "test": "mocha --recursive test/**/*.{js,jsx} --compilers js:babel/register --require test/boot.js",
+    "test": "mocha --recursive test/**/*.js --compilers js:babel/register --require test/boot.js",
     "test.watch": "npm run test -- --watch",
     "build": "babel ./index.js ./src/**/*.{js,jsx} -d ./dist --source-maps",
     "watch": "npm run build -- --watch",

@@ -119,8 +119,8 @@ The initial values of all the fields.
 
 Optional.
 
-##### .filter({field, value, values}) : String
- 
+##### .filter({field, value, values}) : String | Promise
+
 A function used to filter a field value.
 
 Optional.
@@ -135,7 +135,7 @@ Returns:
 
 The filtered value.
 
-##### .validate({field, value, values}) : Boolean | String
+##### .validate({field, value, values}) : Boolean | String | Promise
 
 A function used to validate a field value.
 
@@ -151,9 +151,9 @@ Returns:
 
 True if the value is valid. An error string if the value is not valid.
 
-##### .submit({dispatch, values}) : void
+##### .submit({dispatch, values}) : void | FSA | Promise
 
-A function used to submit the form values.
+A function used to submit the field values.
 
 Optional.
 
@@ -164,7 +164,16 @@ Parameters:
 
 Returns:
 
-Void or a promise.
+Void, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) or a Promise.
+
+
+- if an error is thrown, the `error` property will be set and the form will not be marked as `submitted`
+- if a FSA error is returned, the `error` property will be set and the form will not be marked as `submitted`
+- if a promise is returned:
+  - if the promise is rejected, the `error` property will be set and the form will not be marked as `submitted`
+  - if the promise resolves a FSA error, the `error` property will be set and the form will not be marked as `submitted`
+- in all other cases, the form will be marked as `submitted`
+
 
 ##### .filterOnChange : Boolean
 
