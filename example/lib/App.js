@@ -80,5 +80,6 @@ class App extends React.Component {
 export default form({
   form: 'personal-details',
   fields: ['username', 'name', 'phone'],
-  filter, validate, submit
+  filter, validate, submit,
+  afterValidate: (...args) => console.log(...args)
 })(App);

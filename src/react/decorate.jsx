@@ -12,6 +12,8 @@ const defaultConfig = {
   validate: () => true,
   submit: () => {/* do nothing */},
 
+  afterValidate: () => {/* do nothing */},
+
   filterOnChange: false,
   validateOnChange: false,
 
@@ -41,6 +43,7 @@ export default function decorateForm(config, mapStateToProps) {
   const {
     form: formName, fields: fieldNames, values: initialValues,
     filter, validate, submit,
+    afterValidate,
     filterOnBlur, validateOnBlur,
     filterOnSubmit, validateOnSubmit,
     formStateKey, formPropKey
@@ -100,6 +103,8 @@ export default function decorateForm(config, mapStateToProps) {
                   return props.validate(
                     fieldName, value, validValues, validate //FIXME: pass validValues as fieldValues arg?
                   );
+                }).then(valid => {
+                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
                 })
 
               } else if (filterOnBlur) {
@@ -116,7 +121,9 @@ export default function decorateForm(config, mapStateToProps) {
                 //validate
                 props.validate(
                   fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
-                );
+                ).then(valid => {
+                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
+                });
 
               }
 
@@ -165,6 +172,7 @@ export default function decorateForm(config, mapStateToProps) {
               );
             }).then(valid => {
               formIsValid = formIsValid && valid;
+              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
             });
 
           } else if (filterOnSubmit)  {
@@ -183,6 +191,7 @@ export default function decorateForm(config, mapStateToProps) {
               fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
             ).then(valid => {
               formIsValid = formIsValid && valid;
+              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
             });
 
           }
