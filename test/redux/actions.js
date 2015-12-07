@@ -78,26 +78,30 @@ describe('actions', () => {
         const fn = sinon.stub().returns('John');
         const dispatch = sinon.spy();
 
-        filter(FORM, FIELD, 'John', {}, fn)(dispatch);
-
-        expect(fn).to.be.calledOnce;
+        return filter(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+          expect(fn).to.be.calledOnce;
+        });
 
       });
 
       it('should return an action with a filtered value', () => {
 
+        const fn = sinon.stub().returns('John');
         const dispatch = sinon.spy();
 
-        filter(FORM, FIELD, ' John ', {}, ({value}) => value.trim())(dispatch);
+        return filter(FORM, FIELD, ' John ', {}, fn)(dispatch).then(() => {
 
-        expect(dispatch).to.be.calledWith({
-          type: FILTER,
-          status: 'finish',
-          payload: 'John',
-          meta: {
-            form: FORM,
-            field: FIELD
-          }
+          expect(dispatch).to.be.calledOnce;
+          expect(dispatch).to.be.calledWith({
+            type: FILTER,
+            status: 'finish',
+            payload: 'John',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
         });
 
       });
@@ -105,7 +109,68 @@ describe('actions', () => {
     });
 
     describe('=> asynchronous', () => {
-      it('should...')
+
+      it('should call the fn', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(() => resolve('John'), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return filter(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+          expect(fn).to.be.calledOnce;
+        });
+
+      });
+
+      it('should resolve an action with a filtered value', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(() => resolve('John'), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return filter(FORM, FIELD, ' John ', {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: FILTER,
+            status: 'finish',
+            payload: 'John',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
+        });
+
+      });
+
+      it('should resolve an action with a filtered value', () => {
+
+        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Error!')), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return filter(FORM, FIELD, ' John ', {}, fn)(dispatch).catch(() => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: FILTER,
+            status: 'error',
+            payload: new Error('Error!'),
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
+        });
+
+      });
+
     });
 
   });
@@ -119,9 +184,9 @@ describe('actions', () => {
         const fn = sinon.stub().returns(true);
         const dispatch = sinon.spy();
 
-        validate(FORM, FIELD, 'John', {}, fn)(dispatch);
-
-        expect(fn).to.be.calledOnce;
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+          expect(fn).to.be.calledOnce;
+        });
 
       });
 
@@ -129,16 +194,18 @@ describe('actions', () => {
 
         const dispatch = sinon.spy();
 
-        validate(FORM, FIELD, 'John', {}, () => true)(dispatch);
+        return validate(FORM, FIELD, 'John', {}, () => true)(dispatch).then(() => {
 
-        expect(dispatch).to.be.calledWith({
-          type: VALIDATE,
-          status: 'finish',
-          payload: true,
-          meta: {
-            form: FORM,
-            field: FIELD
-          }
+          expect(dispatch).to.be.calledOnce;
+          expect(dispatch).to.be.calledWith({
+            type: VALIDATE,
+            status: 'finish',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
         });
 
       });
@@ -147,16 +214,19 @@ describe('actions', () => {
 
         const dispatch = sinon.spy();
 
-        validate(FORM, FIELD, 'John', {}, () => 'Error!')(dispatch);
+        return validate(FORM, FIELD, 'John', {}, () => 'Invalid!')(dispatch).then(() => {
 
-        expect(dispatch).to.be.calledWith({
-          type: VALIDATE,
-          status: 'finish',
-          payload: 'Error!',
-          meta: {
-            form: FORM,
-            field: FIELD
-          }
+          expect(dispatch).to.be.calledOnce;
+          expect(dispatch).to.be.calledWith({
+            type: VALIDATE,
+            status: 'error',
+            payload: 'Invalid!',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
         });
 
       });
@@ -164,7 +234,91 @@ describe('actions', () => {
     });
 
     describe('=> asynchronous', () => {
-      it('should...')
+
+      it('should call the fn', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(() => resolve(true), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+          expect(fn).to.be.calledOnce;
+        });
+
+      });
+
+      it('should resolve an action with a valid result', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(() => resolve(true), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: VALIDATE,
+            status: 'finish',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
+        });
+
+      });
+
+      it('should resolve an action with an invalid result', () => {
+
+        const fn = sinon.stub().returns(new Promise(resolve => {
+          setTimeout(() => resolve('Invalid!'), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: VALIDATE,
+            status: 'error',
+            payload: 'Invalid!',
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
+        });
+
+      });
+
+      it('should resolve an action with an error', () => {
+
+        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Error!')), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).catch((err) => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: VALIDATE,
+            status: 'error',
+            payload: new Error('Error!'),
+            meta: {
+              form: FORM,
+              field: FIELD
+            }
+          });
+
+        });
+
+      });
+
     });
 
   });
@@ -180,9 +334,7 @@ describe('actions', () => {
         const values = {};
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
-
           expect(fn).to.be.calledWith({dispatch, values});
-
         });
 
       });
@@ -194,6 +346,7 @@ describe('actions', () => {
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
 
+          expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
             type: SUBMIT,
             status: 'finish',
@@ -211,8 +364,9 @@ describe('actions', () => {
         const fn = sinon.stub().throws(new Error('Submit failed.'));
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch).then(() => {
+        return submit(FORM, {}, fn)(dispatch).catch(() => {
 
+          expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
             type: SUBMIT,
             status: 'error',
@@ -235,6 +389,7 @@ describe('actions', () => {
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
 
+          expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
             type: SUBMIT,
             status: 'finish',
@@ -258,6 +413,7 @@ describe('actions', () => {
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
 
+          expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
             type: SUBMIT,
             status: 'error',
@@ -339,7 +495,7 @@ describe('actions', () => {
         }));
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch).then(() => {
+        return submit(FORM, {}, fn)(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({

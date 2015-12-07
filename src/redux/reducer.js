@@ -125,14 +125,13 @@ function startValidating(state) {
  * @returns {{validating: boolean, validated: boolean, error: string, valid: boolean, validValue: string}}
  */
 function finishValidating(state, action) {
-  const valid = action.payload === true;
   return {
     ...state,
     validating: false,
     validated: true,
-    error: valid ? '' : action.payload || '',
-    valid,
-    validValue: valid ? state.value || '' : state.validValue || ''
+    error: '',
+    valid: true,
+    validValue: state.value || ''
   };
 }
 
@@ -144,7 +143,7 @@ function finishValidating(state, action) {
  * @returns {{validating: boolean, error: string}}
  */
 function errorValidating(state, action) {
-  return {...state, validating: false, error: action.payload || ''};
+  return {...state, validating: false, error: action.payload || '', valid: false};
 }
 
 /**

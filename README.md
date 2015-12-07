@@ -283,4 +283,4 @@ The decorated component will receive the following props:
 for compatibility with packages like [`redux-promise`](https://www.npmjs.com/package/redux-promise)
 - The `filter` and `validate` methods can return a promise, like the `submit` method, in order to perform asynchronous
 filtration and validation
-- Added unit tests for most of the things
+- Added unit tests for most methods

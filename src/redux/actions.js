@@ -39,6 +39,23 @@ export function change(form, field, value) {
     }
   };
 }
+/**
+ * Create a filter error action
+ * @param {string}  form
+ * @param {Error}   error
+ * @returns {{type, status: string, payload: Error, meta: {form: string}}}
+ */
+function filterError(form, field, error) {
+  return {
+    type: actions.FILTER,
+    status: 'error',
+    payload: error,
+    meta: {
+      form,
+      field
+    }
+  };
+}
 
 /**
  * Filter the form values or a single value
@@ -52,20 +69,85 @@ export function change(form, field, value) {
 export function filter(form, field, value, values, fn) {
   return (dispatch) => {
 
-    //todo: handle promise and async filtration+errors?
-    const result = fn({field, value, values});
+    //enter the filtering state when promise doesn't resolve immediately
+    const timeout = setTimeout(() => {
+      dispatch({
+        type: actions.FILTER,
+        status: 'start',
+        meta: {
+          form,
+          field
+        }
+      });
+    }, 0);
 
-    dispatch({
-      type: actions.FILTER,
-      status: 'finish',
-      payload: result,
-      meta: {
-        form,
-        field
-      }
-    });
+    //call the user's filter function and handle any synchronous errors
+    let result = null;
+    try {
+      result = fn({field, value, values});
+    } catch (error) {
 
-    return result;
+      //don't bother entering the filtering state when the promise resolves instantly
+      clearTimeout(timeout);
+
+      //complete the validation
+      dispatch(filterError(form, field, error));
+
+      return Promise.reject(error);
+    }
+
+    //resolve the result of the user's filter function
+    return Promise.resolve(result)
+      .then(
+        (promisedResult) => {
+
+          //don't bother entering the filtering state when the promise resolves instantly
+          clearTimeout(timeout);
+
+          //complete the filtration
+          dispatch({
+            type: actions.FILTER,
+            status: 'finish',
+            payload: promisedResult,
+            meta: {
+              form,
+              field
+            }
+          });
+
+          return promisedResult;
+        },
+        (error) => {
+
+          //don't bother entering the filtering state when the promise resolves instantly
+          clearTimeout(timeout);
+
+          //complete the filtration
+          dispatch(filterError(form, field, error));
+
+          throw error;
+        }
+      )
+    ;
+
+  };
+}
+
+/**
+ * Create a validate error action
+ * @param {string}  form
+ * @param {Error}   error
+ * @returns {{type, status: string, payload: Error, meta: {form: string}}}
+ */
+function validateError(form, field, error) {
+  return {
+    type: actions.VALIDATE,
+    status: 'error',
+    payload: error,
+    meta: {
+      form,
+      field
+    }
   };
 }
 
@@ -81,20 +163,72 @@ export function filter(form, field, value, values, fn) {
 export function validate(form, field, value, values, fn) {
   return (dispatch) => {
 
-    //todo: handle promise and async validation+errors?
-    const result = fn({field, value, values});
+    //enter the validating state when promise doesn't resolve immediately
+    const timeout = setTimeout(() => {
+      dispatch({
+        type: actions.VALIDATE,
+        status: 'start',
+        meta: {
+          form,
+          field
+        }
+      });
+    }, 0);
 
-    dispatch({
-      type: actions.VALIDATE,
-      status: 'finish',
-      payload: result,
-      meta: {
-        form,
-        field
-      }
-    });
+    //call the user's validate function and handle any synchronous errors
+    let result = null;
+    try {
+      result = fn({field, value, values});
+    } catch (error) {
 
-    return result === true;
+      //don't bother entering the validating state when the promise resolves instantly
+      clearTimeout(timeout);
+
+      //complete the validation
+      dispatch(validateError(form, field, error));
+
+      return Promise.reject(error);
+    }
+
+    //resolve the result of the user's validate function
+    return Promise.resolve(result)
+      .then(
+        (promisedResult) => {
+
+          //don't bother entering the validating state when the promise resolves instantly
+          clearTimeout(timeout);
+
+          //complete the validation
+          if (promisedResult === true) {
+
+            dispatch({
+              type: actions.VALIDATE,
+              status: 'finish',
+              meta: {
+                form,
+                field
+              }
+            });
+
+          } else {
+            dispatch(validateError(form, field, promisedResult));
+          }
+
+          return promisedResult === true;
+        },
+        (error) => {
+
+          //don't bother entering the validating state when the promise resolves instantly
+          clearTimeout(timeout);
+
+          //complete the validation
+          dispatch(validateError(form, field, error));
+
+          throw error;
+        }
+      )
+    ;
+
   };
 }
 
@@ -139,7 +273,7 @@ export function submit(form, values, fn) {
     //call the user's submit function and handle any synchronous errors
     let result = null;
     try {
-      result = fn({values, dispatch});
+      result = fn({dispatch, values});
     } catch (error) {
 
       //don't bother entering the submitting state when the promise resolves instantly
@@ -148,22 +282,22 @@ export function submit(form, values, fn) {
       //complete the submission
       dispatch(submitError(form, error));
 
-      return Promise.resolve();
+      return Promise.reject(error);
     }
 
     //resolve the result of the user's submit function
     return Promise.resolve(result)
       .then(
-        (submitResult) => {
+        (promisedResult) => {
 
           //don't bother entering the submitting state when the promise resolves instantly
           clearTimeout(timeout);
 
           //dispatch an error if the result is a Flux Standard Action error
-          if (isFSA(submitResult) && isError(submitResult)) {
+          if (isFSA(promisedResult) && isError(promisedResult)) {
 
             //complete the submission
-            dispatch(submitError(form, submitResult.payload));
+            dispatch(submitError(form, promisedResult.payload));
 
           } else {
 
@@ -187,6 +321,7 @@ export function submit(form, values, fn) {
           //complete the submission
           dispatch(submitError(form, error));
 
+          throw error;
         }
       )
     ;

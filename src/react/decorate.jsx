@@ -73,6 +73,7 @@ export default function decorateForm(config, mapStateToProps) {
 
         //bind/cache the field event handlers
         this.fieldHandlers = fieldNames.reduce((fieldHandlers, fieldName) => {
+
           fieldHandlers[fieldName] = {
 
             onFocus: () => {
@@ -84,23 +85,39 @@ export default function decorateForm(config, mapStateToProps) {
 
               const
                 props = formPropKey ? this.props[formPropKey] : this.props,
-                fieldValues = getValues({formPropKey, props})
+                validValues = getValues({formPropKey, props})
               ;
 
               props.blur(fieldName);
 
-              //filter the value
-              if (filterOnBlur) {
-                fieldValues[fieldName] = props.filter(
-                  fieldName, fieldValues[fieldName], fieldValues, filter //FIXME: pass validValues as fieldValues arg?
-                );
-              }
+              if (filterOnBlur && validateOnBlur) {
 
-              //validate the value
-              if (validateOnBlur) {
+                //filter and validate
+                props.filter(
+                  fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+                ).then(value => {
+                  validValues[fieldName] = value;
+                  props.validate(
+                    fieldName, value, validValues, validate //FIXME: pass validValues as fieldValues arg?
+                  );
+                })
+
+              } else if (filterOnBlur) {
+
+                //filter
+                validValues[fieldName] = props.filter(
+                  fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+                ).then(value => {
+                  validValues[fieldName] = value;
+                });
+
+              } else if (validateOnBlur) {
+
+                //validate
                 props.validate(
-                  fieldName, fieldValues[fieldName], fieldValues, validate //FIXME: pass validValues as fieldValues arg?
+                  fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
                 );
+
               }
 
             },
@@ -111,7 +128,9 @@ export default function decorateForm(config, mapStateToProps) {
             }
 
           };
+
           return fieldHandlers;
+
         }, {});
 
       }
@@ -129,29 +148,50 @@ export default function decorateForm(config, mapStateToProps) {
         const props = formPropKey ? this.props[formPropKey] : this.props;
 
         let
-          valid = true,
+          formIsValid = true,
           validValues = getValues({formPropKey, props})
         ;
 
         //filter and validate each of the fields
         fieldNames.forEach(fieldName => {
 
-          if (filterOnSubmit)  {
+          if (filterOnSubmit && validateOnSubmit)  {
+console.log('validate and filter');
+            props.filter(
+              fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+            ).then(value => {
+              validValues[fieldName] = value;
+              props.validate(
+                fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
+              ).then(valid => {
+                formIsValid = formIsValid && valid;
+              });
+            });
+
+          } else if (filterOnSubmit)  {
+
+            //filter
             validValues[fieldName] = props.filter(
               fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
-            );
-          }
+            ).then(value => {
+              validValues[fieldName] = value;
+            });
 
-          if (validateOnSubmit) {
-            valid = props.validate(
+          } else if (validateOnSubmit) {
+
+            //validate
+            props.validate(
               fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
-            ) && valid;
+            ).then(valid => {
+              formIsValid = formIsValid && valid;
+            });
+
           }
 
         });
 
         //submit the valid values
-        if (valid && submit) {
+        if (formIsValid && submit) {
           props.submit(validValues, submit);
         }
 
