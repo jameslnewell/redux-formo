@@ -226,9 +226,34 @@ describe('actions', () => {
 
       });
 
-      it('should dispatch an action on flux standard action error', () => {
+      it('should dispatch an action on Flux Standard Action', () => {
 
-        const fn = sinon.stub().returns({type: 'ERR', payload: new Error('Submit failed.'), error: true});
+        const fn = sinon.stub().returns({
+          type: 'SAVE',
+        });
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'finish',
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+      it('should dispatch an action on Flux Standard Action error', () => {
+
+        const fn = sinon.stub().returns({
+          type: 'SAVE',
+          error: true,
+          payload: new Error('Submit failed.')
+        });
         const dispatch = sinon.spy();
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
@@ -294,6 +319,7 @@ describe('actions', () => {
 
         return submit(FORM, {}, fn)(dispatch).then(() => {
 
+          expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({
             type: SUBMIT,
             status: 'finish',
@@ -313,22 +339,70 @@ describe('actions', () => {
         }));
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch)
-          .then(
-            () => {
+        return submit(FORM, {}, fn)(dispatch).then(() => {
 
-              expect(dispatch).to.be.calledWith({
-                type: SUBMIT,
-                status: 'error',
-                payload: new Error('Submit failed.'),
-                meta: {
-                  form: FORM
-                }
-              });
-
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'error',
+            payload: new Error('Submit failed.'),
+            meta: {
+              form: FORM
             }
-          )
-        ;
+          });
+
+        });
+
+      });
+
+
+      it('should dispatch an action on Flux Standard Action', () => {
+
+        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+          setTimeout(() => resolve({
+            type: 'SAVE'
+          }), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'finish',
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
+
+      });
+
+      it('should dispatch an action on Flux Standard Action error', () => {
+
+        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+          setTimeout(() => resolve({
+            type: 'SAVE',
+            error: true,
+            payload: new Error('Submit failed.')
+          }), 100);
+        }));
+        const dispatch = sinon.spy();
+
+        return submit(FORM, {}, fn)(dispatch).then(() => {
+
+          expect(dispatch).to.be.calledTwice;
+          expect(dispatch).to.be.calledWith({
+            type: SUBMIT,
+            status: 'error',
+            payload: new Error('Submit failed.'),
+            meta: {
+              form: FORM
+            }
+          });
+
+        });
 
       });
 

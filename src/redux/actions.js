@@ -99,6 +99,23 @@ export function validate(form, field, value, values, fn) {
 }
 
 /**
+ * Create a submit error action
+ * @param {string}  form
+ * @param {Error}   error
+ * @returns {{type, status: string, payload: Error, meta: {form: string}}}
+ */
+function submitError(form, error) {
+  return {
+    type: actions.SUBMIT,
+    status: 'error',
+    payload: error,
+    meta: {
+      form
+    }
+  };
+}
+
+/**
  * Call the user's submit method with the form field values and dispatch actions when it is completed
  * @param   {string}    form          The form name
  * @param   {object}    values        The form values
@@ -129,14 +146,7 @@ export function submit(form, values, fn) {
       clearTimeout(timeout);
 
       //complete the submission
-      dispatch({
-        type: actions.SUBMIT,
-        status: 'error',
-        payload: error,
-        meta: {
-          form
-        }
-      });
+      dispatch(submitError(form, error));
 
       return Promise.resolve();
     }
@@ -146,21 +156,27 @@ export function submit(form, values, fn) {
       .then(
         (submitResult) => {
 
-          //throw error if the result is a flux standard action error
-          if (isFSA(submitResult) && isError(submitResult))
-            throw submitResult.payload || new Error();
-
           //don't bother entering the submitting state when the promise resolves instantly
           clearTimeout(timeout);
 
-          //complete the submission
-          dispatch({
-            type: actions.SUBMIT,
-            status: 'finish',
-            meta: {
-              form
-            }
-          });
+          //dispatch an error if the result is a Flux Standard Action error
+          if (isFSA(submitResult) && isError(submitResult)) {
+
+            //complete the submission
+            dispatch(submitError(form, submitResult.payload));
+
+          } else {
+
+            //complete the submission
+            dispatch({
+              type: actions.SUBMIT,
+              status: 'finish',
+              meta: {
+                form
+              }
+            });
+
+          }
 
         },
         (error) => {
@@ -169,14 +185,7 @@ export function submit(form, values, fn) {
           clearTimeout(timeout);
 
           //complete the submission
-          dispatch({
-            type: actions.SUBMIT,
-            status: 'error',
-            payload: error,
-            meta: {
-              form
-            }
-          });
+          dispatch(submitError(form, error));
 
         }
       )

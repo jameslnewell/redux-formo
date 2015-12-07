@@ -277,9 +277,10 @@ The decorated component will receive the following props:
 
 ### v1.0.0
 - *breaking change:* The name of the package has changed from `the-other-redux-form` to `redux-formo`
-- *breaking change:* The form state is now merged into the root of your component's props unless the `formPropKey`
-option is configured
+- *breaking change:* The form state is now merged into the root of your component's props unless configured by `formPropKey`
 - *breaking change:* The `filter`, `validate` and `submit` methods now receive an object instead of numerous parameters
+- *possible breaking change:* The `submit` method accepts a [Flux Standard Action](https://github.com/acdlite/flux-standard-action)
+for compatibility with packages like [`redux-promise`](https://www.npmjs.com/package/redux-promise)
 - The `filter` and `validate` methods can return a promise, like the `submit` method, in order to perform asynchronous
 filtration and validation
 - Added unit tests for most of the things
