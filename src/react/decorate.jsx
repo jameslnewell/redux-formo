@@ -1,13 +1,16 @@
 import React from 'react';
 import invariant from 'invariant';
 import connect from './connect';
-
-import * as actions from '../redux/actions';
-import getValues from './getValidValues';
+import decorateFormProps from './decorateFormProps';
+import getValues from './getValues';
 
 const defaultConfig = {
 
   values: {},
+
+  filter: ({value}) => value,
+  validate: () => true,
+  submit: () => {/* do nothing */},
 
   filterOnChange: false,
   validateOnChange: false,
@@ -18,73 +21,45 @@ const defaultConfig = {
   filterOnSubmit: true,
   validateOnSubmit: true,
 
-  filter: (fieldName, fieldValue, context) => fieldValue,
-  validate: (fieldName, fieldValue, context) => true,
-  submit: () => {},
+  formStateKey: 'form',
+  formPropKey: ''
 
-  mountPoint: 'form'
-
-};
-
-const defaultFormProps = {
-  fields: {},
-  filtering: false,
-  validating: false,
-  submitting: false,
-  submitted: false,
-  valid: false,
-  error: ''
-};
-
-const defaultFieldProps = {
-  name: '',
-  active: false,
-  filtering: false,
-  validating: false,
-  filtered: false,
-  validated: false,
-  valid: false,
-  error: '',
-  validValue: '',
-  defaultValue: '',
-  defaultChecked: false
 };
 
 /**
  * Decorate a form component with basic form functionality
  * @param   {Object}    config
- * @param   {string}    config.form             The form name
- * @param   {string}    [config.mountPoint]     The form mount point
- * @param   {function}  [mapStateToProps]       A function to map extra state to props
+ * @param   {string}    config.form
+ * @param   {string}    config.fields
+ * @param   {object}    config.values
+ * @param   {string}    [config.formStateKey]
+ * @param   {string}    [config.formPropKey]
+ * @param   {function}  [mapStateToProps]
  * @returns {function}
  */
 export default function decorateForm(config, mapStateToProps) {
-  let {
-    form: formName,
-    fields: fieldNames,
-    values: initialFieldValues,
-    filter,
-    validate,
-    submit,
-    filterOnBlur,
-    validateOnBlur,
-    filterOnSubmit,
-    validateOnSubmit,
-    mountPoint
+  const {
+    form: formName, fields: fieldNames, values: initialValues,
+    filter, validate, submit,
+    filterOnBlur, validateOnBlur,
+    filterOnSubmit, validateOnSubmit,
+    formStateKey, formPropKey
   } = {...defaultConfig, ...config};
 
-  invariant(formName != null, 'A form must have a name.');
-  invariant(fieldNames != null, 'A form must have at least one field.');
+  invariant(formName, 'A form must have a name.');
+  invariant(fieldNames && fieldNames.length, 'A form must have at least one field.');
 
-  return DecoratedComponent => {
+  return WrappedComponent => {
 
     /**
      * A decorated form
+     * @class
      */
     class DecoratedForm extends React.Component {
 
       /**
        * Construct a decorated form
+       * @constructor
        * @param   {object}  props
        * @param   {Array}   args
        */
@@ -92,54 +67,52 @@ export default function decorateForm(config, mapStateToProps) {
         super(props, ...args);
 
         //bind/cache the form event handlers
-        this.handleReset = this.handleReset.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.formHandlers = {
+          onSubmit: this.handleSubmit.bind(this)
+        };
 
         //bind/cache the field event handlers
-        this.handlers = Object.assign.apply(null, fieldNames.map(fieldName => {
-          return {[fieldName]: {
+        this.fieldHandlers = fieldNames.reduce((fieldHandlers, fieldName) => {
+          fieldHandlers[fieldName] = {
 
             onFocus: () => {
-              props.form.focus(fieldName)
+              const props = formPropKey ? this.props[formPropKey] : this.props;
+              props.focus(fieldName);
             },
 
             onBlur: () => {
-              props.form.blur(fieldName);
 
-              //this is pretty hacky?
-              let fieldValues = getValues(fieldNames, this.props.form.fields, initialFieldValues);
+              const
+                props = formPropKey ? this.props[formPropKey] : this.props,
+                fieldValues = getValues({formPropKey, props})
+              ;
 
+              props.blur(fieldName);
+
+              //filter the value
               if (filterOnBlur) {
-                fieldValues[fieldName] = props.form.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
+                fieldValues[fieldName] = props.filter(
+                  fieldName, fieldValues[fieldName], fieldValues, filter //FIXME: pass validValues as fieldValues arg?
+                );
               }
 
+              //validate the value
               if (validateOnBlur) {
-                //field values might be different due to filter
-                props.form.validate(fieldName, fieldValues[fieldName], fieldValues, validate);
+                props.validate(
+                  fieldName, fieldValues[fieldName], fieldValues, validate //FIXME: pass validValues as fieldValues arg?
+                );
               }
 
             },
 
             onChange: (event) => {
-              const fieldValue = event.target.value;
-              props.form.change(fieldName, fieldValue)
+              const props = formPropKey ? this.props[formPropKey] : this.props;
+              props.change(fieldName, event.target.value);
             }
 
-          }};
-        }).concat({}));
-
-      }
-
-      componentWillMount() {
-      }
-
-      componentWillReceiveProps(nextProps) {
-      }
-
-      /**
-       * Handle the form being reset
-       */
-      handleReset() {
+          };
+          return fieldHandlers;
+        }, {});
 
       }
 
@@ -153,80 +126,52 @@ export default function decorateForm(config, mapStateToProps) {
           event.preventDefault();
         }
 
+        const props = formPropKey ? this.props[formPropKey] : this.props;
+
         let
-          props = this.props,
           valid = true,
-          fieldValues = getValues(fieldNames, props.form.fields, initialFieldValues)
+          validValues = getValues({formPropKey, props})
         ;
 
-        //let the user filter and validate each field
+        //filter and validate each of the fields
         fieldNames.forEach(fieldName => {
 
           if (filterOnSubmit)  {
-            fieldValues[fieldName] = props.form.filter(fieldName, fieldValues[fieldName], fieldValues, filter);
+            validValues[fieldName] = props.filter(
+              fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
+            );
           }
 
           if (validateOnSubmit) {
-            valid = props.form.validate(fieldName, fieldValues[fieldName], fieldValues, validate) && valid;
+            valid = props.validate(
+              fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
+            ) && valid;
           }
 
         });
 
-        //let the user submit the values
+        //submit the valid values
         if (valid && submit) {
-          props.form.submit(fieldValues, submit);
+          props.submit(validValues, submit);
         }
 
       }
 
       /**
        * Render the form
-       * @returns {React.Component}
+       * @returns {ReactElement}
        */
       render() {
-        let {form: formProps, ...props} = this.props;
 
-        //mix-in the bound/cached event handlers with the field props
-        let formValid = true;
-        let decoratedFields = Object.assign.apply(null, fieldNames.map(fieldName => {
-
-          const
-            fieldProps = formProps.fields[fieldName] || {},
-            fieldHandlers = this.handlers[fieldName]
-          ;
-
-          //compute whether the whole form is valid
-          formValid = formValid && fieldProps.valid;
-
-          //compute other fields
-          var value = (typeof fieldProps.value === 'undefined' ? initialFieldValues[fieldName] :  fieldProps.value) || ''; //use the default value if the
-
-          // value hasn't been defined yet
-          const computedFieldProps = {
-            name: fieldName,
-            value: value,
-            checked: value === true,
-            defaultValue: initialFieldValues[fieldName] || '',
-            defaultChecked: initialFieldValues[fieldName] === true
-          };
-
-          return {[fieldName]: {
-            ...defaultFieldProps,
-            ...fieldProps,
-            ...fieldHandlers,
-            ...computedFieldProps
-          }};
-
-        }).concat({}));
-
-        const decoratedForm = Object.assign({}, defaultFormProps, formProps, {
-          valid: formValid,
-          fields: decoratedFields,
-          onReset: this.handleReset,
-          onSubmit: this.handleSubmit
+        //wrap the form props; set handlers for every field
+        const decoratedProps = decorateFormProps({
+          formPropKey,
+          props: this.props,
+          formHandlers: this.formHandlers,
+          fieldHandlers: this.fieldHandlers
         });
 
-        return <DecoratedComponent {...props} form={decoratedForm}/>;
+        return <WrappedComponent {...decoratedProps}/>;
       }
 
     }
@@ -235,7 +180,9 @@ export default function decorateForm(config, mapStateToProps) {
     return connect(
       {
         form: formName,
-        mountPoint
+        fields: fieldNames,
+        values: initialValues,
+        formStateKey, formPropKey
       },
       mapStateToProps
     )(DecoratedForm);

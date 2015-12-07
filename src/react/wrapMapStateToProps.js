@@ -1,8 +1,8 @@
 import invariant from 'invariant';
 
 const defaultFormStateKey = 'form';
-const defaultFormPropsKey = '';
-const defaultMapStateToProps = state => ({});
+const defaultformPropKey = '';
+const defaultMapStateToProps = () => ({});
 const defaultFormsState = {};
 const defaultFormState = {fields: {}};
 
@@ -10,14 +10,14 @@ const defaultFormState = {fields: {}};
  * Create a function to extract the form state (and any other state the user wants)
  * @param   {string}    formName
  * @param   {string}    [formStateKey]
- * @param   {string}    [formPropsKey]
+ * @param   {string}    [formPropKey]
  * @param   {function}  [mapStateToProps]
  * @returns {Function}
  */
 export default function wrapMapStateToProps({
   formName,
   formStateKey = defaultFormStateKey,
-  formPropsKey = defaultFormPropsKey,
+  formPropKey = defaultformPropKey,
   mapStateToProps = defaultMapStateToProps
 }) {
 
@@ -27,7 +27,7 @@ export default function wrapMapStateToProps({
    * @returns {object}
    */
   return function(state = defaultFormsState) {
-    let formState;
+    let formState = null;
 
     if (formStateKey) {
       invariant(typeof state[formStateKey] === 'object', `redux-formo: The reducer must be mounted at "${formStateKey}".`);
@@ -36,8 +36,8 @@ export default function wrapMapStateToProps({
       formState = state[formName] || defaultFormState;
     }
 
-    if (formPropsKey) {
-      return {...mapStateToProps(state), [formPropsKey]: formState};
+    if (formPropKey) {
+      return {...mapStateToProps(state), [formPropKey]: formState};
     } else {
       return {...mapStateToProps(state), ...formState};
     }

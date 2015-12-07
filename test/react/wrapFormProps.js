@@ -15,7 +15,7 @@ describe('wrapFormProps()', () => {
       validating: false,
       submitting: false,
       submitted: false,
-      valid: false,
+      valid: true,
       error: ''
     });
 
@@ -26,20 +26,17 @@ describe('wrapFormProps()', () => {
     const wrappedProps = wrapFormProps({
       fieldNames: [],
       props: {
-        fields: {},
-        filtering: true,
-        validating: true,
         submitting: true,
         submitted: true,
-        valid: true,
-        error: 'Uh oh!'
+        error: 'Uh oh!',
+        fields: {}
       }
     });
 
     expect(wrappedProps).to.be.deep.equal({
       fields: {},
-      filtering: true,
-      validating: true,
+      filtering: false,
+      validating: false,
       submitting: true,
       submitted: true,
       valid: true,
@@ -64,7 +61,7 @@ describe('wrapFormProps()', () => {
       error: '',
       fields: {
         firstName: {
-          name: '',
+          name: 'firstName',
           active: false,
           filtering: false,
           validating: false,
@@ -72,8 +69,9 @@ describe('wrapFormProps()', () => {
           validated: false,
           valid: false,
           error: '',
-          value: '',
           validValue: '',
+          value: '',
+          checked: false,
           defaultValue: '',
           defaultChecked: false
         }
@@ -87,15 +85,11 @@ describe('wrapFormProps()', () => {
     const wrappedProps = wrapFormProps({
       fieldNames: ['firstName'],
       props: {
-        filtering: false,
-        validating: false,
         submitting: false,
         submitted: false,
-        valid: false,
         error: '',
         fields: {
           firstName: {
-            name: 'firstName',
             active: true,
             filtering: true,
             validating: true,
@@ -103,21 +97,19 @@ describe('wrapFormProps()', () => {
             validated: true,
             valid: true,
             error: 'Uh oh!',
-            value: 'John!',
             validValue: 'John!',
-            defaultValue: 'John!',
-            defaultChecked: true
+            value: 'John!'
           }
         }
       }
     });
 
     expect(wrappedProps).to.be.deep.equal({
-      filtering: false,
-      validating: false,
+      filtering: true,
+      validating: true,
       submitting: false,
       submitted: false,
-      valid: false,
+      valid: true,
       error: '',
       fields: {
         firstName: {
@@ -129,42 +121,9 @@ describe('wrapFormProps()', () => {
           validated: true,
           valid: true,
           error: 'Uh oh!',
-          value: 'John!',
           validValue: 'John!',
-          defaultValue: 'John!',
-          defaultChecked: true
-        }
-      }
-    });
-
-  });
-
-  it('should set calculated properties', () => {
-
-    const wrappedProps = wrapFormProps({
-      fieldNames: ['firstName'],
-      props: {}
-    });
-
-    expect(wrappedProps).to.be.deep.equal({
-      filtering: false,
-      validating: false,
-      submitting: false,
-      submitted: false,
-      valid: false,
-      error: '',
-      fields: {
-        firstName: {
-          name: '',
-          active: false,
-          filtering: false,
-          validating: false,
-          filtered: false,
-          validated: false,
-          valid: false,
-          error: '',
-          value: '',
-          validValue: '',
+          value: 'John!',
+          checked: false,
           defaultValue: '',
           defaultChecked: false
         }
@@ -172,5 +131,130 @@ describe('wrapFormProps()', () => {
     });
 
   });
+
+  it('should set calculated property .valid', () => {
+
+    const wrappedProps = wrapFormProps({
+      fieldNames: ['firstName', 'lastName'],
+      props: {
+        fields: {
+          firstName: {
+            valid: true,
+            value: 'John',
+            validValue: 'John'
+          },
+          lastName: {
+            valid: true,
+            value: 'Smith',
+            validValue: 'Smith'
+          }
+        }
+      }
+    });
+
+    expect(wrappedProps).to.be.deep.equal({
+      filtering: false,
+      validating: false,
+      submitting: false,
+      submitted: false,
+      valid: true,
+      error: '',
+      fields: {
+        firstName: {
+          name: 'firstName',
+          active: false,
+          filtering: false,
+          validating: false,
+          filtered: false,
+          validated: false,
+          valid: true,
+          error: '',
+          validValue: 'John',
+          value: 'John',
+          checked: false,
+          defaultValue: '',
+          defaultChecked: false
+        },
+        lastName: {
+          name: 'lastName',
+          active: false,
+          filtering: false,
+          validating: false,
+          filtered: false,
+          validated: false,
+          valid: true,
+          error: '',
+          validValue: 'Smith',
+          value: 'Smith',
+          checked: false,
+          defaultValue: '',
+          defaultChecked: false
+        }
+      }
+    });
+
+  });
+
+  it('should set calculated property .filtering and .validating', () => {
+
+    const wrappedProps = wrapFormProps({
+      fieldNames: ['firstName', 'lastName'],
+      props: {
+        fields: {
+          firstName: {
+            validating: true
+          },
+          lastName: {
+            filtering: true
+          }
+        }
+      }
+    });
+
+    expect(wrappedProps).to.be.deep.equal({
+      filtering: true,
+      validating: true,
+      submitting: false,
+      submitted: false,
+      valid: false,
+      error: '',
+      fields: {
+        firstName: {
+          name: 'firstName',
+          active: false,
+          filtering: false,
+          validating: true,
+          filtered: false,
+          validated: false,
+          valid: false,
+          error: '',
+          validValue: '',
+          value: '',
+          checked: false,
+          defaultValue: '',
+          defaultChecked: false
+        },
+        lastName: {
+          name: 'lastName',
+          active: false,
+          filtering: true,
+          validating: false,
+          filtered: false,
+          validated: false,
+          valid: false,
+          error: '',
+          value: '',
+          validValue: '',
+          checked: false,
+          defaultValue: '',
+          defaultChecked: false
+        }
+      }
+    });
+
+  });
+
+  //TODO: test initial values
+  //TODO: test actions
 
 });

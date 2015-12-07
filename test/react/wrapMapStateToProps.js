@@ -58,7 +58,7 @@ describe('wrapMapStateToProps()', () => {
 
   });
 
-  it('should put the form state into the root props when I set .formPropsKey to empty', () => {
+  it('should put the form state into the root props when I set .formPropKey to empty', () => {
 
     const state = {
       form: {
@@ -72,7 +72,7 @@ describe('wrapMapStateToProps()', () => {
 
     const mapStateToProps = wrapMapStateToProps({
       formName: 'profile',
-      formPropsKey: ''
+      formPropKey: ''
     });
 
     const props = mapStateToProps(state);
@@ -85,7 +85,7 @@ describe('wrapMapStateToProps()', () => {
 
   });
 
-  it('should put the form state into the child props when I set .formPropsKey', () => {
+  it('should put the form state into the child props when I set .formPropKey', () => {
 
     const state = {
       form: {
@@ -99,7 +99,7 @@ describe('wrapMapStateToProps()', () => {
 
     const mapStateToProps = wrapMapStateToProps({
       formName: 'profile',
-      formPropsKey: 'form'
+      formPropKey: 'form'
     });
 
     const props = mapStateToProps(state);

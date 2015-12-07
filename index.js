@@ -4,4 +4,4 @@ import decorate from './src/react/decorate';
 
 export {FOCUS, BLUR, CHANGE, FILTER, VALIDATE, SUBMIT};
 export {reducer};
-export {decorate};
+export default decorate;

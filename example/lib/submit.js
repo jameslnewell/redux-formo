@@ -15,8 +15,8 @@ export default function({values}) {
   //return;
 
   //async completion is handled
-  //return new Promise((resolve, reject) => {
-  //  setTimeout(resolve, 3000);
-  //});
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, 3000);
+  });
 
 }
