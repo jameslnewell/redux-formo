@@ -1,15 +1,14 @@
 
 export default function({field, value}) {
+  value = String(value).trim();
 
-  if (field === 'name') {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve('John'), 1000);
-    });
+  if (field === 'username') {
+    value = value.replace(/[^a-zA-Z0-9-\_]/g, '');
   }
 
   if (field === 'phone') {
-    return value && value.replace(/[^0-9]/g, '');
+    value = value.replace(/[^0-9]/g, '');
   }
 
-  return value.trim();
+  return value;
 }

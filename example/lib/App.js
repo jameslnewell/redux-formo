@@ -14,7 +14,7 @@ class App extends React.Component {
       submitting,
       submitted,
       onSubmit,
-      fields: {name, phone}
+      fields: {username, name, phone}
     } = this.props;
 
     const formClassNames = classNames(
@@ -28,14 +28,25 @@ class App extends React.Component {
     return (
       <form className={formClassNames} onSubmit={onSubmit}>
 
-        <h1>About You</h1>
+        <h1>Personal Defails</h1>
 
         {error && <p className="control__error">{error}</p>}
 
-        {name.active && 'Valid value: ' + name.validValue + ' Value: ' + name.value}
+        {username.active && <small>{`Value: "${username.value}" Valid value: "${username.validValue}"`}</small>}
         <div className="control">
           <label className="control__label">
-            Name: <input className="control__input" {...name}/>
+            Username: <input className="control__input" {...username} disabled={username.filtering || username.validating}/>
+          </label>
+          {username.error ? <p className="control__error">{username.error}</p> : null}
+        </div>
+
+        <br/>
+        <br/>
+
+        {name.active && <small>{`Value: "${name.value}" Valid value: "${name.validValue}"`}</small>}
+        <div className="control">
+          <label className="control__label">
+            Full name: <input className="control__input" {...name}/>
           </label>
           {name.error ? <p className="control__error">{name.error}</p> : null}
         </div>
@@ -43,7 +54,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        {phone.active && 'Valid value: ' + phone.validValue + ' Value: ' + phone.value}
+        {phone.active && <small>{`Value: "${phone.value}" Valid value: "${phone.validValue}"`}</small>}
         <div className="control">
           <label className="control__label">
             Phone: <input className="control__input" {...phone}/>
@@ -68,6 +79,6 @@ class App extends React.Component {
 
 export default form({
   form: 'personal-details',
-  fields: ['name', 'phone'],
+  fields: ['username', 'name', 'phone'],
   filter, validate, submit
 })(App);

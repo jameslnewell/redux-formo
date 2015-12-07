@@ -3,6 +3,24 @@ export default function({field, value}) {
 
   switch (field) {
 
+    case 'username':
+
+      if (value == '') {
+        return 'Please enter a username which you will use to log in.';
+      }
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (value === 'jameslnewell') {
+            resolve('Sorry this username has already been taken.');
+          } else {
+            resolve(true);
+          }
+        }, 2000)
+      });
+
+      break;
+
     case 'name':
 
       if (value == '') {

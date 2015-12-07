@@ -97,7 +97,7 @@ export default function decorateForm(config, mapStateToProps) {
                   fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
                 ).then(value => {
                   validValues[fieldName] = value;
-                  props.validate(
+                  return props.validate(
                     fieldName, value, validValues, validate //FIXME: pass validValues as fieldValues arg?
                   );
                 })
@@ -153,25 +153,24 @@ export default function decorateForm(config, mapStateToProps) {
         ;
 
         //filter and validate each of the fields
-        fieldNames.forEach(fieldName => {
+        Promise.all(fieldNames.map(fieldName => {
 
           if (filterOnSubmit && validateOnSubmit)  {
-console.log('validate and filter');
-            props.filter(
+            return props.filter(
               fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
             ).then(value => {
               validValues[fieldName] = value;
-              props.validate(
+              return props.validate(
                 fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
-              ).then(valid => {
-                formIsValid = formIsValid && valid;
-              });
+              );
+            }).then(valid => {
+              formIsValid = formIsValid && valid;
             });
 
           } else if (filterOnSubmit)  {
 
             //filter
-            validValues[fieldName] = props.filter(
+            return validValues[fieldName] = props.filter(
               fieldName, validValues[fieldName], validValues, filter //FIXME: pass validValues as fieldValues arg?
             ).then(value => {
               validValues[fieldName] = value;
@@ -180,7 +179,7 @@ console.log('validate and filter');
           } else if (validateOnSubmit) {
 
             //validate
-            props.validate(
+            return props.validate(
               fieldName, validValues[fieldName], validValues, validate //FIXME: pass validValues as fieldValues arg?
             ).then(valid => {
               formIsValid = formIsValid && valid;
@@ -188,12 +187,14 @@ console.log('validate and filter');
 
           }
 
-        });
+        })).then(() => {
 
-        //submit the valid values
-        if (formIsValid && submit) {
-          props.submit(validValues, submit);
-        }
+          //submit the valid values
+          if (formIsValid && submit) {
+            props.submit(validValues, submit);
+          }
+
+        });
 
       }
 

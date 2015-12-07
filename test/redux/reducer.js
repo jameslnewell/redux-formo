@@ -198,12 +198,11 @@ describe('reducer()', () => {
 
         });
 
-        it('should set .valid to false', () => {
+        it('should set .valid to true', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
-            status: 'error',
-            payload: 'Invalid!',
+            status: 'finish',
             meta: {
               form: FORM,
               field: FIELD
@@ -285,7 +284,7 @@ describe('reducer()', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
-            status: 'finish',
+            status: 'error',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -301,7 +300,7 @@ describe('reducer()', () => {
 
           const state = reducer({[FORM]: {fields: {[FIELD]: {value: 'John'}}}}, {
             type: VALIDATE,
-            status: 'finish',
+            status: 'error',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -309,7 +308,7 @@ describe('reducer()', () => {
             }
           });
 
-          expect(state[FORM].fields[FIELD]).to.have.property('validValue', '');
+          expect(state[FORM].fields[FIELD]).not.to.have.property('validValue');
 
         });
 
@@ -317,7 +316,7 @@ describe('reducer()', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
-            status: 'finish',
+            status: 'error',
             payload: 'Invalid.',
             meta: {
               form: FORM,
