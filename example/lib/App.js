@@ -83,3 +83,4 @@ export default form({
   filter, validate, submit,
   afterValidate: (...args) => console.log(...args)
 })(App);
+
