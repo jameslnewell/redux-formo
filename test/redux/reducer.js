@@ -221,6 +221,7 @@ describe('reducer()', () => {
           const state = reducer({}, {
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -236,6 +237,7 @@ describe('reducer()', () => {
           const state = reducer({}, {
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -251,6 +253,7 @@ describe('reducer()', () => {
           const state = reducer({}, {
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -266,6 +269,7 @@ describe('reducer()', () => {
           const state = reducer({[FORM]: {fields: {[FIELD]: {value: 'John'}}}}, {
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -332,7 +336,7 @@ describe('reducer()', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
-            status: 'error',
+            status: 'finish',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -348,7 +352,7 @@ describe('reducer()', () => {
 
           const state = reducer({[FORM]: {fields: {[FIELD]: {value: 'John'}}}}, {
             type: VALIDATE,
-            status: 'error',
+            status: 'finish',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -364,7 +368,7 @@ describe('reducer()', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
-            status: 'error',
+            status: 'finish',
             payload: 'Invalid.',
             meta: {
               form: FORM,
@@ -381,7 +385,23 @@ describe('reducer()', () => {
     });
 
     describe('=> when validation has errored', () => {
-      it('should...');
+
+      it('should set .error', () => {
+
+        const state = reducer({}, {
+          type: VALIDATE,
+          status: 'error',
+          payload: new Error('Failure!'),
+          meta: {
+            form: FORM,
+            field: FIELD
+          }
+        });
+
+        expect(state[FORM].fields[FIELD]).to.have.property('error', 'Failure!');
+
+      });
+
     });
 
   });

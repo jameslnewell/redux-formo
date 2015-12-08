@@ -185,21 +185,15 @@ export function validate(form, field, value, values, fn) {
           clearTimeout(timeout);
 
           //complete the validation
-          if (result === true) {
-
-            dispatch({
-              type: actions.VALIDATE,
-              status: 'finish',
-              meta: {
-                form,
-                field
-              }
-            });
-
-          } else {
-            dispatch(validateError(form, field, result));
-            throw new Error(result);
-          }
+          dispatch({
+            type: actions.VALIDATE,
+            status: 'finish',
+            payload: result,
+            meta: {
+              form,
+              field
+            }
+          });
 
           return result === true;
         },
@@ -278,6 +272,8 @@ export function submit(form, values, fn) {
 
             //complete the submission
             dispatch(submitError(form, result.payload));
+
+            throw result.payload;
 
           } else {
 

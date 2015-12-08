@@ -126,17 +126,23 @@ function startValidating(state) {
  * @param   {object}  state           The field state
  * @param   {object}  action
  * @param   {string}  action.payload  The field status
- * @returns {{validating: boolean, validated: boolean, error: string, valid: boolean, validValue: string}}
+ * @returns {{validating: boolean, validated: boolean, error: string, valid: boolean, [validValue]: string}}
  */
 function finishValidating(state, action) {
-  return {
+  const valid = action.payload === true;
+  const newState = {
     ...state,
     validating: false,
     validated: true,
-    error: '',
-    valid: true,
-    validValue: state.value || ''
+    error: valid ? '' : action.payload || '',
+    valid: valid
   };
+
+  if (valid) {
+    newState.validValue = state.value || '';
+  }
+
+  return newState;
 }
 
 /**
@@ -147,7 +153,12 @@ function finishValidating(state, action) {
  * @returns {{validating: boolean, error: string}}
  */
 function errorValidating(state, action) {
-  return {...state, validating: false, validated: true, error: action.payload || '', valid: false};
+  return {
+    ...state,
+    validating: false,
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || '',
+    valid: false
+  };
 }
 
 /**

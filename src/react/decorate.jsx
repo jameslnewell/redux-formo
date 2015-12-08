@@ -145,8 +145,9 @@ export default function decorateForm(config, mapStateToProps) {
 
         const props = formPropKey ? this.props[formPropKey] : this.props;
 
-        let
-          formIsValid = true,
+        let formIsValid = true;
+
+        const
           values = getValuesFromProps({props, prop: 'value'}),
           validValues = getValuesFromProps({props, prop: 'validValue'})
         ;
@@ -154,7 +155,7 @@ export default function decorateForm(config, mapStateToProps) {
         //filter and validate each of the fields
         Promise.all(fieldNames.map(fieldName => {
 
-          if (filterOnSubmit && validateOnSubmit)  {
+          if (filterOnSubmit && validateOnSubmit) {
             return props.filter(
               fieldName, values[fieldName], validValues, filter
             ).then(value => {
@@ -165,10 +166,10 @@ export default function decorateForm(config, mapStateToProps) {
               formIsValid = formIsValid && valid;
             });
 
-          } else if (filterOnSubmit)  {
+          } else if (filterOnSubmit) {
 
             //filter
-            return values[fieldName] = props.filter(
+            return props.filter(
               fieldName, values[fieldName], validValues, filter
             );
 
