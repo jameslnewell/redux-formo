@@ -1,7 +1,19 @@
 {
   "name": "redux-formo",
+  "version": "1.0.3",
   "description": "An alternate forms framework for Redux+React.",
-  "version": "1.0.2",
+  "keywords": [
+    "redux-formo",
+    "redux-form",
+    "redux",
+    "form",
+    "react",
+    "react-redux",
+    "flux",
+    "validate",
+    "submit",
+    "universaljs"
+  ],
   "main": "./dist/index.js",
   "dependencies": {
     "flux-standard-action": "^0.6.0",
