@@ -42,6 +42,7 @@
     "watch": "npm run build -- --watch",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js --debug --extension=.jsx",
     "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js --debug --extension=.jsx",
+    "postinstall": "npm run build",
     "prepublish": "npm run build"
   },
   "license": "MIT"
