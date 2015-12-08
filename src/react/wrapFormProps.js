@@ -1,11 +1,8 @@
 
 const defaultFormProps = {
   fields: {},
-  filtering: false,
-  validating: false,
   submitting: false,
   submitted: false,
-  valid: false,
   error: ''
 };
 
@@ -17,28 +14,28 @@ const defaultFieldProps = {
   filtered: false,
   validated: false,
   valid: false,
-  error: '',
-  value: '',
   validValue: '',
-  defaultValue: '',
-  defaultChecked: false
+  error: '',
+  value: ''
 };
 
 /**
  * @param {Array<string>} fieldNames    The field names
- * @param {object}        fieldValues   The initial field values
+ * @param {object}        initialValues   The initial field values
  * @param {object}        props         The component props
  * @param {object}        actions       The form actions
  * @param {string}        formPropKey
  * @returns {object}
  */
-export default function wrapFormProps({fieldNames, fieldValues, props, actions, formPropKey = ''}) {
-  const initialValues = fieldValues || {};
+export default function wrapFormProps({fieldNames, initialValues = {}, props, actions = {}, formPropKey = ''}) {
 
   const formProps = formPropKey ? props[formPropKey] : props;
   const newFormProps = {...defaultFormProps, ...formProps, ...actions};
 
-  let allFieldsAreValid = true;
+  newFormProps.filtering = false;
+  newFormProps.validating = false;
+  newFormProps.valid = true;
+
   newFormProps.fields = fieldNames.reduce((wrappedFieldProps, fieldName) => {
 
     const fieldProps = newFormProps.fields[fieldName] || {};
@@ -55,20 +52,18 @@ export default function wrapFormProps({fieldNames, fieldValues, props, actions, 
       ...fieldProps,
       name: fieldName,
       value,
-      checked: value === true,
-      defaultValue: initialValues[fieldName] || '',
-      defaultChecked: Boolean(initialValues[fieldName]) === true
+      checked: Boolean(value) === true
+      //defaultValue: initialValues[fieldName] || '',
+      //defaultChecked: Boolean(initialValues[fieldName]) === true
     };
 
     //update the computed form values
     newFormProps.filtering = newFormProps.filtering || Boolean(fieldProps.filtering);
     newFormProps.validating = newFormProps.validating || Boolean(fieldProps.validating);
-    allFieldsAreValid = allFieldsAreValid && Boolean(fieldProps.valid);
+    newFormProps.valid = newFormProps.valid && Boolean(fieldProps.valid);
 
     return wrappedFieldProps;
   }, {});
-
-  newFormProps.valid = allFieldsAreValid;
 
   if (formPropKey) {
     return {...props, [formPropKey]: newFormProps};

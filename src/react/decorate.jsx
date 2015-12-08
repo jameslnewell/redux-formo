@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'invariant';
 import connect from './connect';
 import decorateFormProps from './decorateFormProps';
-import getValues from './getValues';
+import getValuesFromProps from './getValuesFromProps';
 
 const defaultConfig = {
 
@@ -85,8 +85,8 @@ export default function decorateForm(config, mapStateToProps) {
 
               const
                 props = formPropKey ? this.props[formPropKey] : this.props,
-                values = getValues({props, prop: 'value'}),
-                validValues = getValues({props, prop: 'validValue'})
+                values = getValuesFromProps({props, prop: 'value'}),
+                validValues = getValuesFromProps({props, prop: 'validValue'})
               ;
 
               props.blur(fieldName);
@@ -147,8 +147,8 @@ export default function decorateForm(config, mapStateToProps) {
 
         let
           formIsValid = true,
-          values = getValues({props, prop: 'value'}),
-          validValues = getValues({props, prop: 'validValue'})
+          values = getValuesFromProps({props, prop: 'value'}),
+          validValues = getValuesFromProps({props, prop: 'validValue'})
         ;
 
         //filter and validate each of the fields

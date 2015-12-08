@@ -74,7 +74,11 @@ function finishFiltering(state, action) {
  * @returns {{filtering: boolean, error: string}}
  */
 function errorFiltering(state, action) {
-  return {...state, filtering: false, error: action.payload || ''};
+  return {
+    ...state,
+    filtering: false,
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || ''
+  };
 }
 
 /**

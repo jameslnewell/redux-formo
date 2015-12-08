@@ -138,7 +138,55 @@ describe('reducer()', () => {
     });
 
     describe('=> when filtration has errored', () => {
-      it('should...');
+
+      it('should not set .value', () => {
+
+        const state = reducer({}, {
+          type: FILTER,
+          status: 'error',
+          payload: new Error('Fail!'),
+          meta: {
+            form: FORM,
+            field: FIELD
+          }
+        });
+
+        expect(state[FORM].fields[FIELD]).not.to.have.property('value');
+
+      });
+
+      it('should set .filtering to false', () => {
+
+        const state = reducer({}, {
+          type: FILTER,
+          status: 'error',
+          payload: new Error('Fail!'),
+          meta: {
+            form: FORM,
+            field: FIELD
+          }
+        });
+
+        expect(state[FORM].fields[FIELD]).to.have.property('filtering', false);
+
+      });
+
+      it('should set .error', () => {
+
+        const state = reducer({}, {
+          type: FILTER,
+          status: 'error',
+          payload: new Error('Fail!'),
+          meta: {
+            form: FORM,
+            field: FIELD
+          }
+        });
+
+        expect(state[FORM].fields[FIELD]).to.have.property('error', 'Fail!');
+
+      });
+
     });
 
   });
