@@ -174,19 +174,6 @@ Void, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) 
   - if the promise resolves a FSA error, the `error` property will be set and the form will not be marked as `submitted`
 - in all other cases, the form will be marked as `submitted`
 
-
-##### .filterOnChange : Boolean
-
-Whether a field should be filtered when the field changes.
-
-Optional. Defaults to `false`.
-
-##### .validateOnChange : Boolean
-
-Whether a field should be validated when the field changes.
-
-Optional. Defaults to `false`.
-
 ##### .filterOnBlur : Boolean
 
 Whether a field should be filtered when the field loses focus.
@@ -285,3 +272,7 @@ The decorated component will receive the following props:
 - The `filter` and `validate` methods can return a promise, like the `submit` method, in order to perform asynchronous
  filtration and validation
 - Added unit tests for most methods
+
+## THANKS
+
+Much of this package is inspired by `redux-form` by `erikras`. Much thanks!
