@@ -104,7 +104,7 @@ export default function decorateForm(config, mapStateToProps) {
                     fieldName, value, validValues, validate
                   );
                 }).then(valid => {
-                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
+                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: values[fieldName], values: validValues});
                 })
 
               } else if (filterOnBlur) {
@@ -120,7 +120,7 @@ export default function decorateForm(config, mapStateToProps) {
                 props.validate(
                   fieldName, values[fieldName], validValues, validate
                 ).then(valid => {
-                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
+                  afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: values[fieldName], values: validValues});
                 });
 
               }
@@ -170,7 +170,7 @@ export default function decorateForm(config, mapStateToProps) {
               );
             }).then(valid => {
               formIsValid = formIsValid && valid;
-              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
+              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: values[fieldName], values: validValues});
             });
 
           } else if (filterOnSubmit)  {
@@ -187,7 +187,7 @@ export default function decorateForm(config, mapStateToProps) {
               fieldName, values[fieldName], validValues, validate
             ).then(valid => {
               formIsValid = formIsValid && valid;
-              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: validValues[fieldName], values: validValues});
+              afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: values[fieldName], values: validValues});
             });
 
           }
