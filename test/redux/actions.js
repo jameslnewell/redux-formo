@@ -214,7 +214,7 @@ describe('actions', () => {
 
         const dispatch = sinon.spy();
 
-        return validate(FORM, FIELD, 'John', {}, () => 'Invalid!')(dispatch).then(() => {
+        return validate(FORM, FIELD, 'John', {}, () => 'Invalid!')(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
@@ -278,7 +278,7 @@ describe('actions', () => {
         }));
         const dispatch = sinon.spy();
 
-        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({
@@ -546,7 +546,7 @@ describe('actions', () => {
         }));
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch).then(() => {
+        return submit(FORM, {}, fn)(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({
