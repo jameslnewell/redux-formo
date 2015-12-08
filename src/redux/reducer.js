@@ -214,7 +214,11 @@ function finishSubmitting(state) {
  */
 
 function errorSubmitting(state, action) {
-  return {...state, submitting: false, error: action.payload || ''};
+  return {
+    ...state,
+    submitting: false,
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || ''
+  };
 }
 
 /**

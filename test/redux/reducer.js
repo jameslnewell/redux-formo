@@ -494,7 +494,7 @@ describe('reducer()', () => {
         const state = reducer({}, {
           type: SUBMIT,
           status: 'error',
-          payload: 'Error!',
+          payload: new Error('Error!'),
           meta: {
             form: FORM
           }
