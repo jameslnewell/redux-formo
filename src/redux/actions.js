@@ -90,7 +90,7 @@ export function filter(form, field, value, values, fn) {
     }
 
     //resolve the result of the user's filter function
-    return Promise.resolve(result)
+    return Promise.resolve(promise)
       .then(
         result => {
 
