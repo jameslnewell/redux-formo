@@ -11,12 +11,12 @@ export default function({field, value}) {
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          if (value === 'jameslnewell') {
+          if (value === 'johnsmith') {
             resolve('Sorry this username has already been taken.');
           } else {
             resolve(true);
           }
-        }, 2000)
+        }, 1500)
       });
 
       break;
