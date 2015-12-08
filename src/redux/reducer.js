@@ -143,7 +143,7 @@ function finishValidating(state, action) {
  * @returns {{validating: boolean, error: string}}
  */
 function errorValidating(state, action) {
-  return {...state, validating: false, error: action.payload || '', valid: false};
+  return {...state, validating: false, validated: true, error: action.payload || '', valid: false};
 }
 
 /**
