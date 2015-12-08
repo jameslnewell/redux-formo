@@ -16,7 +16,6 @@ describe('bindActionCreators()', () => {
 
   });
 
-
   it('should call dispatch() with the action bound to the form', () => {
 
     const dispatch = sinon.spy();

@@ -82,24 +82,17 @@ export function filter(form, field, value, values, fn) {
     }, 0);
 
     //call the user's filter function and handle any synchronous errors
-    let result = null;
+    let promise = null;
     try {
-      result = fn({field, value, values});
+      promise = fn({field, value, values});
     } catch (error) {
-
-      //don't bother entering the filtering state when the promise resolves instantly
-      clearTimeout(timeout);
-
-      //complete the validation
-      dispatch(filterError(form, field, error));
-
-      return Promise.reject(error);
+      promise = Promise.reject(error);
     }
 
     //resolve the result of the user's filter function
-    return Promise.resolve(result)
+    return Promise.resolve(promise)
       .then(
-        (promisedResult) => {
+        result => {
 
           //don't bother entering the filtering state when the promise resolves instantly
           clearTimeout(timeout);
@@ -108,16 +101,16 @@ export function filter(form, field, value, values, fn) {
           dispatch({
             type: actions.FILTER,
             status: 'finish',
-            payload: promisedResult,
+            payload: result,
             meta: {
               form,
               field
             }
           });
 
-          return promisedResult;
+          return result;
         },
-        (error) => {
+        error => {
 
           //don't bother entering the filtering state when the promise resolves instantly
           clearTimeout(timeout);
@@ -176,47 +169,35 @@ export function validate(form, field, value, values, fn) {
     }, 0);
 
     //call the user's validate function and handle any synchronous errors
-    let result = null;
+    let promise = null;
     try {
-      result = fn({field, value, values});
+      promise = fn({field, value, values});
     } catch (error) {
-
-      //don't bother entering the validating state when the promise resolves instantly
-      clearTimeout(timeout);
-
-      //complete the validation
-      dispatch(validateError(form, field, error));
-
-      return Promise.reject(error);
+      promise = Promise.reject(error);
     }
 
     //resolve the result of the user's validate function
-    return Promise.resolve(result)
+    return Promise.resolve(promise)
       .then(
-        (promisedResult) => {
+        result => {
 
           //don't bother entering the validating state when the promise resolves instantly
           clearTimeout(timeout);
 
           //complete the validation
-          if (promisedResult === true) {
+          dispatch({
+            type: actions.VALIDATE,
+            status: 'finish',
+            payload: result,
+            meta: {
+              form,
+              field
+            }
+          });
 
-            dispatch({
-              type: actions.VALIDATE,
-              status: 'finish',
-              meta: {
-                form,
-                field
-              }
-            });
-
-          } else {
-            dispatch(validateError(form, field, promisedResult));
-          }
-
-          return promisedResult === true;
+          return result === true;
         },
-        (error) => {
+        error => {
 
           //don't bother entering the validating state when the promise resolves instantly
           clearTimeout(timeout);
@@ -271,33 +252,28 @@ export function submit(form, values, fn) {
     }, 0);
 
     //call the user's submit function and handle any synchronous errors
-    let result = null;
+    let promise = null;
     try {
-      result = fn({dispatch, values});
+      promise = fn({dispatch, values});
     } catch (error) {
-
-      //don't bother entering the submitting state when the promise resolves instantly
-      clearTimeout(timeout);
-
-      //complete the submission
-      dispatch(submitError(form, error));
-
-      return Promise.reject(error);
+      promise = Promise.reject(error);
     }
 
     //resolve the result of the user's submit function
-    return Promise.resolve(result)
+    return Promise.resolve(promise)
       .then(
-        (promisedResult) => {
+        result => {
 
           //don't bother entering the submitting state when the promise resolves instantly
           clearTimeout(timeout);
 
           //dispatch an error if the result is a Flux Standard Action error
-          if (isFSA(promisedResult) && isError(promisedResult)) {
+          if (isFSA(result) && isError(result)) {
 
             //complete the submission
-            dispatch(submitError(form, promisedResult.payload));
+            dispatch(submitError(form, result.payload));
+
+            throw result.payload;
 
           } else {
 
@@ -313,7 +289,7 @@ export function submit(form, values, fn) {
           }
 
         },
-        (error) => {
+        error => {
 
           //don't bother entering the submitting state when the promise resolves instantly
           clearTimeout(timeout);

@@ -76,10 +76,10 @@ export default function connectForm(
         //wrap the form props; set default values for any value that is undefined in the store
         const wrappedProps = wrapFormProps({
           formPropKey,
-          fieldNames,
-          initialValues,
           props: this.props,
-          actions: this.actions
+          actions: this.actions,
+          fieldNames,
+          initialValues
         });
 
         return <WrappedComponent {...wrappedProps}/>;

@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'invariant';
 import connect from './connect';
 import decorateFormProps from './decorateFormProps';
-import getValues from './getValues';
+import getValuesFromProps from './getValuesFromProps';
 
 const defaultConfig = {
 
@@ -88,8 +88,8 @@ export default function decorateForm(config, mapStateToProps) {
 
               const
                 props = formPropKey ? this.props[formPropKey] : this.props,
-                values = getValues({props, prop: 'value'}),
-                validValues = getValues({props, prop: 'validValue'})
+                values = getValuesFromProps({props, prop: 'value'}),
+                validValues = getValuesFromProps({props, prop: 'validValue'})
               ;
 
               props.blur(fieldName);
@@ -152,16 +152,17 @@ export default function decorateForm(config, mapStateToProps) {
 
         const props = formPropKey ? this.props[formPropKey] : this.props;
 
-        let
-          formIsValid = true,
-          values = getValues({props, prop: 'value'}),
-          validValues = getValues({props, prop: 'validValue'})
+        let formIsValid = true;
+
+        const
+          values = getValuesFromProps({props, prop: 'value'}),
+          validValues = getValuesFromProps({props, prop: 'validValue'})
         ;
 
         //filter and validate each of the fields
         Promise.all(fieldNames.map(fieldName => {
 
-          if (filterOnSubmit && validateOnSubmit)  {
+          if (filterOnSubmit && validateOnSubmit) {
             return props.filter(
               fieldName, values[fieldName], validValues, filter
             ).then(value => {
@@ -173,10 +174,10 @@ export default function decorateForm(config, mapStateToProps) {
               afterValidate({dispatch: this.props.dispatch, field: fieldName, valid, value: values[fieldName], values: validValues});
             });
 
-          } else if (filterOnSubmit)  {
+          } else if (filterOnSubmit) {
 
             //filter
-            return values[fieldName] = props.filter(
+            return props.filter(
               fieldName, values[fieldName], validValues, filter
             );
 

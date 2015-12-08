@@ -129,7 +129,7 @@ Parameters:
 
 - `field` - The name of the field being filtered
 - `value` - The value of the field being filtered
-- `values` - All the field values
+- `values` - All the valid field values
 
 Returns:
 
@@ -145,7 +145,7 @@ Parameters:
 
 - `field` - The name of the field being filtered
 - `value` - The value of the field being filtered
-- `values` - All the field values
+- `values` - All the valid field values
 
 Returns:
 
@@ -160,7 +160,7 @@ Optional.
 Parameters:
 
 - `dispatch` - The dispatch method
-- `values` - All the field values
+- `values` - All the valid field values
 
 Returns:
 
@@ -269,9 +269,7 @@ The decorated component will receive the following props:
         - **valid** - `bool` - whether the current value is valid
         - **validValue** `string` - the the last successfully validated value
         - **value** - `string` - the current value
-        - **checked** - `bool`
-        - **defaultValue** `string`
-        - **defaultChecked** `bool`
+        - **checked** - `bool` - true when the value is not empty (for use with checkboxes)
 
 ## CHANGE LOG
 
@@ -279,8 +277,11 @@ The decorated component will receive the following props:
 - *breaking change:* The name of the package has changed from `the-other-redux-form` to `redux-formo`
 - *breaking change:* The form state is now merged into the root of your component's props unless configured by `formPropKey`
 - *breaking change:* The `filter`, `validate` and `submit` methods now receive an object instead of numerous parameters
-- *possible breaking change:* The `submit` method accepts a [Flux Standard Action](https://github.com/acdlite/flux-standard-action)
-for compatibility with packages like [`redux-promise`](https://www.npmjs.com/package/redux-promise)
+- *possible breaking change:* The `filter`, `validate` and `submit` methods receive an object containing most recent
+ valid values instead of the current values
+- *possible breaking change:* For compatibility with packages that adhere to
+ [Flux Standard Action](https://github.com/acdlite/flux-standard-action) (e.g. [`redux-promise`](https://www.npmjs.com/package/redux-promise)),
+ if the `submit` method returns/resolves a FSA error the form submission will be assumed to have failed
 - The `filter` and `validate` methods can return a promise, like the `submit` method, in order to perform asynchronous
-filtration and validation
+ filtration and validation
 - Added unit tests for most methods

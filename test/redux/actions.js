@@ -200,6 +200,7 @@ describe('actions', () => {
           expect(dispatch).to.be.calledWith({
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -212,14 +213,15 @@ describe('actions', () => {
 
       it('should return an action with an invalid result', () => {
 
+        const fn = () => 'Invalid!';
         const dispatch = sinon.spy();
 
-        return validate(FORM, FIELD, 'John', {}, () => 'Invalid!')(dispatch).then(() => {
+        return validate(FORM, FIELD, 'John', {}, fn)(dispatch).then(() => {
 
           expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
             type: VALIDATE,
-            status: 'error',
+            status: 'finish',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -261,6 +263,7 @@ describe('actions', () => {
           expect(dispatch).to.be.calledWith({
             type: VALIDATE,
             status: 'finish',
+            payload: true,
             meta: {
               form: FORM,
               field: FIELD
@@ -283,7 +286,7 @@ describe('actions', () => {
           expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({
             type: VALIDATE,
-            status: 'error',
+            status: 'finish',
             payload: 'Invalid!',
             meta: {
               form: FORM,
@@ -411,7 +414,7 @@ describe('actions', () => {
         });
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch).then(() => {
+        return submit(FORM, {}, fn)(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledOnce;
           expect(dispatch).to.be.calledWith({
@@ -514,7 +517,7 @@ describe('actions', () => {
 
       it('should dispatch an action on Flux Standard Action', () => {
 
-        const fn = sinon.stub().returns(new Promise((resolve, reject) => {
+        const fn = sinon.stub().returns(new Promise((resolve) => {
           setTimeout(() => resolve({
             type: 'SAVE'
           }), 100);
@@ -546,7 +549,7 @@ describe('actions', () => {
         }));
         const dispatch = sinon.spy();
 
-        return submit(FORM, {}, fn)(dispatch).then(() => {
+        return submit(FORM, {}, fn)(dispatch).catch(() => {
 
           expect(dispatch).to.be.calledTwice;
           expect(dispatch).to.be.calledWith({
