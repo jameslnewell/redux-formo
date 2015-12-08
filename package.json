@@ -1,11 +1,11 @@
 {
   "name": "redux-formo",
-  "version": "1.0.1",
+  "description": "An alternate forms framework for Redux+React.",
+  "version": "1.0.2",
   "main": "./dist/index.js",
   "dependencies": {
     "flux-standard-action": "^0.6.0",
-    "invariant": "^2.1.1",
-    "sinon-chai": "^2.8.0"
+    "invariant": "^2.1.1"
   },
   "devDependencies": {
     "babel": "^5.8.29",
@@ -23,6 +23,7 @@
     "redux": "^3.0.4",
     "redux-thunk": "^1.0.0",
     "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0",
     "watchify": "^3.5.0"
   },
   "peerDependencies": {
