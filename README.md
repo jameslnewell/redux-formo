@@ -272,6 +272,13 @@ The decorated component will receive the following props:
 
 ## CHANGE LOG
 
+### v1.1.0
+
+- added `filterOnChange` and `validateOnChange` properties to allow configuration of whether validation occurs
+ each time the user changes the value of a field
+- An un-documented function, `afterValidate()`, is called after validation of each is complete - may change in the future!
+- refactored `decorate.jsx` to make it more testable
+
 ### v1.0.0
 - *breaking change:* The name of the package has changed from `the-other-redux-form` to `redux-formo`
 - *breaking change:* The form state is now merged into the root of your component's props unless configured by `formPropKey`

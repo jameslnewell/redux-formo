@@ -143,7 +143,7 @@ export function filter(form, field, value, values, fn) {
  * @param   {string}    form          The form name
  * @param   {string}    field         The field name
  * @param   {Error}     error         The validation error
- * @returns * @returns {{type, status: string, meta: {form: string, field: string}, payload: Error}}
+ * @returns {{type, status: string, meta: {form: string, field: string}, payload: Error}}
  */
 function validateError(form, field, error) {
   return {

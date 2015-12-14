@@ -120,7 +120,6 @@ export default function decorateForm(config, mapStateToProps) {
             onChange: (event) => {
 
               const props = formPropKey ? this.props[formPropKey] : this.props;
-              const values = getValuesFromProps({props, prop: 'value'});
               const validValues = getValuesFromProps({props, prop: 'validValue'});
 
               props.change(fieldName, event.target.value);
@@ -128,7 +127,7 @@ export default function decorateForm(config, mapStateToProps) {
               filterAndValidate({
 
                 field: fieldName,
-                value: values[fieldName],
+                value: event.target.value,
                 values: validValues,
 
                 filter: filterOnChange,
@@ -171,11 +170,10 @@ export default function decorateForm(config, mapStateToProps) {
         const values = getValuesFromProps({props, prop: 'value'});
         const validValues = getValuesFromProps({props, prop: 'validValue'});
 
-
         //filter and validate each of the fields
-        Promise.all(fieldNames.map(fieldName => {
+        Promise.all(fieldNames.map(fieldName =>
 
-          return filterAndValidate({
+          filterAndValidate({
 
             field: fieldName,
             value: values[fieldName],
@@ -192,11 +190,9 @@ export default function decorateForm(config, mapStateToProps) {
 
             dispatch: this.props.dispatch
 
-          })
-            .then(valid => formIsValid = formIsValid && valid)
-          ;
+          }).then(valid => formIsValid = formIsValid && valid)
 
-        })).then(() => {
+        )).then(() => {
 
           //submit the valid values
           if (formIsValid && submit) {
