@@ -135,7 +135,7 @@ function finishValidating(state, action) {
     validating: false,
     validated: true,
     error: valid ? '' : action.payload || '',
-    valid: valid
+    valid
   };
 
   if (valid) {
@@ -197,6 +197,7 @@ function validate(state, action) {
 function startSubmitting(state) {
   return {...state, submitting: true};
 }
+
 /**
  * Finish submitting a form
  * @param   {object}  state
@@ -205,6 +206,7 @@ function startSubmitting(state) {
 function finishSubmitting(state) {
   return {...state, submitting: false, submitted: true, error: ''};
 }
+
 /**
  * Error submitting a form
  * @param   {object}  state
@@ -212,7 +214,6 @@ function finishSubmitting(state) {
  * @param   {string}  action.payload  The form error
  * @returns {{submitting: boolean, error: string}}
  */
-
 function errorSubmitting(state, action) {
   return {
     ...state,

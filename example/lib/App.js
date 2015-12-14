@@ -11,6 +11,8 @@ class App extends React.Component {
     const {
       valid,
       error,
+      filtering,
+      validating,
       submitting,
       submitted,
       onSubmit,
@@ -68,7 +70,7 @@ class App extends React.Component {
         <input
           type="submit"
           value={submitted ? 'Saved.' : (submitting ? 'Saving...' : 'Save')}
-          disabled={submitting || submitted}
+          disabled={filtering || validating || submitting || submitted}
         />
 
       </form>
@@ -81,5 +83,6 @@ export default form({
   form: 'personal-details',
   fields: ['username', 'name', 'phone'],
   values: {username: 'johnsmith'},
-  filter, validate, submit
+  filter, validate, submit,
+  afterValidate: (...args) => console.log(...args)
 })(App);

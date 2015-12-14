@@ -1,7 +1,12 @@
 import {isFSA, isError} from 'flux-standard-action';
-
 import * as actions from './constants';
 
+/**
+ * Mark a field as active
+ * @param   {string}    form          The form name
+ * @param   {string}    field         The field name
+ * @returns {{type: FOCUS, meta: {form: string, field: string}}}
+ */
 export function focus(form, field) {
   return {
     type: actions.FOCUS,
@@ -12,6 +17,12 @@ export function focus(form, field) {
   };
 }
 
+/**
+ * Mark a field as inactive
+ * @param   {string}    form          The form name
+ * @param   {string}    field         The field name
+ * @returns {{type: BLUR, meta: {form: string, field: string}}}
+ */
 export function blur(form, field) {
   return {
     type: actions.BLUR,
@@ -27,33 +38,34 @@ export function blur(form, field) {
  * @param   {string}    form          The form name
  * @param   {string}    field         The field name
  * @param   {string}    value         The field value
- * @returns {{type: CHANGE, form: string, field: string, value: string}}
+ * @returns {{type: CHANGE, meta: {form: string, field: string}, payload: string}}
  */
 export function change(form, field, value) {
   return {
     type: actions.CHANGE,
-    payload: value,
     meta: {
       form,
       field
-    }
+    },
+    payload: value
   };
 }
 /**
  * Create a filter error action
- * @param {string}  form
- * @param {Error}   error
- * @returns {{type, status: string, payload: Error, meta: {form: string}}}
+ * @param   {string}    form          The form name
+ * @param   {string}    field         The field name
+ * @param   {Error}     error         The filtration error
+ * @returns {{type, status: string, meta: {form: string, field: string}, payload: Error}}
  */
 function filterError(form, field, error) {
   return {
     type: actions.FILTER,
     status: 'error',
-    payload: error,
     meta: {
       form,
       field
-    }
+    },
+    payload: error
   };
 }
 
@@ -128,9 +140,10 @@ export function filter(form, field, value, values, fn) {
 
 /**
  * Create a validate error action
- * @param {string}  form
- * @param {Error}   error
- * @returns {{type, status: string, payload: Error, meta: {form: string}}}
+ * @param   {string}    form          The form name
+ * @param   {string}    field         The field name
+ * @param   {Error}     error         The validation error
+ * @returns * @returns {{type, status: string, meta: {form: string, field: string}, payload: Error}}
  */
 function validateError(form, field, error) {
   return {

@@ -174,6 +174,18 @@ Void, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) 
   - if the promise resolves a FSA error, the `error` property will be set and the form will not be marked as `submitted`
 - in all other cases, the form will be marked as `submitted`
 
+##### .filterOnChange : Boolean
+
+Whether a field should be filtered when the field value changes.
+
+Optional. Defaults to `true`.
+
+##### .validateOnChange : Boolean
+
+Whether a field should be validated when the field value changes.
+
+Optional. Defaults to `true`.
+
 ##### .filterOnBlur : Boolean
 
 Whether a field should be filtered when the field loses focus.
