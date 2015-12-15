@@ -178,13 +178,13 @@ Void, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) 
 
 Whether a field should be filtered when the field value changes.
 
-Optional. Defaults to `true`.
+Optional. Defaults to `false`.
 
 ##### .validateOnChange : Boolean
 
 Whether a field should be validated when the field value changes.
 
-Optional. Defaults to `true`.
+Optional. Defaults to `false`.
 
 ##### .filterOnBlur : Boolean
 
