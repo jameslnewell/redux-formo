@@ -1,5 +1,5 @@
 import * as constants from './constants';
-
+import mapValues from '../react/mapValues';
 /**
  * Mark a field as focused
  * @param   {object}  state           The field state
@@ -282,13 +282,30 @@ const reducers = {
   [constants.SUBMIT]: createFormReducer(submit)
 };
 
+
+/**
+ * Adds additional functionality to the reducer
+ */
+function decorate(target) {
+  target.plugin = function plugin(reducers) { // use 'function' keyword to enable 'this'
+    return decorate((state = {}, action = {}) => {
+      const result = this(state, action);
+      return {
+        ...result,
+        ...mapValues(reducers, (pluginReducer, key) => pluginReducer(result[key] || {}, action))
+      };
+    });
+  };
+  return target;
+}
+
 /**
  * The form reducer
  * @param   {object} state
  * @param   {object} action
  * @returns {object}
  */
-export default function reducer(state = {}, action = {}) {
+function reducer(state = {}, action = {}) {
   const {type} = action;
 
   if (reducers.hasOwnProperty(type)) {
@@ -297,3 +314,5 @@ export default function reducer(state = {}, action = {}) {
 
   return state;
 }
+
+export default decorate(reducer)
