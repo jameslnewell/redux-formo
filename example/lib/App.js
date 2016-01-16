@@ -7,6 +7,23 @@ import submit from './submit';
 
 class App extends React.Component {
 
+  constructor(...args) {
+    super(...args);
+    this.handleCheckboxGroupChange = this.handleCheckboxGroupChange.bind(this);
+  }
+
+  handleCheckboxGroupChange(event) {
+    let values = this.props.fields.interests.value || [];
+
+    if (event.target.checked) {
+      values.push(event.target.value);
+    } else {
+      values = values.filter(value => value !== event.target.value);
+    }
+
+    this.props.fields.interests.onChange(values);
+  }
+
   render() {
     const {
       valid,
@@ -62,16 +79,28 @@ class App extends React.Component {
         <div className="control">
           Interests:
           <label className="control__label">
-            <input type="checkbox" {...interests}/> Sport
+            <input type="checkbox" {...interests} value="sport"
+             onChange={this.handleCheckboxGroupChange}
+             checked={interests && interests.value.indexOf('sport') !== -1}
+            /> Sport
           </label>
           <label className="control__label">
-            <input type="checkbox" {...interests}/> Computers
+            <input type="checkbox" {...interests} value="computers"
+             onChange={this.handleCheckboxGroupChange}
+             checked={interests && interests.value.indexOf('computers') !== -1}
+            /> Computers
           </label>
           <label className="control__label">
-            <input type="checkbox" {...interests}/> Art
+            <input type="checkbox" {...interests} value="art"
+             onChange={this.handleCheckboxGroupChange}
+             checked={interests && interests.value.indexOf('art') !== -1}
+            /> Art
           </label>
           <label className="control__label">
-            <input type="checkbox" {...interests}/> Science
+            <input type="checkbox" {...interests} value="science"
+             onChange={this.handleCheckboxGroupChange}
+             checked={interests && interests.value.indexOf('science') !== -1}
+            /> Science
           </label>
           {interests.error && <p className="control__error">{interests.error}</p>}
         </div>

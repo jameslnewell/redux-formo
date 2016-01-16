@@ -1,4 +1,8 @@
 
 export default function({field, value}) {
-  return String(value).trim();
+  if (typeof value === 'string') {
+    return String(value).trim();
+  } else {
+    return value;
+  }
 }
