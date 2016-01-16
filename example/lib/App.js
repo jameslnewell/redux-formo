@@ -16,7 +16,12 @@ class App extends React.Component {
       submitting,
       submitted,
       onSubmit,
-      fields: {username, name, phone}
+      fields: {
+        name,
+        email,
+        interests,
+        newsletter
+      }
     } = this.props;
 
     const formClassNames = classNames(
@@ -30,22 +35,10 @@ class App extends React.Component {
     return (
       <form className={formClassNames} onSubmit={onSubmit}>
 
-        <h1>Personal Defails</h1>
+        <h1>Personal details</h1>
 
         {error && <p className="control__error">{error}</p>}
 
-        {username.active && <small>{`Value: "${username.value}" Valid value: "${username.validValue}"`}</small>}
-        <div className="control">
-          <label className="control__label">
-            Username: <input className="control__input" {...username} disabled={username.filtering || username.validating}/>
-          </label>
-          {username.error ? <p className="control__error">{username.error}</p> : null}
-        </div>
-
-        <br/>
-        <br/>
-
-        {name.active && <small>{`Value: "${name.value}" Valid value: "${name.validValue}"`}</small>}
         <div className="control">
           <label className="control__label">
             Full name: <input className="control__input" {...name}/>
@@ -56,12 +49,41 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        {phone.active && <small>{`Value: "${phone.value}" Valid value: "${phone.validValue}"`}</small>}
         <div className="control">
           <label className="control__label">
-            Phone: <input className="control__input" {...phone}/>
+            Email: <input className="control__input" {...email}/>
           </label>
-          {phone.error && <p className="control__error">{phone.error}</p>}
+          {email.error && <p className="control__error">{email.error}</p>}
+        </div>
+
+        <br/>
+        <br/>
+
+        <div className="control">
+          Interests:
+          <label className="control__label">
+            <input type="checkbox" {...interests}/> Sport
+          </label>
+          <label className="control__label">
+            <input type="checkbox" {...interests}/> Computers
+          </label>
+          <label className="control__label">
+            <input type="checkbox" {...interests}/> Art
+          </label>
+          <label className="control__label">
+            <input type="checkbox" {...interests}/> Science
+          </label>
+          {interests.error && <p className="control__error">{interests.error}</p>}
+        </div>
+
+        <br/>
+        <br/>
+
+        <div className="control">
+          <label className="control__label">
+            <input type="checkbox" {...newsletter}/> I want to receive weekly updates
+          </label>
+          {newsletter.error && <p className="control__error">{newsletter.error}</p>}
         </div>
 
         <br/>
@@ -81,7 +103,7 @@ class App extends React.Component {
 
 export default form({
   form: 'personal-details',
-  fields: ['username', 'name', 'phone'],
-  values: {username: 'johnsmith'},
+  fields: ['name', 'email', 'interests', 'newsletter'],
+  values: {name: 'John'},
   filter, validate, submit
 })(App);

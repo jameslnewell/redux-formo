@@ -3,24 +3,6 @@ export default function({field, value}) {
 
   switch (field) {
 
-    case 'username':
-
-      if (value == '') {
-        return 'Please enter a username which you will use to log in.';
-      }
-
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (value === 'johnsmith') {
-            resolve('Sorry this username has already been taken.');
-          } else {
-            resolve(true);
-          }
-        }, 1500)
-      });
-
-      break;
-
     case 'name':
 
       if (value == '') {
@@ -29,14 +11,30 @@ export default function({field, value}) {
 
       break;
 
-    case 'phone':
+    case 'email':
 
       if (value == '') {
-        return 'Please enter your phone number so we can contact you.';
+        return 'Please enter your email address so we can contact you.';
       }
 
-      if (!/^0[0-9]{9}$/.test(value)) {
-        return 'Your phone number must consist of 10 digits starting with a 0';
+      if (!/^[^@]+@[^@]+$/.test(value)) {
+        return 'Your email address must be valid';
+      }
+
+      break;
+
+    case 'interests':
+
+      if (value == '' || (Array.isArray(value) && value.length === 0)) {
+        return 'You must select at least one interest.';
+      }
+
+      break;
+
+    case 'newsletter':
+
+      if (value == '') {
+        return 'You must receive updates.';
       }
 
       break;
