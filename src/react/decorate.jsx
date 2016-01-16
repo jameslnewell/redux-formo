@@ -4,6 +4,7 @@ import connect from './connect';
 import decorateFormProps from './decorateFormProps';
 import getValuesFromProps from './getValuesFromProps';
 import filterAndValidate from './filterAndValidate';
+import getEventValue from './getValueFromEvent';
 
 const defaultConfig = {
 
