@@ -508,4 +508,24 @@ describe('reducer()', () => {
 
   });
 
+  describe('.plugin', () => {
+    it('should reduce state based on the function provided into the plugin', () => {
+      const result = reducer.plugin({
+        formInstance: (state) => ({fields: {}})
+      })({}, {
+        form: {
+          formInstance: {
+            fields: {
+              field1: 'value1',
+              field2: 'value2',
+            }
+          }
+        }
+      });
+
+      expect(result).to.be.ok;
+      expect(result).to.deep.equal({formInstance: {fields: {}}});
+    });
+  });
+
 });
