@@ -121,13 +121,14 @@ export default function decorateForm(config, mapStateToProps) {
 
               const props = formPropKey ? this.props[formPropKey] : this.props;
               const validValues = getValuesFromProps({props, prop: 'validValue'});
+              const eventValue = getEventValue(event);
 
-              props.change(fieldName, event.target.value);
+              props.change(fieldName, eventValue);
 
               filterAndValidate({
 
                 field: fieldName,
-                value: event.target.value,
+                value: eventValue,
                 values: validValues,
 
                 filter: filterOnChange,
