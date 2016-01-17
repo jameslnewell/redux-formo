@@ -1,4 +1,5 @@
 import * as constants from './constants';
+import mapValues from './mapValues';
 
 /**
  * Mark a field as focused
@@ -283,12 +284,37 @@ const reducers = {
 };
 
 /**
+ * Adds additional functionality to the reducer
+ * @param   {function} target
+ * @returns {function}
+ */
+function decorate(target) {
+
+  /**
+   * Return a new reducer that runs a set of reducers on the form state after the original reducer
+   * @param   {object} reducers
+   * @returns {function}
+   */
+  target.plugin = reducers => {
+    return decorate((state = {}, action = {}) => {
+      const newState = target(state, action);
+      return {
+        ...newState,
+        ...mapValues(reducers, (reducerPlugin, formName) => reducerPlugin(newState[formName] || {}, action))
+      };
+    });
+  };
+
+  return target;
+}
+
+/**
  * The form reducer
  * @param   {object} state
  * @param   {object} action
  * @returns {object}
  */
-export default function reducer(state = {}, action = {}) {
+function reducer(state = {}, action = {}) {
   const {type} = action;
 
   if (reducers.hasOwnProperty(type)) {
@@ -297,3 +323,5 @@ export default function reducer(state = {}, action = {}) {
 
   return state;
 }
+
+export default decorate(reducer)

@@ -508,4 +508,37 @@ describe('reducer()', () => {
 
   });
 
+  describe('.plugin', () => {
+
+    it('should reduce state based on the function provided into the plugin', () => {
+
+      const initialState = {
+        personalDetails: {
+          fields: {
+            field1: {value: 'value1'},
+            field2: {value: 'value2'}
+          }
+        }
+      };
+
+      const customReducer = reducer.plugin({
+        personalDetails: (state) => ({...state, fields: {...state.fields, field1: {}}}) //reset field1
+      });
+
+      const finalState = customReducer(initialState);
+
+      expect(finalState).to.be.ok;
+      expect(finalState).to.deep.equal({
+        personalDetails: {
+          fields: {
+            field1: {},
+            field2: {value: 'value2'}
+          }}
+      });
+    });
+
+    //TODO: more tests
+
+  });
+
 });
