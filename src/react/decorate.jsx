@@ -12,7 +12,6 @@ const defaultConfig = {
 
   filter: ({value}) => value,
   validate: () => true,
-  submit: () => {/* do nothing */},
 
   filterOnChange: false,
   validateOnChange: false,
@@ -44,7 +43,7 @@ const defaultConfig = {
 export default function decorateForm(config, mapStateToProps) {
   const {
     form: formName, fields: fieldNames, values: initialValues,
-    filter, validate, submit,
+    filter, validate,
     filterOnChange, validateOnChange,
     filterOnBlur, validateOnBlur,
     filterOnSubmit, validateOnSubmit,
@@ -160,49 +159,48 @@ export default function decorateForm(config, mapStateToProps) {
        * @param   {MouseEvent} event
        * @returns {void}
        */
-      handleSubmit(event) {
-
-        //prevent the form submitting
-        if (event && event.preventDefault) {
-          event.preventDefault();
-        }
-
-        let formIsValid = true;
-        const props = formPropKey ? this.props[formPropKey] : this.props;
-        const values = getValuesFromProps({props, prop: 'value'});
-        const validValues = getValuesFromProps({props, prop: 'validValue'});
-
-        //filter and validate each of the fields
-        Promise.all(fieldNames.map(fieldName =>
-
-          filterAndValidate({
-
-            field: fieldName,
-            value: values[fieldName],
-            values: validValues,
-
-            filter: filterOnSubmit,
-            filterFn: filter,
-            filterAction: props.filter,
-
-            validate: validateOnSubmit,
-            validateFn: validate,
-            validateAction: props.validate,
-            afterValidate,
-
-            dispatch: this.props.dispatch
-
-          }).then(valid => formIsValid = formIsValid && valid)
-
-        )).then(() => {
-
-          //submit the valid values
-          if (formIsValid && submit) {
-            props.submit(validValues, submit);
+      handleSubmit(submitHandler) {
+        return (event) => {
+          //prevent the form submitting
+          if (event && event.preventDefault) {
+            event.preventDefault();
           }
 
-        });
+          let formIsValid = true;
+          const props = formPropKey ? this.props[formPropKey] : this.props;
+          const values = getValuesFromProps({props, prop: 'value'});
+          const validValues = getValuesFromProps({props, prop: 'validValue'});
 
+          //filter and validate each of the fields
+          Promise.all(fieldNames.map(fieldName =>
+
+              filterAndValidate({
+
+                field: fieldName,
+                value: values[fieldName],
+                values: validValues,
+
+                filter: filterOnSubmit,
+                filterFn: filter,
+                filterAction: props.filter,
+
+                validate: validateOnSubmit,
+                validateFn: validate,
+                validateAction: props.validate,
+                afterValidate,
+
+                dispatch: this.props.dispatch
+
+              }).then(valid => formIsValid = formIsValid && valid)
+          )).then(() => {
+
+            //submit the valid values
+            if (formIsValid && submitHandler) {
+              props.submit(validValues, submitHandler);
+            }
+
+          });
+        }
       }
 
       /**
