@@ -50,7 +50,7 @@ class App extends React.Component {
     );
 
     return (
-      <form className={formClassNames} onSubmit={onSubmit}>
+      <form className={formClassNames} onSubmit={onSubmit(submit)}>
 
         <h1>Personal details</h1>
 
@@ -81,25 +81,25 @@ class App extends React.Component {
           <label className="control__label">
             <input type="checkbox" {...interests} value="sport"
              onChange={this.handleCheckboxGroupChange}
-             checked={interests && interests.value.indexOf('sport') !== -1}
+             checked={interests.value && interests.value.indexOf('sport') !== -1}
             /> Sport
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="computers"
              onChange={this.handleCheckboxGroupChange}
-             checked={interests && interests.value.indexOf('computers') !== -1}
+             checked={interests.value && interests.value.indexOf('computers') !== -1}
             /> Computers
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="art"
              onChange={this.handleCheckboxGroupChange}
-             checked={interests && interests.value.indexOf('art') !== -1}
+             checked={interests.value && interests.value.indexOf('art') !== -1}
             /> Art
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="science"
              onChange={this.handleCheckboxGroupChange}
-             checked={interests && interests.value.indexOf('science') !== -1}
+             checked={interests.value && interests.value.indexOf('science') !== -1}
             /> Science
           </label>
           {interests.error && <p className="control__error">{interests.error}</p>}
@@ -134,5 +134,5 @@ export default form({
   form: 'personal-details',
   fields: ['name', 'email', 'interests', 'newsletter'],
   values: {name: 'John'},
-  filter, validate, submit
+  filter, validate
 })(App);

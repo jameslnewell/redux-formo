@@ -155,12 +155,20 @@ export default function decorateForm(config, mapStateToProps) {
       }
 
       /**
-       * Handle the form submission
-       * @param   {MouseEvent} event
-       * @returns {void}
+       * Create a submission handler
+       * @param   {function} [submit]
+       * @returns {function}
        */
-      handleSubmit(submitHandler) {
-        return (event) => {
+      handleSubmit(submit) {
+        const submitFn = submit || (() => {/*do nothing*/});
+
+        /**
+         * Handle the form submission
+         * @param   {Event} event
+         * @returns {void}
+         */
+        return event => {
+
           //prevent the form submitting
           if (event && event.preventDefault) {
             event.preventDefault();
@@ -173,34 +181,34 @@ export default function decorateForm(config, mapStateToProps) {
 
           //filter and validate each of the fields
           Promise.all(fieldNames.map(fieldName =>
+            filterAndValidate({
 
-              filterAndValidate({
+              field: fieldName,
+              value: values[fieldName],
+              values: validValues,
 
-                field: fieldName,
-                value: values[fieldName],
-                values: validValues,
+              filter: filterOnSubmit,
+              filterFn: filter,
+              filterAction: props.filter,
 
-                filter: filterOnSubmit,
-                filterFn: filter,
-                filterAction: props.filter,
+              validate: validateOnSubmit,
+              validateFn: validate,
+              validateAction: props.validate,
+              afterValidate,
 
-                validate: validateOnSubmit,
-                validateFn: validate,
-                validateAction: props.validate,
-                afterValidate,
+              dispatch: this.props.dispatch
 
-                dispatch: this.props.dispatch
-
-              }).then(valid => formIsValid = formIsValid && valid)
+            }).then(valid => formIsValid = formIsValid && valid)
           )).then(() => {
 
             //submit the valid values
-            if (formIsValid && submitHandler) {
-              props.submit(validValues, submitHandler);
+            if (formIsValid) {
+              props.submit(validValues, submitFn);
             }
 
           });
-        }
+        };
+
       }
 
       /**
