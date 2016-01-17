@@ -222,7 +222,7 @@ The name of the property where the form state is passed in props to the react co
 
 Optional. Defaults to none.
 
-##### .destroyOnUnmount
+##### .destroyOnUnmount : Boolean
 
 Whether the form state is destroyed when the component is unmounted.
 
@@ -292,7 +292,7 @@ The decorated component will receive the following props:
  can optionally access props on the component
 - *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to 
 restore the previous behaviour
-- *breaking change:* Stopped coercing field values to empty strings
+- *breaking change:* Stopped coercing values to empty strings
 - *breaking change:* Renamed `.validValue` to `.lastValidValue`
 
 ### v1.3.0
