@@ -124,7 +124,36 @@ class App extends React.Component {
           disabled={filtering || validating || submitting || submitted}
         />
 
+        <div>
+          <h4>Values</h4>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>.defaultValue</th>
+                <th>.value</th>
+                <th>.lastValidValue</th>
+              </tr>
+            </thead>
+            <tbody>
+            {Object.keys(this.props.fields).map(field => {
+              const fieldProps = this.props.fields[field];
+              return (
+                <tr key={fieldProps.name}>
+                  <th>{fieldProps.name}:</th>
+                  <td>{JSON.stringify(fieldProps.defaultValue)}</td>
+                  <td>{JSON.stringify(fieldProps.value)}</td>
+                  <td>{JSON.stringify(fieldProps.lastValidValue)}</td>
+                </tr>
+              );
+            })}
+            </tbody>
+          </table>
+        </div>
+
+
       </form>
+
     );
   }
 
@@ -133,6 +162,6 @@ class App extends React.Component {
 export default form({
   form: 'personal-details',
   fields: ['name', 'email', 'interests', 'newsletter'],
-  values: {name: 'John'},
+  values: {name: 'John', interests: ['sport'], newsletter: true},
   filter, validate
 })(App);

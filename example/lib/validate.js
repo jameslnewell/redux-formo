@@ -33,7 +33,7 @@ export default function({field, value}) {
 
     case 'newsletter':
 
-      if (value == '') {
+      if (value === false) {
         return 'You must receive updates.';
       }
 

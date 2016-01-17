@@ -264,7 +264,7 @@ describe('reducer()', () => {
 
         });
 
-        it('should set .validValue', () => {
+        it('should set .lastValidValue', () => {
 
           const state = reducer({[FORM]: {fields: {[FIELD]: {value: 'John'}}}}, {
             type: VALIDATE,
@@ -276,11 +276,11 @@ describe('reducer()', () => {
             }
           });
 
-          expect(state[FORM].fields[FIELD]).to.have.property('validValue', 'John');
+          expect(state[FORM].fields[FIELD]).to.have.property('lastValidValue', 'John');
 
         });
 
-        it('should set .error to an empty string', () => {
+        it('should set .error to undefined', () => {
 
           const state = reducer({}, {
             type: VALIDATE,
@@ -292,7 +292,7 @@ describe('reducer()', () => {
             }
           });
 
-          expect(state[FORM].fields[FIELD]).to.have.property('error', '');
+          expect(state[FORM].fields[FIELD].error).to.not.exist;
 
         });
 
@@ -348,7 +348,7 @@ describe('reducer()', () => {
 
         });
 
-        it('should not set .validValue', () => {
+        it('should not set .lastValidValue', () => {
 
           const state = reducer({[FORM]: {fields: {[FIELD]: {value: 'John'}}}}, {
             type: VALIDATE,
@@ -360,7 +360,7 @@ describe('reducer()', () => {
             }
           });
 
-          expect(state[FORM].fields[FIELD]).not.to.have.property('validValue');
+          expect(state[FORM].fields[FIELD]).not.to.have.property('lastValidValue');
 
         });
 
@@ -456,7 +456,7 @@ describe('reducer()', () => {
 
       });
 
-      it('should set .error to an empty string', () => {
+      it('should set .error to undefined', () => {
 
         const state = reducer({}, {
           type: SUBMIT,
@@ -466,7 +466,7 @@ describe('reducer()', () => {
           }
         });
 
-        expect(state[FORM]).to.have.property('error', '');
+        expect(state[FORM].error).to.not.exist;
 
       });
 

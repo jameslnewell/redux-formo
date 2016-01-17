@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import invariant from 'invariant';
 
 import bindActionCreators from './bindActionCreators';
-import wrapFormProps from './wrapFormProps';
+import mapFormStateToProps from './mapFormStateToProps';
 import wrapMapStateToProps from './wrapMapStateToProps';
 
 /**
@@ -74,7 +74,7 @@ export default function connectForm(
       render() {
 
         //wrap the form props; set default values for any value that is undefined in the store
-        const wrappedProps = wrapFormProps({
+        const wrappedProps = mapFormStateToProps({
           formPropKey,
           props: this.props,
           actions: this.actions,

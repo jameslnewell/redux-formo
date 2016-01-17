@@ -259,7 +259,7 @@ The decorated component will receive the following props:
 - **validating** : `bool` - whether one or more values are currently being validated
 - **submitting** : `bool` - whether the form is currently being submitted
 - **submitted** : `bool` - whether the form has been submitted one or more times
-- **error** : `string` - the error message from the last failed submission
+- **error** : `string|undefined` - the error message from the last failed submission
 - **valid** : `bool` - whether all the field values are valid
 - **fields** : `object`
     - **&lt;name&gt;** - `object`
@@ -269,15 +269,24 @@ The decorated component will receive the following props:
         - **filtered** - `bool` - whether the field has been filtered one or more times since the store was created
         - **validating** - `bool` - whether the validation function is currently running on the field
         - **validated** - `bool` - whether the field has been validated one or more times since the store was created
-        - **error** - `string` - the error message from the previous validation
+        - **error** - `string|undefined` - the error message from the previous validation
         - **valid** - `bool` - whether the current value is valid
-        - **validValue** `string` - the the last successfully validated value
-        - **value** - `string` - the current value
-        - **checked** - `bool` - true when the value is not empty (for use with checkboxes)
+        - **lastValidValue** `*|undefined` - the the last successfully validated value
+        - **value** - `*|undefined` - the current value
+        - **checked** - `bool|undefined` - true when the value is true, false when the value is false
+        - **defaultValue** - `*|undefined` - the defaultValue
+        - **defaultChecked** - `bool|undefined` - true when the value is true, false when the value is false
+        
 
 ## CHANGE LOG
 
 ### v2.0.0
+
+- *breaking change:* The `submit()` function must now be passed as a parameter to the `onSubmit()` handler so that the `submit()` 
+function can optionally access the props on the component
+- *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to restore previous behaviour
+- *breaking change:* Stopped coercing field values to empty strings
+- *breaking change:* Renamed `.validValue` to `.lastValidValue`
 
 ### v1.3.0
 
@@ -289,7 +298,7 @@ The decorated component will receive the following props:
 
 ### v1.1.0
 
-- added `filterOnChange` and `validateOnChange` properties to allow configuration of whether validation occurs
+- added `.filterOnChange` and `.validateOnChange` properties to allow configuration of whether validation occurs
  each time the user changes the value of a field
 - An un-documented function, `afterValidate()`, is called after validation of each is complete - may change in the future!
 - refactored `decorate.jsx` to make it more testable

@@ -35,7 +35,7 @@ function blur(state) {
 function change(state, action) {
   return {
     ...state,
-    value: action.payload || ''
+    value: action.payload
   };
 }
 
@@ -63,7 +63,7 @@ function finishFiltering(state, action) {
     ...state,
     filtering: false,
     filtered: true,
-    value: action.payload || ''
+    value: action.payload
   };
 }
 
@@ -78,7 +78,7 @@ function errorFiltering(state, action) {
   return {
     ...state,
     filtering: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || ''
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst filtering'
   };
 }
 
@@ -135,12 +135,12 @@ function finishValidating(state, action) {
     ...state,
     validating: false,
     validated: true,
-    error: valid ? '' : action.payload || '',
+    error: valid ? undefined : action.payload,
     valid
   };
 
   if (valid) {
-    newState.validValue = state.value || '';
+    newState.lastValidValue = state.value;
   }
 
   return newState;
@@ -157,7 +157,7 @@ function errorValidating(state, action) {
   return {
     ...state,
     validating: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || '',
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst validating',
     valid: false
   };
 }
@@ -205,7 +205,7 @@ function startSubmitting(state) {
  * @returns {{submitting: boolean}}
  */
 function finishSubmitting(state) {
-  return {...state, submitting: false, submitted: true, error: ''};
+  return {...state, submitting: false, submitted: true, error: undefined};
 }
 
 /**
@@ -219,7 +219,7 @@ function errorSubmitting(state, action) {
   return {
     ...state,
     submitting: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || ''
+    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst submitting'
   };
 }
 

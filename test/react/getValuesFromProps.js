@@ -10,11 +10,11 @@ describe('getValuesFromProps()', () => {
         fields: {
           firstName: {
             value: 'John',
-            validValue: 'John'
+            lastValidValue: 'John'
           },
           lastName: {
             value: 'Smith',
-            validValue: ''
+            lastValidValue: ''
           }
         }
       }
@@ -30,16 +30,16 @@ describe('getValuesFromProps()', () => {
   it('should extract valid values', () => {
 
     const values = getValuesFromProps({
-      prop: 'validValue',
+      prop: 'lastValidValue',
       props: {
         fields: {
           firstName: {
             value: 'John',
-            validValue: 'John'
+            lastValidValue: 'John'
           },
           lastName: {
             value: 'Smith',
-            validValue: ''
+            lastValidValue: ''
           }
         }
       }

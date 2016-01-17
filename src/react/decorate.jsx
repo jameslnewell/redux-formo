@@ -92,7 +92,7 @@ export default function decorateForm(config, mapStateToProps) {
 
               const props = formPropKey ? this.props[formPropKey] : this.props;
               const values = getValuesFromProps({props, prop: 'value'});
-              const validValues = getValuesFromProps({props, prop: 'validValue'});
+              const lastValidValues = getValuesFromProps({props, prop: 'lastValidValue'});
 
               props.blur(fieldName);
 
@@ -100,7 +100,7 @@ export default function decorateForm(config, mapStateToProps) {
 
                 field: fieldName,
                 value: values[fieldName],
-                values: validValues,
+                values: lastValidValues,
 
                 filter: filterOnBlur,
                 filterFn: filter,
@@ -120,7 +120,7 @@ export default function decorateForm(config, mapStateToProps) {
             onChange: (event) => {
 
               const props = formPropKey ? this.props[formPropKey] : this.props;
-              const validValues = getValuesFromProps({props, prop: 'validValue'});
+              const lastValidValues = getValuesFromProps({props, prop: 'lastValidValue'});
               const eventValue = getEventValue(event);
 
               props.change(fieldName, eventValue);
@@ -129,7 +129,7 @@ export default function decorateForm(config, mapStateToProps) {
 
                 field: fieldName,
                 value: eventValue,
-                values: validValues,
+                values: lastValidValues,
 
                 filter: filterOnChange,
                 filterFn: filter,
@@ -177,7 +177,7 @@ export default function decorateForm(config, mapStateToProps) {
           let formIsValid = true;
           const props = formPropKey ? this.props[formPropKey] : this.props;
           const values = getValuesFromProps({props, prop: 'value'});
-          const validValues = getValuesFromProps({props, prop: 'validValue'});
+          const lastValidValues = getValuesFromProps({props, prop: 'lastValidValue'});
 
           //filter and validate each of the fields
           Promise.all(fieldNames.map(fieldName =>
@@ -185,7 +185,7 @@ export default function decorateForm(config, mapStateToProps) {
 
               field: fieldName,
               value: values[fieldName],
-              values: validValues,
+              values: lastValidValues,
 
               filter: filterOnSubmit,
               filterFn: filter,
@@ -203,7 +203,7 @@ export default function decorateForm(config, mapStateToProps) {
 
             //submit the valid values
             if (formIsValid) {
-              props.submit(validValues, submitFn);
+              props.submit(lastValidValues, submitFn);
             }
 
           });
