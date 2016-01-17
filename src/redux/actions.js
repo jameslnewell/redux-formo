@@ -317,3 +317,17 @@ export function submit(form, values, fn) {
 
   };
 }
+
+/**
+ * Destroy a form
+ * @param   {string}    form          The form name
+ * @returns {{type: DESTROY, meta: {form: string}}}
+ */
+export function destroy(form) { //TODO: test me!
+  return {
+    type: actions.DESTROY,
+    meta: {
+      form
+    }
+  };
+}

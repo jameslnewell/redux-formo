@@ -151,7 +151,6 @@ class App extends React.Component {
           </table>
         </div>
 
-
       </form>
 
     );

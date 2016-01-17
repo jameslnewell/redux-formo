@@ -25,6 +25,8 @@ const defaultConfig = {
   formStateKey: 'form',
   formPropKey: '',
 
+  destroyOnUnmount: true,
+
   afterValidate: () => {/* do nothing */}
 
 };
@@ -48,7 +50,8 @@ export default function decorateForm(config, mapStateToProps) {
     filterOnBlur, validateOnBlur,
     filterOnSubmit, validateOnSubmit,
     afterValidate,
-    formStateKey, formPropKey
+    formStateKey, formPropKey,
+    destroyOnUnmount
   } = {...defaultConfig, ...config};
 
   invariant(formName, 'A form must have a name.');
@@ -152,6 +155,13 @@ export default function decorateForm(config, mapStateToProps) {
 
         }, {});
 
+      }
+
+      componentWillUnmount() {
+        const props = formPropKey ? this.props[formPropKey] : this.props;
+        if (destroyOnUnmount) {
+          props.destroy();
+        }
       }
 
       /**

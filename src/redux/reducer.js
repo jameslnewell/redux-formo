@@ -225,7 +225,7 @@ function errorSubmitting(state, action) {
 
 /**
  * Submit the values of a form
- * @param   {object}  state           The field state
+ * @param   {object}  state           The form state
  * @param   {object}  action
  * @param   {string}  action.type
  * @param   {boolean} action.status
@@ -252,6 +252,21 @@ export function submit(state, action) {
 
 }
 
+/**
+ * Destroy a form
+ * @param   {object}  state           The form state
+ * @returns {object}
+ */
+export function destroy(state, action) { //TODO: test me!
+  const {meta: {form}} = action;
+  console.log(form);
+  return Object.keys(state).reduce((accumulator, formName) =>
+    formName === form ? accumulator : {
+      ...accumulator,
+      [formName]: state[formName]
+    }, {});
+}
+
 function createFormReducer(fn) {
   return (state, action) => {
     const {meta: {form}} = action;
@@ -264,23 +279,24 @@ function createFormReducer(fn) {
 }
 
 function createFieldReducer(fn) {
-  return (state, action) => {
+  return createFormReducer((state, action) => {
     const {meta: {field}} = action;
     const
       fieldState = state.fields && state.fields[field] || {},
       newFieldState = fn(fieldState, action)
     ;
     return {...state, fields: {...(state.fields), [field]: {...fieldState, ...newFieldState}}};
-  };
+  });
 }
 
 const reducers = {
-  [constants.FOCUS]: createFormReducer(createFieldReducer(focus)),
-  [constants.BLUR]: createFormReducer(createFieldReducer(blur)),
-  [constants.CHANGE]: createFormReducer(createFieldReducer(change)),
-  [constants.FILTER]: createFormReducer(createFieldReducer(filter)),
-  [constants.VALIDATE]: createFormReducer(createFieldReducer(validate)),
-  [constants.SUBMIT]: createFormReducer(submit)
+  [constants.FOCUS]: createFieldReducer(focus),
+  [constants.BLUR]: createFieldReducer(blur),
+  [constants.CHANGE]: createFieldReducer(change),
+  [constants.FILTER]: createFieldReducer(filter),
+  [constants.VALIDATE]: createFieldReducer(validate),
+  [constants.SUBMIT]: createFormReducer(submit),
+  [constants.DESTROY]: destroy
 };
 
 /**

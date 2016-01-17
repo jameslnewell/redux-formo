@@ -1,3 +1,5 @@
+export const DESTROY = '@redux-formo/destroy';
+
 export const FOCUS = '@redux-formo/focus';
 export const BLUR = '@redux-formo/blur';
 export const CHANGE = '@redux-formo/change';

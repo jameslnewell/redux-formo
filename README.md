@@ -222,6 +222,12 @@ The name of the property where the form state is passed in props to the react co
 
 Optional. Defaults to none.
 
+##### .destroyOnUnmount
+
+Whether the form state is destroyed when the component is unmounted.
+
+Optional. Defaults to `true`.
+
 #### mapStateToProps(state, ownProps) : Object
 
 See the [`react-redux` documentation on the `connect` function](https://github.com/rackt/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options).
@@ -282,9 +288,10 @@ The decorated component will receive the following props:
 
 ### v2.0.0
 
-- *breaking change:* The `submit()` function must now be passed as a parameter to the `onSubmit()` handler so that the `submit()` 
-function can optionally access the props on the component
-- *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to restore previous behaviour
+- *breaking change:* The `submit()` function must now be passed as a parameter to the `onSubmit()` handler so that `submit()`
+ can optionally access props on the component
+- *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to 
+restore the previous behaviour
 - *breaking change:* Stopped coercing field values to empty strings
 - *breaking change:* Renamed `.validValue` to `.lastValidValue`
 
