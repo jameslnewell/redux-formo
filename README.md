@@ -50,7 +50,7 @@ class App extends React.Component {
     } = this.props;
 
     return (
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit(submit)}>
 
         {error && <p>{error}</p>}
 
@@ -87,7 +87,7 @@ class App extends React.Component {
 export default form({
   form: 'personal-details',
   fields: ['name', 'phone'],
-  filter, validate, submit
+  filter, validate
 })(App);
 ```
 
@@ -276,6 +276,8 @@ The decorated component will receive the following props:
         - **checked** - `bool` - true when the value is not empty (for use with checkboxes)
 
 ## CHANGE LOG
+
+### v2.0.0
 
 ### v1.3.0
 
