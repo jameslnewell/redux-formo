@@ -1,5 +1,6 @@
 import * as constants from './constants';
-import mapValues from '../react/mapValues';
+import mapValues from './mapValues';
+
 /**
  * Mark a field as focused
  * @param   {object}  state           The field state
@@ -282,20 +283,28 @@ const reducers = {
   [constants.SUBMIT]: createFormReducer(submit)
 };
 
-
 /**
  * Adds additional functionality to the reducer
+ * @param   {function} target
+ * @returns {function}
  */
 function decorate(target) {
-  target.plugin = function plugin(reducers) { // use 'function' keyword to enable 'this'
+
+  /**
+   * Return a new reducer that runs a set of reducers on the form state after the original reducer
+   * @param   {object} reducers
+   * @returns {function}
+   */
+  target.plugin = reducers => {
     return decorate((state = {}, action = {}) => {
-      const result = this(state, action);
+      const newState = target(state, action);
       return {
-        ...result,
-        ...mapValues(reducers, (pluginReducer, key) => pluginReducer(result[key] || {}, action))
+        ...newState,
+        ...mapValues(reducers, (reducerPlugin, formName) => reducerPlugin(newState[formName] || {}, action))
       };
     });
   };
+
   return target;
 }
 

@@ -94,7 +94,7 @@ export default form({
 
 ## Methods
 
-### form(config, [mapStateToProps], [mapDispatchToProps], [mergeProps], [options])(Component)
+### form(config : Object, [mapStateToProps], [mapDispatchToProps], [mergeProps], [options])(Component)
 
 Decorate a React Component, connecting the Redux form state and providing helper methods
  for handling form and field events e.g. `onSubmit()`, `onChange()`, `onBlur()`.
@@ -246,6 +246,11 @@ See the [`react-redux` documentation on the `connect` function](https://github.c
 
 Optional.
 
+### reducer.plugin(reducers : Object) : Function
+
+Returns a new reducer that will return a new state as a result of chaining the result of the original reducer and then 
+the result of the dictionary of reducers.
+
 ## Props
 
 The decorated component will receive the following props:
@@ -272,6 +277,14 @@ The decorated component will receive the following props:
 
 ## CHANGE LOG
 
+### v1.3.0
+
+- added an API for hooking into the reducer
+
+### v1.2.0
+
+- added handling of `checkbox` inputs and custom inputs in the onChange event
+
 ### v1.1.0
 
 - added `filterOnChange` and `validateOnChange` properties to allow configuration of whether validation occurs
@@ -294,4 +307,4 @@ The decorated component will receive the following props:
 
 ## THANKS
 
-Much of this package is inspired by `redux-form` by `erikras`. Much thanks!
+Much of this package is inspired by the work of `@erikras` on `redux-form`. Much thanks!
