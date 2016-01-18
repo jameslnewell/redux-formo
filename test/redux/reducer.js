@@ -1,5 +1,6 @@
-import reducer from '../../src/redux/reducer';
+import reducer, {initialise} from '../../src/redux/reducer';
 import {
+  INITIALISE,
   FOCUS, BLUR, CHANGE,
   FILTER, VALIDATE, SUBMIT
 } from '../../src/redux/constants';
@@ -503,6 +504,26 @@ describe('reducer()', () => {
         expect(state[FORM]).to.have.property('error', 'Error!');
 
       });
+
+    });
+
+  });
+
+  describe('INITIALISE', () => {
+
+    it('...', () => {
+
+      const state = initialise(
+        {},
+        {
+          type: INITIALISE,
+          meta: {form: FORM},
+          payload: {[FIELD]: 'foobar'}
+        }
+      );
+
+      expect(state.fields[FIELD]).to.have.property('value', 'foobar');
+      expect(state.fields[FIELD]).to.have.property('defaultValue', 'foobar');
 
     });
 

@@ -109,13 +109,13 @@ Required.
 
 ##### .fields : Array<String>
 
-The names of all the fields.
+The names of the fields.
 
 Required.
 
-##### .values : Array<String>
+##### .defaults : Array<String>
 
-The initial values of all the fields.
+The default values of the fields.
 
 Optional.
 
@@ -294,6 +294,8 @@ The decorated component will receive the following props:
 restore the previous behaviour
 - *breaking change:* Stopped coercing values to empty strings
 - *breaking change:* Renamed `.validValue` to `.lastValidValue`
+- *breaking change:* Renamed `.values` to `.defaults`
+- *breaking change:* Changed how the default values are set
 
 ### v1.3.0
 

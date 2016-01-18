@@ -79,7 +79,7 @@ export default function connectForm(
           props: this.props,
           actions: this.actions,
           fieldNames,
-          initialValues
+          initialValues: this.props.defaultValues || initialValues
         });
 
         return <WrappedComponent {...wrappedProps}/>;

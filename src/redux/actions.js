@@ -319,6 +319,21 @@ export function submit(form, values, fn) {
 }
 
 /**
+ * Initialise a form
+ * @param   {string}    form          The form name
+ * @param   {object}    defaults      The default values
+ * @returns {{type: INITIALISE, meta: {form: string}}}
+ */
+export function initialise(form, defaults) { //TODO: test me!
+  return {
+    type: actions.INITIALISE,
+    meta: {form},
+    payload: defaults
+  };
+}
+
+
+/**
  * Destroy a form
  * @param   {string}    form          The form name
  * @returns {{type: DESTROY, meta: {form: string}}}
@@ -326,8 +341,6 @@ export function submit(form, values, fn) {
 export function destroy(form) { //TODO: test me!
   return {
     type: actions.DESTROY,
-    meta: {
-      form
-    }
+    meta: {form}
   };
 }

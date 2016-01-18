@@ -161,6 +161,6 @@ class App extends React.Component {
 export default form({
   form: 'personal-details',
   fields: ['name', 'email', 'interests', 'newsletter'],
-  values: {name: 'John', interests: ['sport'], newsletter: true},
+  defaults: {name: 'John', interests: ['sport'], newsletter: true},
   filter, validate
 })(App);

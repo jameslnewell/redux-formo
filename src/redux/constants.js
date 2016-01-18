@@ -1,3 +1,4 @@
+export const INITIALISE = '@redux-formo/initialise';
 export const DESTROY = '@redux-formo/destroy';
 
 export const FOCUS = '@redux-formo/focus';

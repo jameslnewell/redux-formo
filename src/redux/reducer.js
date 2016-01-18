@@ -252,6 +252,26 @@ export function submit(state, action) {
 
 }
 
+
+function mergeValues(fields, defaults) {
+  const newFields = Object.assign({}, fields);
+  Object.keys(defaults).forEach(field => {
+    newFields[field] = {...fields[field], value: defaults[field], defaultValue: defaults[field]}
+  });
+  return newFields;
+}
+
+export function initialise(state, action) { //TODO: test me!
+  const fields = state.fields || {};
+  return {
+    ...state,
+    fields: {
+      ...fields,
+      ...mergeValues(fields, action.payload)
+    }
+  };
+}
+
 /**
  * Destroy a form
  * @param   {object}  state           The form state
@@ -259,7 +279,6 @@ export function submit(state, action) {
  */
 export function destroy(state, action) { //TODO: test me!
   const {meta: {form}} = action;
-  console.log(form);
   return Object.keys(state).reduce((accumulator, formName) =>
     formName === form ? accumulator : {
       ...accumulator,
@@ -296,6 +315,7 @@ const reducers = {
   [constants.FILTER]: createFieldReducer(filter),
   [constants.VALIDATE]: createFieldReducer(validate),
   [constants.SUBMIT]: createFormReducer(submit),
+  [constants.INITIALISE]: createFormReducer(initialise),
   [constants.DESTROY]: destroy
 };
 
