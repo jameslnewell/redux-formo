@@ -1,5 +1,7 @@
-import * as constants from './constants';
-import mapValues from './mapValues';
+import * as constants from './../constants';
+import mapValues from './../mapValues';
+import initialise from './form/initialise';
+import destroy from './form/destroy';
 
 /**
  * Mark a field as focused
@@ -250,42 +252,6 @@ export function submit(state, action) {
 
   }
 
-}
-
-
-function mergeValues(fields, defaults) {
-  const newFields = Object.assign({}, fields);
-  Object.keys(defaults).forEach(field => {
-    newFields[field] = {...fields[field], value: defaults[field], defaultValue: defaults[field]}
-  });
-  return newFields;
-}
-
-export function initialise(state, action) { //TODO: test me!
-  const fields = state.fields || {};
-  return {
-    ...state,
-    fields: {
-      ...fields,
-      ...mergeValues(fields, action.payload)
-    }
-  };
-}
-
-/**
- * Destroy a form
- * @param   {object}  state           The form state
- * @returns {object}
- */
-export function destroy(state, action) { //TODO: test me!
-  const {meta: {form}} = action;
-  return Object.keys(state).reduce((accumulator, formName) =>
-    formName === form ? accumulator : {
-      ...accumulator,
-      [formName]: state[formName]
-    }, {});
-}
-
 function createFormReducer(fn) {
   return (state, action) => {
     const {meta: {form}} = action;
@@ -308,14 +274,14 @@ function createFieldReducer(fn) {
   });
 }
 
-const reducers = {
+const REDUCERS = {
+  [constants.INITIALISE]: createFormReducer(initialise),
   [constants.FOCUS]: createFieldReducer(focus),
   [constants.BLUR]: createFieldReducer(blur),
   [constants.CHANGE]: createFieldReducer(change),
   [constants.FILTER]: createFieldReducer(filter),
   [constants.VALIDATE]: createFieldReducer(validate),
   [constants.SUBMIT]: createFormReducer(submit),
-  [constants.INITIALISE]: createFormReducer(initialise),
   [constants.DESTROY]: destroy
 };
 
@@ -353,11 +319,11 @@ function decorate(target) {
 function reducer(state = {}, action = {}) {
   const {type} = action;
 
-  if (reducers.hasOwnProperty(type)) {
-    return reducers[type](state, action);
+  if (REDUCERS.hasOwnProperty(type)) {
+    return REDUCERS[type](state, action);
   }
 
   return state;
 }
 
-export default decorate(reducer)
+export default decorate(reducer);

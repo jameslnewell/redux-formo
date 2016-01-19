@@ -35,7 +35,7 @@ export default function connectForm(
 ) {
   const finalConfig = {...defaultConfig, ...config};
   const {
-    form: formName, fields: fieldNames, values: initialValues,
+    form: formName, fields: fieldNames, defaults: defaultValues,
     formStateKey, formPropKey
   } = finalConfig;
 
@@ -69,7 +69,7 @@ export default function connectForm(
 
       /**
        * Render the form
-       * @returns {ReactElement}
+       * @returns {React.Element}
        */
       render() {
 
@@ -78,8 +78,7 @@ export default function connectForm(
           formPropKey,
           props: this.props,
           actions: this.actions,
-          fieldNames,
-          initialValues: this.props.defaultValues || initialValues
+          fieldNames
         });
 
         return <WrappedComponent {...wrappedProps}/>;

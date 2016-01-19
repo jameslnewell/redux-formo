@@ -12,16 +12,6 @@ describe('mapFieldStateToProps()', () => {
     expect(props).to.have.property('value', 'John');
   });
 
-  it('should set .value from .defaultValue when .value is undefined', () => {
-    const props = mapFieldStateToProps('firstName', {}, 'John');
-    expect(props).to.have.property('value', 'John');
-  });
-
-  it('should set .defaultValue', () => {
-    const props = mapFieldStateToProps('firstName', {}, 'John');
-    expect(props).to.have.property('defaultValue', 'John');
-  });
-
   it('should set .checked when .value is true', () => {
     const props = mapFieldStateToProps('firstName', {value: true});
     expect(props).to.have.property('checked', true);
@@ -38,12 +28,12 @@ describe('mapFieldStateToProps()', () => {
   });
 
   it('should set .defaultChecked when defaultValue is true', () => {
-    const props = mapFieldStateToProps('firstName', {}, true);
+    const props = mapFieldStateToProps('firstName', {defaultValue: true});
     expect(props).to.have.property('defaultChecked', true);
   });
 
   it('should set .defaultChecked when defaultValue is false', () => {
-    const props = mapFieldStateToProps('firstName', {}, false);
+    const props = mapFieldStateToProps('firstName', {defaultValue: false});
     expect(props).to.have.property('defaultChecked', false);
   });
 

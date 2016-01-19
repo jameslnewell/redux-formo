@@ -2,13 +2,13 @@ import React from 'react';
 import invariant from 'invariant';
 import connect from './connect';
 import decorateFormProps from './decorateFormProps';
-import getValuesFromProps from './getValuesFromProps';
+import getValuesFromProps from './getFieldValuesFromProps';
 import filterAndValidate from './filterAndValidate';
-import getEventValue from './getValueFromEvent';
+import getEventValue from './getFieldValueFromEvent';
 
 const defaultConfig = {
 
-  values: {},
+  defaults: {},
 
   filter: ({value}) => value,
   validate: () => true,
@@ -44,7 +44,7 @@ const defaultConfig = {
  */
 export default function decorateForm(config, mapStateToProps) {
   const {
-    form: formName, fields: fieldNames, values: initialValues,
+    form: formName, fields: fieldNames, defaults: defaultValues,
     filter, validate,
     filterOnChange, validateOnChange,
     filterOnBlur, validateOnBlur,
@@ -157,6 +157,13 @@ export default function decorateForm(config, mapStateToProps) {
 
       }
 
+      componentWillMount() {
+        const props = formPropKey ? this.props[formPropKey] : this.props;
+        if (!props.initialised) {
+          props.initialise(this.props.defaultValues || defaultValues);
+        }
+      }
+
       componentWillUnmount() {
         const props = formPropKey ? this.props[formPropKey] : this.props;
         if (destroyOnUnmount) {
@@ -249,7 +256,6 @@ export default function decorateForm(config, mapStateToProps) {
       {
         form: formName,
         fields: fieldNames,
-        values: initialValues,
         formStateKey, formPropKey
       },
       mapStateToProps

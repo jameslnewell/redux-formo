@@ -12,13 +12,12 @@ const defaultFormProps = {
 
 /**
  * @param {Array<string>} fieldNames    The field names
- * @param {object}        initialValues   The initial field values
  * @param {object}        props         The component props
  * @param {object}        actions       The form actions
  * @param {string}        formPropKey
  * @returns {object}
  */
-export default function mapFormStateToProps({fieldNames, initialValues = {}, props, actions = {}, formPropKey = ''}) {
+export default function mapFormStateToProps({fieldNames, props, actions = {}, formPropKey = ''}) {
 
   const formProps = formPropKey ? props[formPropKey] : props;
   const newFormProps = {...defaultFormProps, ...formProps, ...actions};
@@ -35,8 +34,7 @@ export default function mapFormStateToProps({fieldNames, initialValues = {}, pro
       ...wrappedFieldProps,
       [fieldName]: mapStateToFieldProps(
         fieldName,
-        fieldProps,
-        initialValues[fieldName]
+        fieldProps
       )
     };
 

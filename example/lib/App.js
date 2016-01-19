@@ -16,7 +16,7 @@ class App extends React.Component {
     let values = this.props.fields.interests.value || [];
 
     if (event.target.checked) {
-      values.push(event.target.value);
+      values = values.concat([event.target.value]);
     } else {
       values = values.filter(value => value !== event.target.value);
     }

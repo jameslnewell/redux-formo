@@ -1,4 +1,4 @@
-import getValuesFromProps from '../../src/react/getValuesFromProps';
+import getValuesFromProps from '../../src/react/getFieldValuesFromProps';
 
 describe('getValuesFromProps()', () => {
 

@@ -1,4 +1,4 @@
-import getValueFromEvent from '../../src/react/getValueFromEvent';
+import getValueFromEvent from '../../src/react/getFieldValueFromEvent';
 
 describe('getValueFromEvent()', () => {
 

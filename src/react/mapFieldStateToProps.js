@@ -5,27 +5,35 @@ const defaultProps = {
   validating: false,
   filtered: false,
   validated: false,
-  valid: false,
-  error: undefined,
-  lastValidValue: undefined
+  valid: false
 };
 
 /**
  * Get the props for a field from the state
  * @param   {string}  fieldName
  * @param   {object}  fieldState
- * @param   {*}       [defaultValue]
  * @returns {object}
  */
-export default function mapFieldStateToProps(fieldName, fieldState, defaultValue) {
-  const fieldValue = typeof fieldState.value !== 'undefined' ? fieldState.value : defaultValue;
-  return {
+export default function mapFieldStateToProps(fieldName, fieldState) {
+
+  const props = {
     ...defaultProps,
     ...fieldState,
-    name: fieldName,
-    value: fieldValue,
-    checked: typeof fieldValue === 'boolean' ? fieldValue === true : undefined,
-    defaultValue: defaultValue,
-    defaultChecked: typeof defaultValue === 'boolean' ? defaultValue === true : undefined
+    name: fieldName
   };
+
+  if (typeof fieldState.value !== 'undefined') {
+    props.value = fieldState.value;
+  }
+
+  if (typeof fieldState.value === 'boolean') {
+    props.checked = fieldState.value === true;
+  }
+
+  if (typeof fieldState.defaultValue === 'boolean') {
+    props.defaultChecked = fieldState.defaultValue === true;
+  }
+
+
+  return props;
 }

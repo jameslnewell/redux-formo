@@ -49,9 +49,9 @@
   },
   "scripts": {
     "lint": "eslint ./index.js ./src/**/*.{js,jsx}",
-    "test": "mocha --recursive test/**/*.js --compilers js:babel/register --require test/boot.js",
+    "test": "mocha --recursive --compilers js:babel/register --require test/boot.js",
     "test.watch": "npm run test -- --watch",
-    "build": "babel ./index.js ./src/**/*.{js,jsx} -d ./dist --source-maps",
+    "build": "babel ./index.js ./src/**/*.{js,jsx} ./src/**/**/*.{js,jsx} ./src/**/**/**/*.{js,jsx} -d ./dist --source-maps",
     "watch": "npm run build -- --watch",
     "example.build": "browserify --debug -t babelify example/index.js -o example/index.bundle.js --debug --extension=.jsx",
     "example.watch": "watchify -v --debug -t babelify example/index.js -o example/index.bundle.js --debug --extension=.jsx",
