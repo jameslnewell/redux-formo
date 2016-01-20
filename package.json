@@ -1,6 +1,6 @@
 {
   "name": "redux-formo",
-  "version": "2.0.0",
+  "version": "2.0.0-rc.1",
   "description": "An alternate forms framework for Redux+React.",
   "keywords": [
     "redux-formo",
