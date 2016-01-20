@@ -32,20 +32,25 @@ class ReduxFormo extends React.Component {
 
     //cache the form props
     this.form = mapFormStateToProps(
-      props.state,
       props.fields,
+      props.state,
       this.actions,
       this.formHandlers,
-      this.fieldHandlers
+      this.fieldHandlers,
+      props.defaults //FIXME: hack: merge the defaults because the component won't receive the updated props before render() on the server
     );
 
   }
 
   componentWillMount() {
-    const {defaults} = this.props;
+    const {fields, defaults} = this.props;
 
     if (!this.form.initialised) {
-      this.form.initialise(defaults);
+      this.form.initialise(
+        Object.keys(defaults) //TODO: test me! exclude any values which aren't allowed fields
+          .filter(fieldName => (fields.indexOf(fieldName) !== -1))
+          .reduce((prev, fieldName) => ({...prev, [fieldName]: defaults[fieldName]}))
+      );
     }
 
   }

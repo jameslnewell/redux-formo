@@ -49,9 +49,10 @@ export function mergeDefaultFieldPropsWithState(fieldName, fieldState) {
  * @param   {object}        actions
  * @param   {object}        formHandlers
  * @param   {object}        fieldHandlers
+ * @param   {object}        defaults        Only pass on construct as a hack if the form is not initialised to get around timing issues
  * @returns {object}
  */
-export default function mapFormStateToProps(fieldNames, formState, actions, formHandlers, fieldHandlers) {
+export default function mapFormStateToProps(fieldNames, formState, actions, formHandlers, fieldHandlers, defaults = {}) {
 
   const formProps = {
     ...defaultFormProps,
@@ -67,6 +68,12 @@ export default function mapFormStateToProps(fieldNames, formState, actions, form
     formProps.filtering = formProps.filtering || Boolean(fieldProps.filtering);
     formProps.validating = formProps.validating || Boolean(fieldProps.validating);
     formProps.valid = formProps.valid && Boolean(fieldProps.valid);
+
+    //FIXME: hack to merge the defaults because the component won't receive the updated props before render() on the server
+    if (!formProps.initialised && defaults[fieldName]) {
+      fieldProps.value = defaults[fieldName];
+      fieldProps.defaultValue = defaults[fieldName];
+    }
 
     return {
       ...prev,
