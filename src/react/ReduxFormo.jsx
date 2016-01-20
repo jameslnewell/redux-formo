@@ -49,7 +49,7 @@ class ReduxFormo extends React.Component {
       this.form.initialise(
         Object.keys(defaults) //TODO: test me! exclude any values which aren't allowed fields
           .filter(fieldName => (fields.indexOf(fieldName) !== -1))
-          .reduce((prev, fieldName) => ({...prev, [fieldName]: defaults[fieldName]}))
+          .reduce((prev, fieldName) => ({...prev, [fieldName]: defaults[fieldName]}), {})
       );
     }
 
