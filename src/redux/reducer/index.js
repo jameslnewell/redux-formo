@@ -80,7 +80,7 @@ function errorFiltering(state, action) {
   return {
     ...state,
     filtering: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst filtering'
+    error: (action.payload && action.payload.message ? action.payload.message : String(action.payload)) || 'An unknown error occurred whilst filtering'
   };
 }
 
@@ -159,7 +159,7 @@ function errorValidating(state, action) {
   return {
     ...state,
     validating: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst validating',
+    error: (action.payload && action.payload.message ? action.payload.message : String(action.payload)) || 'An unknown error occurred whilst validating',
     valid: false
   };
 }
@@ -221,7 +221,7 @@ function errorSubmitting(state, action) {
   return {
     ...state,
     submitting: false,
-    error: (action.payload && action.payload.message ? action.payload.message : action.payload) || 'An unknown error occurred whilst submitting'
+    error: (action.payload && action.payload.message ? action.payload.message : String(action.payload)) || 'An unknown error occurred whilst submitting'
   };
 }
 
