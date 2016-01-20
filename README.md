@@ -210,13 +210,13 @@ Whether a field should be validated when the form is submitted.
 
 Optional. Defaults to `true`.
 
-##### .formStateKey : String
+##### .stateKey : String
 
 The name of the property where the form reducer is mounted on the state.
 
 Optional. Defaults to `form`.
 
-##### .formPropKey : String
+##### .propKey : String
 
 The name of the property where the form state is passed in props to the react component.
 
@@ -288,14 +288,17 @@ The decorated component will receive the following props:
 
 ### v2.0.0
 
-- *breaking change:* The `submit()` function must now be passed as a parameter to the `onSubmit()` handler so that `submit()`
- can optionally access props on the component
-- *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to 
-restore the previous behaviour
+- *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to
+ restore the previous behaviour
+- *breaking change:* In order to enable the `submit()` function to access the component props, the `submit()` function
+ is now passed as a parameter to the `onSubmit()` handler
+- *breaking change:* Improved how initial values are set and enabled the initial values to be set from the redux state
 - *breaking change:* Stopped coercing values to empty strings
-- *breaking change:* Renamed `.validValue` to `.lastValidValue`
-- *breaking change:* Renamed `.values` to `.defaults`
-- *breaking change:* Changed how the default values are set
+- *breaking change:* Renamed `config.form` to `config.name`
+- *breaking change:* Renamed `config.formPropKey` to `config.propKey`
+- *breaking change:* Renamed `config.formStateKey` to `config.stateKey`
+- *breaking change:* Renamed `props.fields[fieldName].validValue` to `props.fields[fieldName].lastValidValue`
+- refactored internals
 
 ### v1.3.0
 

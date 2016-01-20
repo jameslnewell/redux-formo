@@ -1,7 +1,7 @@
 import {INITIALISE, FOCUS, BLUR, CHANGE, FILTER, VALIDATE, SUBMIT, DESTROY} from './src/redux/constants';
 import reducer from './src/redux/reducer';
-import decorate from './src/react/decorate';
+import connect from './src/react/connect';
 
 export {INITIALISE, FOCUS, BLUR, CHANGE, FILTER, VALIDATE, SUBMIT, DESTROY};
 export {reducer};
-export default decorate;
+export default connect;

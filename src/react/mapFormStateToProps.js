@@ -1,49 +1,85 @@
-import mapStateToFieldProps from './mapFieldStateToProps';
 
-const defaultFormProps = {
-  fields: {},
+export const defaultFieldProps = {
+  active: false,
+  filtering: false,
+  validating: false,
+  filtered: false,
+  validated: false,
+  valid: false
+};
+
+export const defaultFormProps = {
+  initialised: false,
   filtering: false,
   validating: false,
   valid: true,
   submitting: false,
   submitted: false,
-  error: undefined
+  fields: {}
 };
 
 /**
- * @param {Array<string>} fieldNames    The field names
- * @param {object}        props         The component props
- * @param {object}        actions       The form actions
- * @param {string}        formPropKey
+ * Merge the default props for a field with the field state
+ * @param   {string}  fieldName     The field name
+ * @param   {object}  fieldState    The form state
  * @returns {object}
  */
-export default function mapFormStateToProps({fieldNames, props, actions = {}, formPropKey = ''}) {
+export function mergeDefaultFieldPropsWithState(fieldName, fieldState) {
+  const props = {
+    ...defaultFieldProps,
+    ...fieldState,
+    name: fieldName
+  };
 
-  const formProps = formPropKey ? props[formPropKey] : props;
-  const newFormProps = {...defaultFormProps, ...formProps, ...actions};
+  if (typeof fieldState.value === 'boolean') {
+    props.checked = fieldState.value === true;
+  }
 
-  newFormProps.fields = fieldNames.reduce((wrappedFieldProps, fieldName) => {
-    const fieldProps = newFormProps.fields[fieldName] || {};
+  if (typeof fieldState.defaultValue === 'boolean') {
+    props.defaultChecked = fieldState.defaultValue === true;
+  }
+
+  return props;
+}
+
+/**
+ * Merge default props and handlers with the form state
+ * @param   {Array<string>} fieldNames
+ * @param   {object}        formState
+ * @param   {object}        actions
+ * @param   {object}        formHandlers
+ * @param   {object}        fieldHandlers
+ * @returns {object}
+ */
+export default function mapFormStateToProps(fieldNames, formState, actions, formHandlers, fieldHandlers) {
+
+  const formProps = {
+    ...defaultFormProps,
+    ...actions,
+    ...formHandlers,
+    ...formState
+  };
+
+  formProps.fields = fieldNames.reduce((prev, fieldName) => {
+    const fieldProps = formProps.fields[fieldName] || {};
 
     //update the computed form values
-    newFormProps.filtering = newFormProps.filtering || Boolean(fieldProps.filtering);
-    newFormProps.validating = newFormProps.validating || Boolean(fieldProps.validating);
-    newFormProps.valid = newFormProps.valid && Boolean(fieldProps.valid);
+    formProps.filtering = formProps.filtering || Boolean(fieldProps.filtering);
+    formProps.validating = formProps.validating || Boolean(fieldProps.validating);
+    formProps.valid = formProps.valid && Boolean(fieldProps.valid);
 
     return {
-      ...wrappedFieldProps,
-      [fieldName]: mapStateToFieldProps(
-        fieldName,
-        fieldProps
-      )
+      ...prev,
+      [fieldName]: {
+        ...fieldHandlers[fieldName],
+        ...mergeDefaultFieldPropsWithState(
+          fieldName,
+          fieldProps
+        )
+      }
     };
 
   }, {});
 
-  if (formPropKey) {
-    return {...props, [formPropKey]: newFormProps};
-  } else {
-    return {...props, ...newFormProps};
-  }
-
+  return formProps;
 }

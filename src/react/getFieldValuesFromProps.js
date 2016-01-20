@@ -1,13 +1,13 @@
 
 /**
  * Get all the values from the props
- * @param   {object} props
  * @param   {string} prop
+ * @param   {object} state
  * @returns {object}
  */
-export default function({props, prop}) {
-  return Object.keys(props.fields).reduce((values, fieldName) => {
-    values[fieldName] = props.fields[fieldName][prop];
+export default function(prop, state) {
+  return Object.keys(state.fields).reduce((values, fieldName) => {
+    values[fieldName] = state.fields[fieldName][prop];
     return values;
   }, {});
 }

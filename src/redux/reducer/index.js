@@ -1,5 +1,5 @@
-import * as constants from './../constants';
-import mapValues from './../mapValues';
+import * as constants from '../constants';
+import mapValues from '../mapValues';
 import initialise from './form/initialise';
 import destroy from './form/destroy';
 
@@ -251,6 +251,7 @@ export function submit(state, action) {
       return state;
 
   }
+}
 
 function createFormReducer(fn) {
   return (state, action) => {
@@ -326,4 +327,4 @@ function reducer(state = {}, action = {}) {
   return state;
 }
 
-export default decorate(reducer);
+export default decorate(reducer)

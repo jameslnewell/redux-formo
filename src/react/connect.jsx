@@ -1,104 +1,69 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import invariant from 'invariant';
-
-import bindActionCreators from './bindActionCreators';
-import mapFormStateToProps from './mapFormStateToProps';
-import wrapMapStateToProps from './wrapMapStateToProps';
+import ReduxFormo from './ReduxFormo';
 
 /**
  * The default config
  * @type {Object}
  */
 const defaultConfig = {
-  values: {},
-  formStateKey: 'form',
-  formPropKey: ''
+  formStateKey: 'form'
 };
-
-const defaultMapStateToProps = () => ({});
 
 /**
  * Connect a form component with the form state
  * @param   {Object}        config
- * @param   {string}        config.form
+ * @param   {string}        config.name
  * @param   {Array<string>} config.fields
- * @param   {object}        config.values
+ * @param   {object}        config.defaults
  * @param   {string}        [config.formStateKey]
- * @param   {string}        [config.formPropKey]
  * @param   {function}      [mapStateToProps]
  * @returns {function}
  */
-export default function connectForm(
+export default function( //TODO: test me!
   config,
-  mapStateToProps = defaultMapStateToProps
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps,
+  options
 ) {
-  const finalConfig = {...defaultConfig, ...config};
-  const {
-    form: formName, fields: fieldNames, defaults: defaultValues,
-    formStateKey, formPropKey
-  } = finalConfig;
+  const mergedConfig = {...defaultConfig, ...config};
+  const {name, formStateKey, ...otherConfig} = mergedConfig;
 
   //ensure the form has a name
-  invariant(typeof formName === 'string', `redux-formo: The form must have a name.`);
+  invariant(
+    typeof name === 'string' && name.length > 0,
+    `redux-formo: The form must have a name.`
+  );
 
-  return WrappedComponent => {
+  //connect the form component to the store
+  return component =>
+    connect(
+      state => {
+        const extraProps = {name, component, ...otherConfig};
 
-    /**
-     * A connected form
-     * @class
-     */
-    class ConnectedForm extends React.Component {
+        //extract the form state
+        let formState = null;
+        if (formStateKey) {
+          invariant(typeof state[formStateKey] === 'object', `redux-formo: The reducer must be mounted at "${formStateKey}".`);
+          formState = state[formStateKey][name] || {};
+        } else {
+          formState = state[name] || {};
+        }
 
-      /**
-       * Construct a connected form
-       * @constructor
-       * @param   {object}  props
-       * @param   {Array}   args
-       */
-      constructor(props, ...args) {
-        super(props, ...args);
+        //run the user's mapStateToProps function and merge any extra state that the user has extracted
+        if (mapStateToProps) {
+          return {state: formState, ...mapStateToProps(state), ...extraProps};
+        } else {
+          return {state: formState, ...extraProps};
+        }
 
-        //bind/cache each of the form actions for ease of use and performance
-        this.actions = bindActionCreators({
-          dispatch: props.dispatch,
-          formName
-        });
+      },
+      mapDispatchToProps,
+      mergeProps,
+      options
+    )(ReduxFormo)
+  ;
 
-      }
-
-      /**
-       * Render the form
-       * @returns {React.Element}
-       */
-      render() {
-
-        //wrap the form props; set default values for any value that is undefined in the store
-        const wrappedProps = mapFormStateToProps({
-          formPropKey,
-          props: this.props,
-          actions: this.actions,
-          fieldNames
-        });
-
-        return <WrappedComponent {...wrappedProps}/>;
-      }
-
-    }
-
-    ConnectedForm.propTypes = {
-      dispatch: React.PropTypes.func.isRequired
-    };
-
-    //connect the form component to the store
-    return connect(
-      wrapMapStateToProps({
-        formName,
-        formStateKey,
-        formPropKey,
-        mapStateToProps
-      })
-    )(ConnectedForm);
-
-  };
 }

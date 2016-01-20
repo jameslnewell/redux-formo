@@ -7,7 +7,7 @@ describe('bindActionCreators()', () => {
   it('should have a bound function for each action', () => {
 
     const dispatch = sinon.spy();
-    const boundActions = bindActionCreators({formName: 'profile', dispatch});
+    const boundActions = bindActionCreators('profile', dispatch);
 
     Object.keys(actions).forEach(action => {
       expect(boundActions[action]).to.be.a('function');
@@ -19,7 +19,7 @@ describe('bindActionCreators()', () => {
   it('should call dispatch() with the action bound to the form', () => {
 
     const dispatch = sinon.spy();
-    const boundActions = bindActionCreators({formName: 'profile', dispatch});
+    const boundActions = bindActionCreators('profile', dispatch);
 
     boundActions.focus('firstName');
 
