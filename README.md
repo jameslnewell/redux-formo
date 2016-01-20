@@ -100,7 +100,7 @@ Decorate a React Component, connecting the Redux form state and providing helper
 
 #### config : Object
 
-##### .form : String
+##### .name : String
 
 The name of the form.
 
