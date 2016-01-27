@@ -33,7 +33,7 @@ class ReduxFormo extends React.Component {
     //cache the form props
     this.form = mapFormStateToProps(
       props.fields,
-      props.state,
+      props.form,
       this.actions,
       this.formHandlers,
       this.fieldHandlers,
@@ -69,7 +69,7 @@ class ReduxFormo extends React.Component {
     //cache the form props
     this.form = mapFormStateToProps(
       nextProps.fields,
-      nextProps.state,
+      nextProps.form,
       this.actions,
       this.formHandlers,
       this.fieldHandlers
@@ -89,7 +89,7 @@ class ReduxFormo extends React.Component {
       filterOnSubmit, validateOnSubmit,
       destroyOnUnmount,
       afterValidate,
-      state,
+      form,
       component: Component,
       ...props
     } = this.props;
@@ -133,7 +133,7 @@ ReduxFormo.propTypes = {
   afterValidate: React.PropTypes.func,
 
   dispatch: React.PropTypes.func.isRequired,
-  state: React.PropTypes.object,
+  form: React.PropTypes.object,
   component: React.PropTypes.func.isRequired
 
 };
@@ -159,7 +159,7 @@ ReduxFormo.defaultProps = {
 
   afterValidate: () => {/*do nothing*/},
 
-  state: {}
+  form: {}
 
 };
 

@@ -54,9 +54,9 @@ export default function( //TODO: test me!
 
         //run the user's mapStateToProps function and merge any extra state that the user has extracted
         if (mapStateToProps) {
-          return {state: formState, ...mapStateToProps(state), ...extraProps};
+          return {form: formState, ...mapStateToProps(state), ...extraProps};
         } else {
-          return {state: formState, ...extraProps};
+          return {form: formState, ...extraProps};
         }
 
       },
