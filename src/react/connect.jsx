@@ -1,7 +1,9 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import invariant from 'invariant';
 import ReduxFormo from './ReduxFormo';
+import wrapMapDispatchToProps from './wrapMapDispatchToProps';
 
 /**
  * The default config
@@ -38,32 +40,35 @@ export default function( //TODO: test me!
   );
 
   //connect the form component to the store
-  return component =>
-    connect(
-      state => {
-        const extraProps = {name, component, ...otherConfig};
+  return component => {
 
-        //extract the form state
-        let formState = null;
-        if (formStateKey) {
-          invariant(typeof state[formStateKey] === 'object', `redux-formo: The reducer must be mounted at "${formStateKey}".`);
-          formState = state[formStateKey][name] || {};
-        } else {
-          formState = state[name] || {};
-        }
+    const wrapMapStateToProps = state => {
+      const extraProps = {name, component, ...otherConfig};
 
-        //run the user's mapStateToProps function and merge any extra state that the user has extracted
-        if (mapStateToProps) {
-          return {form: formState, ...mapStateToProps(state), ...extraProps};
-        } else {
-          return {form: formState, ...extraProps};
-        }
+      //extract the form state
+      let formState = null;
+      if (formStateKey) {
+        invariant(typeof state[formStateKey] === 'object', `redux-formo: The reducer must be mounted at "${formStateKey}".`);
+        formState = state[formStateKey][name] || {};
+      } else {
+        formState = state[name] || {};
+      }
 
-      },
-      mapDispatchToProps,
+      //run the user's mapStateToProps function and merge any extra state that the user has extracted
+      if (mapStateToProps) {
+        return {form: formState, ...mapStateToProps(state), ...extraProps};
+      } else {
+        return {form: formState, ...extraProps};
+      }
+
+    };
+
+    return connect(
+      wrapMapStateToProps,
+      wrapMapDispatchToProps(mapDispatchToProps),
       mergeProps,
       options
-    )(ReduxFormo)
-  ;
+    )(ReduxFormo);
 
+  };
 }

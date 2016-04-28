@@ -9,7 +9,8 @@ import App from './lib/App';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(combineReducers({
-  form: reducer
+  form: reducer,
+  foo: (state, action) => {console.log(action); return state || {};}
 }));
 
 render(

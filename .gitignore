@@ -3,6 +3,6 @@
 .DS_Store
 Thumbs.db
 node_modules
-npm-debug.log
+npm-debug.log*
 dist/
 example/index.bundle.js

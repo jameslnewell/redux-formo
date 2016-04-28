@@ -48,7 +48,8 @@ class App extends React.Component {
         'form--invalid': !valid
       }
     );
-
+    console.log(this.props.foo, this.props.dispatch);
+this.props.foo();
     return (
       <form className={formClassNames} onSubmit={onSubmit(submit)}>
 

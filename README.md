@@ -285,6 +285,10 @@ The decorated component will receive the following props:
 
 ## CHANGE LOG
 
+### v2.0.1
+
+- *fix:* `mapDispatchToProps` always returns `dispatch` so that `redux-formo` continues to work when `mapDispatchToProps` is used
+
 ### v2.0.0
 
 - *breaking change:* Destroying the form state when the component is unmounted - set `.destroyOnUmount` to `false` to
