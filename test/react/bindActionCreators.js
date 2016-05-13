@@ -1,4 +1,4 @@
-import {FOCUS} from '../../src/redux/constants';
+import {focus} from '../../src/redux/actions';
 import * as actions from '../../src/redux/actions';
 import bindActionCreators from '../../src/react/bindActionCreators';
 
@@ -19,17 +19,11 @@ describe('bindActionCreators()', () => {
   it('should call dispatch() with the action bound to the form', () => {
 
     const dispatch = sinon.spy();
-    const boundActions = bindActionCreators('profile', dispatch);
+    const boundActions = bindActionCreators('form', 'personal-details', dispatch);
 
     boundActions.focus('firstName');
 
-    expect(dispatch).to.be.calledWith({
-      type: FOCUS,
-      meta: {
-        form: 'profile',
-        field: 'firstName'
-      }
-    });
+    expect(dispatch).to.be.calledWith(focus('form', 'personal-details', 'firstName'));
 
   });
 

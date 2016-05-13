@@ -9,16 +9,12 @@ describe('filterAndValidate()', () => {
     return filterAndValidate({
 
       field: 'name',
-      value: 'John',
-      values: {},
 
       filter: false,
       filterAction
 
     })
-      .then(() => {
-        expect(filterAction).to.not.be.called;
-      })
+      .then(() => expect(filterAction).to.not.be.called)
     ;
 
   });
@@ -30,16 +26,12 @@ describe('filterAndValidate()', () => {
     return filterAndValidate({
 
       field: 'name',
-      value: 'John',
-      values: {},
 
       validate: false,
       validateAction
 
     })
-      .then(() => {
-        expect(validateAction).to.not.be.called;
-      })
+      .then(() => expect(validateAction).to.not.be.called)
     ;
 
   });
@@ -47,16 +39,10 @@ describe('filterAndValidate()', () => {
   it('should return false when filter=false and validate=false', () => {
 
     return filterAndValidate({
-
-      field: 'name',
-      value: 'John',
-      values: {}
-
+      field: 'name'
     })
-      .then(valid => {
-        expect(valid).to.be.false;
-      })
-      ;
+      .then(valid => expect(valid).to.be.false)
+    ;
 
   });
 
@@ -70,16 +56,12 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn,
         filterAction
       })
-        .then(() => {
-          expect(filterAction).to.be.calledWith('name', 'John', {}, filterFn);
-        })
+        .then(() => expect(filterAction).to.be.calledWith('name', filterFn))
       ;
 
     });
@@ -91,17 +73,13 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
         filterAction
 
       })
-        .then(valid => {
-          expect(valid).to.be.false;
-        })
+        .then(valid => expect(valid).to.be.false)
       ;
 
     });
@@ -118,18 +96,16 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         validate: true,
         validateFn,
         validateAction,
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(() => {
-          expect(validateAction).to.be.calledWith('name', 'John', {}, validateFn);
-        })
+        .then(() => expect(validateAction).to.be.calledWith('name', validateFn))
       ;
 
     });
@@ -139,18 +115,16 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         validate: true,
         validateFn: () => false,
         validateAction: sinon.stub().returns(Promise.resolve(false)),
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(valid => {
-          expect(valid).to.be.false;
-        })
+        .then(valid => expect(valid).to.be.false)
       ;
 
     });
@@ -160,18 +134,16 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         validate: true,
         validateFn: () => true,
         validateAction: sinon.stub().returns(Promise.resolve(true)),
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(valid => {
-          expect(valid).to.be.true;
-        })
+        .then(valid => expect(valid).to.be.true)
       ;
 
     });
@@ -183,24 +155,22 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         validate: true,
         validateFn: () => true,
         validateAction: sinon.stub().returns(Promise.resolve(true)),
-        afterValidate
+        afterValidate,
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(valid => {
-          expect(afterValidate).to.be.calledWith({
-            valid: true,
-            field: 'name',
-            value: 'John',
-            values: {name: 'John'},
-            dispatch: undefined
-          });
-        })
+        .then(() => expect(afterValidate).to.be.calledWith({
+          valid: true,
+          field: 'name',
+          value: 'John',
+          values: {name: 'Jo'},
+          dispatch: undefined
+        }))
       ;
 
     });
@@ -210,6 +180,28 @@ describe('filterAndValidate()', () => {
   describe('=> when filter=true and validate=true', () => {
 
     it('should call the filter action', () => {
+
+      const filterFn = () => {/*do nothing*/};
+      const filterAction = sinon.stub().returns(Promise.resolve('John'));
+
+      return filterAndValidate({
+
+        field: 'name',
+
+        filter: true,
+        filterFn,
+        filterAction,
+
+        validate: true,
+        validateFn: () => {/*do nothing*/},
+        validateAction: sinon.stub().returns(Promise.resolve('')),
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
+
+      })
+        .then(() => expect(filterAction).to.be.calledWith('name', filterFn))
+      ;
 
     });
 
@@ -221,8 +213,6 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
@@ -231,11 +221,13 @@ describe('filterAndValidate()', () => {
         validate: true,
         validateFn,
         validateAction,
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
         .then(() => {
-          expect(validateAction).to.be.calledWith('name', 'John', {}, validateFn);
+          expect(validateAction).to.be.calledWith('name', validateFn);
         })
       ;
 
@@ -246,8 +238,6 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
@@ -256,7 +246,9 @@ describe('filterAndValidate()', () => {
         validate: true,
         validateFn: () => false,
         validateAction: sinon.stub().returns(Promise.resolve(false)),
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
         .then(valid => {
@@ -271,8 +263,6 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
@@ -281,7 +271,9 @@ describe('filterAndValidate()', () => {
         validate: true,
         validateFn: () => true,
         validateAction: sinon.stub().returns(Promise.resolve(true)),
-        afterValidate: () => {/*do nothing*/}
+        afterValidate: () => {/*do nothing*/},
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
         .then(valid => {
@@ -298,25 +290,25 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
-        filterAction: sinon.stub().returns(Promise.resolve('Jo')),
+        filterAction: sinon.stub().returns(Promise.resolve('John')),
 
         validate: true,
         validateFn: () => false,
         validateAction: sinon.stub().returns(Promise.resolve(false)),
-        afterValidate
+        afterValidate,
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(valid => {
+        .then(() => {
           expect(afterValidate).to.be.calledWith({
             valid: false,
             field: 'name',
-            value: 'Jo',
-            values: {},
+            value: 'John',
+            values: {name: 'Jo'},
             dispatch: undefined
           });
         })
@@ -331,25 +323,25 @@ describe('filterAndValidate()', () => {
       return filterAndValidate({
 
         field: 'name',
-        value: 'John',
-        values: {},
 
         filter: true,
         filterFn: () => {/*do nothing*/},
-        filterAction: sinon.stub().returns(Promise.resolve('John')),
+        filterAction: sinon.stub().returns(Promise.resolve('Jo')),
 
         validate: true,
         validateFn: () => true,
         validateAction: sinon.stub().returns(Promise.resolve(true)),
-        afterValidate
+        afterValidate,
+
+        component: {form: {fields: {name: {value: 'John', lastValidValue: 'Jo'}}}}
 
       })
-        .then(valid => {
+        .then(() => {
           expect(afterValidate).to.be.calledWith({
             valid: true,
             field: 'name',
             value: 'John',
-            values: {name: 'John'},
+            values: {name: 'Jo'},
             dispatch: undefined
           });
         })

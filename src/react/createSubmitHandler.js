@@ -1,5 +1,5 @@
 import filterAndValidate from './filterAndValidate';
-import getFieldValuesFromProps from './getFieldValuesFromProps';
+import selectLastValidValues from '../selectLastValidValues';
 
 /**
  * @param   {object}  component   The form component
@@ -38,16 +38,12 @@ export default function(component) {
         filter, validate,
         afterValidate
       } = props;
-      const values = getFieldValuesFromProps('value', form);
-      const lastValidValues = getFieldValuesFromProps('lastValidValue', form);
 
       //filter and validate each of the fields
       Promise.all(fields.map(fieldName =>
         filterAndValidate({
 
           field: fieldName,
-          value: values[fieldName],
-          values: lastValidValues,
 
           filter: filterOnSubmit,
           filterFn: filter,
@@ -58,14 +54,15 @@ export default function(component) {
           validateAction: form.validate,
           afterValidate,
 
-          dispatch
+          dispatch,
+          component
 
         }).then(valid => formIsValid = formIsValid && valid)
       )).then(() => {
 
         //submit the valid values
         if (formIsValid) {
-          form.submit(lastValidValues, submitFn);
+          form.submit(selectLastValidValues(form), submitFn);
         }
 
       });

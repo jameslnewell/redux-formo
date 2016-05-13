@@ -1,9 +1,10 @@
+import selectValue from '../selectValue';
+import selectLastValidValues from '../selectLastValidValues';
+
 /**
  * Filter and validate a field
  *
  * @param {string}        field           The field name
- * @param {string}        value           The field value
- * @param {Array<string>} values          The valid form values
  *
  * @param {boolean}       filter          Whether the field should be filtered
  * @param {function}      filterFn        A function for filtering the field
@@ -21,8 +22,6 @@
 export default function filterAndValidate({
 
   field,
-  value,
-  values,
 
   filter,
   filterFn,
@@ -33,26 +32,25 @@ export default function filterAndValidate({
   validateAction,
   afterValidate,
 
-  dispatch
+  dispatch,
+  component
 
 }) {
 
-  const doFilter = () => filterAction(field, value, values, filterFn);
+  const doFilter = () => filterAction(field, filterFn);
 
-  const doValidate = (filteredValue) =>
-    validateAction(field, filteredValue, values, validateFn)
+  const doValidate = () =>
+    validateAction(field, validateFn)
       .then(valid => {
 
-        const validValues = values;
-        if (valid) {
-          validValues[field] = filteredValue;
-        }
+        const value = selectValue(field, component.form);
+        const values = selectLastValidValues(component.form);
 
         afterValidate({
           valid,
           field,
-          value: filteredValue,
-          values: validValues,
+          value,
+          values,
           dispatch
         });
 
@@ -66,7 +64,7 @@ export default function filterAndValidate({
   } else if (filter) {
     return doFilter().then(() => false);
   } else if (validate) {
-    return doValidate(value);
+    return doValidate();
   } else {
     return Promise.resolve(false);
   }

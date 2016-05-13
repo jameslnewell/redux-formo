@@ -4,6 +4,7 @@ import form from '../../index';
 import filter from './filter';
 import validate from './validate';
 import submit from './submit';
+import afterValidate from './afterValidate';
 
 class App extends React.Component {
 
@@ -48,8 +49,7 @@ class App extends React.Component {
         'form--invalid': !valid
       }
     );
-    console.log(this.props.foo, this.props.dispatch);
-this.props.foo();
+
     return (
       <form className={formClassNames} onSubmit={onSubmit(submit)}>
 
@@ -81,26 +81,34 @@ this.props.foo();
           Interests:
           <label className="control__label">
             <input type="checkbox" {...interests} value="sport"
-             onChange={this.handleCheckboxGroupChange}
-             checked={interests.value && interests.value.indexOf('sport') !== -1}
+              onChange={this.handleCheckboxGroupChange}
+              checked={interests.value && interests.value.indexOf('sport') !== -1}
             /> Sport
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="computers"
-             onChange={this.handleCheckboxGroupChange}
-             checked={interests.value && interests.value.indexOf('computers') !== -1}
+              onChange={this.handleCheckboxGroupChange}
+              checked={interests.value && interests.value.indexOf('computers') !== -1}
             /> Computers
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="art"
-             onChange={this.handleCheckboxGroupChange}
-             checked={interests.value && interests.value.indexOf('art') !== -1}
+              onChange={this.handleCheckboxGroupChange}
+              checked={interests.value && interests.value.indexOf('art') !== -1}
             /> Art
           </label>
           <label className="control__label">
             <input type="checkbox" {...interests} value="science"
-             onChange={this.handleCheckboxGroupChange}
-             checked={interests.value && interests.value.indexOf('science') !== -1}
+              onClick={(event) => {
+                if (event.target.checked) {
+                  interests.change([event.target.value]);
+                } else {
+                  interests.change([]);
+                }
+                interests.validate();
+              }}
+              onChange={this.handleCheckboxGroupChange}
+              checked={interests.value && interests.value.indexOf('science') !== -1}
             /> Science
           </label>
           {interests.error && <p className="control__error">{interests.error}</p>}
@@ -163,5 +171,5 @@ export default form({
   name: 'personal-details',
   fields: ['name', 'email', 'interests', 'newsletter'],
   defaults: {name: 'John', interests: ['sport'], newsletter: true},
-  filter, validate
+  filter, validate, afterValidate
 })(App);

@@ -2,10 +2,12 @@ import {bindActionCreators} from 'redux';
 
 /**
  * Wrap a `mapDispatchToProps` object/function to always include `dispatch` (as currently required by `redux-formo`)
+ * @param   {string}            key
+ * @param   {string}            form
  * @param   {object|function}   mapDispatchToProps
  * @returns {function}
  */
-export default function wrapMapDispatchToProps(mapDispatchToProps) {
+export default function wrapMapDispatchToProps(key, form, mapDispatchToProps) {
 
   if (mapDispatchToProps) {
     if (typeof mapDispatchToProps === 'function') {
@@ -35,5 +37,4 @@ export default function wrapMapDispatchToProps(mapDispatchToProps) {
   return dispatch => ({
     dispatch
   });
-
 }

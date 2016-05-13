@@ -56,16 +56,16 @@ export default function( //TODO: test me!
 
       //run the user's mapStateToProps function and merge any extra state that the user has extracted
       if (mapStateToProps) {
-        return {form: formState, ...mapStateToProps(state), ...extraProps};
+        return {form: formState, ...mapStateToProps(state), ...extraProps, stateKey: formStateKey};
       } else {
-        return {form: formState, ...extraProps};
+        return {form: formState, ...extraProps, stateKey: formStateKey};
       }
 
     };
 
     return connect(
       wrapMapStateToProps,
-      wrapMapDispatchToProps(mapDispatchToProps),
+      wrapMapDispatchToProps(formStateKey, name, mapDispatchToProps),
       mergeProps,
       options
     )(ReduxFormo);

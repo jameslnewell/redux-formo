@@ -1,5 +1,4 @@
 import filterAndValidate from './filterAndValidate';
-import getFieldValuesFromProps from './getFieldValuesFromProps';
 
 /**
  * @param   {object}  component   The form component
@@ -19,13 +18,10 @@ export default function(component, fieldName) {
       filter, validate,
       afterValidate
     } = props;
-    const lastValidValues = getFieldValuesFromProps('lastValidValue', form);
 
     filterAndValidate({
 
       field: fieldName,
-      value: form.fields[fieldName].value,
-      values: lastValidValues,
 
       filter: filterOnBlur,
       filterFn: filter,
@@ -36,7 +32,8 @@ export default function(component, fieldName) {
       validateAction: form.validate,
       afterValidate,
 
-      dispatch
+      dispatch,
+      component
 
     });
 

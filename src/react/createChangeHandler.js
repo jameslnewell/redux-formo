@@ -1,5 +1,4 @@
 import filterAndValidate from './filterAndValidate';
-import getFieldValuesFromProps from './getFieldValuesFromProps';
 
 /**
  * Get the field value from an input event
@@ -31,8 +30,7 @@ export default function(component, fieldName) {
     const form = component.form;
     const props = component.props;
 
-    const fieldValue = getValueFromEvent(event);
-    form.change(fieldName, fieldValue);
+    form.change(fieldName, getValueFromEvent(event));
 
     const {
       dispatch,
@@ -40,13 +38,10 @@ export default function(component, fieldName) {
       filter, validate,
       afterValidate
     } = props;
-    const lastValidValues = getFieldValuesFromProps('lastValidValue', form);
 
     filterAndValidate({
 
       field: fieldName,
-      value: fieldValue,
-      values: lastValidValues,
 
       filter: filterOnChange,
       filterFn: filter,
@@ -57,7 +52,8 @@ export default function(component, fieldName) {
       validateAction: form.validate,
       afterValidate,
 
-      dispatch
+      dispatch,
+      component
 
     });
 

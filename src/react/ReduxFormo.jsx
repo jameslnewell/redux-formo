@@ -1,9 +1,9 @@
 import React from 'react';
+
 import bindActionCreators from './bindActionCreators';
+import createFieldActions from './createFieldActions';
+import createFieldHandlers from './createFieldHandlers';
 import createSubmitHandler from './createSubmitHandler';
-import createFocusHandler from './createFocusHandler';
-import createBlurHandler from './createBlurHandler';
-import createChangeHandler from './createChangeHandler';
 import mapFormStateToProps from './mapFormStateToProps';
 
 class ReduxFormo extends React.Component {
@@ -12,7 +12,7 @@ class ReduxFormo extends React.Component {
     super(props, ...args);
 
     //bind/cache each of the form actions for ease of use and performance
-    this.actions = bindActionCreators(props.name, props.dispatch);
+    this.actions = bindActionCreators(props.stateKey, props.name, props.dispatch);
 
     //bind/cache the form event handlers
     this.formHandlers = {
@@ -20,13 +20,11 @@ class ReduxFormo extends React.Component {
     };
 
     //bind/cache the field event handlers
-    this.fieldHandlers = props.fields.reduce((fieldHandlers, fieldName) => ({
+    this.fieldHandlers = props.fields.reduce((fieldHandlers, field) => ({
       ...fieldHandlers,
-      [fieldName]: {
-        //TODO: form functions - filter: () => this.form.filter(field...), validate: () => this.form.validate(field...)
-        onFocus: createFocusHandler(this, fieldName),
-        onBlur: createBlurHandler(this,fieldName),
-        onChange: createChangeHandler(this, fieldName)
+      [field]: {
+        ...createFieldActions(field, this.actions, {filter: props.filter, validate: props.validate}),
+        ...createFieldHandlers(field, this)
       }
     }), {});
 
@@ -34,7 +32,7 @@ class ReduxFormo extends React.Component {
     this.form = mapFormStateToProps(
       props.fields,
       props.form,
-      this.actions,
+      this.actions, //actions
       this.formHandlers,
       this.fieldHandlers,
       props.defaults //FIXME: hack: merge the defaults because the component won't receive the updated props before render() on the server
@@ -70,7 +68,7 @@ class ReduxFormo extends React.Component {
     this.form = mapFormStateToProps(
       nextProps.fields,
       nextProps.form,
-      this.actions,
+      this.actions, //actions
       this.formHandlers,
       this.fieldHandlers
     );

@@ -253,7 +253,7 @@ Optional.
 
 ### reducer.plugin(reducers : Object) : Function
 
-Returns a new reducer that will return a new state as a result of chaining the result of the original reducer and then 
+Returns a new reducer that will return a new state as a result of chaining the result of the original reducer and then
 the result of the dictionary of reducers.
 
 ## Props
@@ -281,9 +281,14 @@ The decorated component will receive the following props:
         - **checked** - `bool|undefined` - true when the value is true, false when the value is false
         - **defaultValue** - `*|undefined` - the defaultValue
         - **defaultChecked** - `bool|undefined` - true when the value is true, false when the value is false
-        
+
 
 ## CHANGE LOG
+
+### v3.0.0
+
+- *breaking change*: `filter` and `validate` actions no longer take the value(s) as parameters, but get the value(s) from the state instead
+- *breaking change*: `afterValidate()` no longer receives the last valid `values`
 
 ### v2.0.1
 
