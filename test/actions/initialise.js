@@ -1,5 +1,5 @@
-import {INITIALISE} from '../../../src/redux/constants';
-import {initialise} from '../../../src/redux/actions';
+import {INITIALISE} from '../../src/constants';
+import {initialise} from '../../src/actions';
 
 describe.skip('initialise()', () => {
 

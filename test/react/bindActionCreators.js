@@ -1,8 +1,9 @@
-import {focus} from '../../src/redux/actions';
-import * as actions from '../../src/redux/actions';
+import {focus} from '../../src/actions';
+import * as actions from '../../src/actions';
 import bindActionCreators from '../../src/react/bindActionCreators';
 
 describe('bindActionCreators()', () => {
+
 
   it('should have a bound function for each action', () => {
 

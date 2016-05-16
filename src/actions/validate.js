@@ -1,7 +1,7 @@
 import {VALIDATE} from './../constants';
-import selectForm from '../../selectForm';
-import selectValue from '../../selectValue';
-import selectLastValidValues from '../../selectLastValidValues';
+import selectForm from '../selectForm';
+import selectValue from '../selectValue';
+import selectLastValidValues from '../selectLastValidValues';
 
 function startValidating(form, field) {
   return {

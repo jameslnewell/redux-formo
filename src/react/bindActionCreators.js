@@ -1,4 +1,4 @@
-import * as actions from '../redux/actions';
+import * as actions from '../actions';
 
 /**
  * Bind the action creators with the dispatch method and form name to save key strokes

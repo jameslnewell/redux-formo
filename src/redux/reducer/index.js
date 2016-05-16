@@ -1,4 +1,4 @@
-import * as constants from '../constants';
+import * as constants from '../../constants';
 import mapValues from '../mapValues';
 import initialise from './form/initialise';
 import destroy from './form/destroy';

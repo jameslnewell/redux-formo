@@ -1,5 +1,5 @@
-import {CHANGE} from '../../../src/redux/constants';
-import {change} from '../../../src/redux/actions';
+import {CHANGE} from '../../src/constants';
+import {change} from '../../src/actions';
 
 describe('change()', () => {
 

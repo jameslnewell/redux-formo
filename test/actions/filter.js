@@ -1,5 +1,5 @@
-import {FILTER} from '../../../src/redux/constants';
-import {filter} from '../../../src/redux/actions';
+import {FILTER} from '../../src/constants';
+import {filter} from '../../src/actions';
 
 const KEY = 'form';
 const FORM = 'personal-details';

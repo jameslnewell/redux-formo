@@ -1,5 +1,5 @@
-import {VALIDATE} from '../../../src/redux/constants';
-import {validate} from '../../../src/redux/actions';
+import {VALIDATE} from '../../src/constants';
+import {validate} from '../../src/actions';
 
 const KEY = 'form';
 const FORM = 'personal-details';

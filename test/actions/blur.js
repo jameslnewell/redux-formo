@@ -1,5 +1,5 @@
-import {BLUR} from '../../../src/redux/constants';
-import {blur} from '../../../src/redux/actions';
+import {BLUR} from '../../src/constants';
+import {blur} from '../../src/actions';
 
 describe('blur()', () => {
 

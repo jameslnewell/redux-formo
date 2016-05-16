@@ -1,3 +1,5 @@
+export const STATE_KEY = 'form';
+
 export const INITIALISE = '@redux-formo/initialise';
 export const DESTROY = '@redux-formo/destroy';
 

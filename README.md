@@ -336,6 +336,9 @@ The decorated component will receive the following props:
  filtration and validation
 - Added unit tests for most methods
 
+## Design decisions
+- like redux-form but unlike react-redux-form, use a different subset of the state to store values (let the user choose when they want to sync/update their model with the data on the form)
+
 ## THANKS
 
 Much of this package is inspired by the work of `@erikras` on `redux-form`. Much thanks!

@@ -1,5 +1,5 @@
-import {FOCUS} from '../../../src/redux/constants';
-import {focus} from '../../../src/redux/actions';
+import {FOCUS} from '../../src/constants';
+import {focus} from '../../src/actions';
 
 describe('focus()', () => {
 
@@ -10,7 +10,6 @@ describe('focus()', () => {
     expect(action).to.have.property('type', FOCUS);
     expect(action).to.have.property('meta').property('form', 'personal-details');
     expect(action).to.have.property('meta').property('field', 'firstName');
-
   });
 
 });

@@ -1,7 +1,7 @@
 import {isFSA, isError} from 'flux-standard-action';
-import {SUBMIT} from './../constants';
-import selectForm from '../../selectForm';
-import selectLastValidValues from '../../selectLastValidValues';
+import {SUBMIT} from '../constants';
+import selectForm from '../selectForm';
+import selectLastValidValues from '../selectLastValidValues';
 
 function startSubmitting(form) {
   return {

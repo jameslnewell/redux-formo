@@ -2,7 +2,7 @@ import reducer from '../../../src/redux/reducer';
 import {
   FOCUS, BLUR, CHANGE,
   FILTER, VALIDATE, SUBMIT
-} from '../../../src/redux/constants';
+} from '../../../src/constants';
 
 const FORM = 'profile';
 const FIELD = 'firstName';

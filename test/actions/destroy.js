@@ -1,5 +1,5 @@
-import {DESTROY} from '../../../src/redux/constants';
-import {destroy} from '../../../src/redux/actions';
+import {DESTROY} from '../../src/constants';
+import {destroy} from '../../src/actions';
 
 describe.skip('destroy()', () => {
 

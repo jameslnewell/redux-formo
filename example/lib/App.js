@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import form from '../../index';
+import form from '../..';
+import Field from '../../src/components/Field';
 import filter from './filter';
 import validate from './validate';
 import submit from './submit';
 import afterValidate from './afterValidate';
+
+
 
 class App extends React.Component {
 
@@ -56,6 +59,15 @@ class App extends React.Component {
         <h1>Personal details</h1>
 
         {error && <p className="control__error">{error}</p>}
+
+
+          <label className="control__label">
+            Full name:
+            <Field name="personal-details.name">
+              <input className="control__input"/>
+            </Field>
+          </label>
+          {name.error ? <p className="control__error">{name.error}</p> : null}
 
         <div className="control">
           <label className="control__label">

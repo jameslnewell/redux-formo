@@ -1,5 +1,5 @@
-import {SUBMIT} from '../../../src/redux/constants';
-import {submit} from '../../../src/redux/actions';
+import {SUBMIT} from '../../src/constants';
+import {submit} from '../../src/actions';
 
 const KEY = 'form';
 const FORM = 'personal-details';

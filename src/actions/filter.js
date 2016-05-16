@@ -1,7 +1,7 @@
 import {FILTER} from '../constants';
-import selectForm from '../../selectForm';
-import selectValue from '../../selectValue';
-import selectLastValidValues from '../../selectLastValidValues';
+import selectForm from '../selectForm';
+import selectValue from '../selectValue';
+import selectLastValidValues from '../selectLastValidValues';
 
 function startFiltering(form, field) {
   return {
