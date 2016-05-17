@@ -1,5 +1,5 @@
 import filterAndValidate from './filterAndValidate';
-import selectLastValidValues from '../selectLastValidValues';
+import selectLastValidValues from '../util/selectLastValidValues';
 
 /**
  * @param   {object}  component   The form component

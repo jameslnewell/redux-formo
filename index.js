@@ -1,4 +1,4 @@
-import {INITIALISE, FOCUS, BLUR, CHANGE, FILTER, VALIDATE, SUBMIT, DESTROY} from './src/redux/constants';
+import {INITIALISE, FOCUS, BLUR, CHANGE, FILTER, VALIDATE, SUBMIT, DESTROY} from './src/constants';
 import reducer from './src/redux/reducer';
 import connect from './src/react/connect';
 

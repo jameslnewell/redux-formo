@@ -1,5 +1,5 @@
-import selectValue from '../selectValue';
-import selectLastValidValues from '../selectLastValidValues';
+import selectValue from '../util/selectValue';
+import selectLastValidValues from '../util/selectLastValidValues';
 
 /**
  * Filter and validate a field
