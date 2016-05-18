@@ -5,7 +5,7 @@ export default function({field, value}) {
 
     case 'name':
 
-      if (value == '') {
+      if (value === undefined || value == '') {
         return 'Please enter your name so we can contact you.';
       }
 
@@ -13,7 +13,7 @@ export default function({field, value}) {
 
     case 'email':
 
-      if (value == '') {
+      if (value === undefined || value == '') {
         return 'Please enter your email address so we can contact you.';
       }
 
@@ -25,7 +25,7 @@ export default function({field, value}) {
 
     case 'interests':
 
-      if (value == '' || (Array.isArray(value) && value.length === 0)) {
+      if (value === undefined || value == '' || (Array.isArray(value) && value.length === 0)) {
         return 'You must select at least one interest.';
       }
 
@@ -33,7 +33,7 @@ export default function({field, value}) {
 
     case 'newsletter':
 
-      if (value === false) {
+      if (value === undefined || value === false) {
         return 'You must receive updates.';
       }
 

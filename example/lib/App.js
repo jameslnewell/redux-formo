@@ -8,178 +8,149 @@ import validate from './validate';
 import submit from './submit';
 import afterValidate from './afterValidate';
 
+const handleCheckboxChange = field => event => {
+  let values = field.value || [];
 
+  if (event.target.checked) {
+    values = values.concat([event.target.value]);
+  } else {
+    values = values.filter(value => value !== event.target.value);
+  }
+
+  field.change(values);
+};
+
+const isCheckboxChecked = (field, value) => field.value && field.value.indexOf(value) !== -1;
 
 class App extends React.Component {
 
-  constructor(...args) {
-    super(...args);
-    this.handleCheckboxGroupChange = this.handleCheckboxGroupChange.bind(this);
-  }
-
-  handleCheckboxGroupChange(event) {
-    let values = this.props.fields.interests.value || [];
-
-    if (event.target.checked) {
-      values = values.concat([event.target.value]);
-    } else {
-      values = values.filter(value => value !== event.target.value);
-    }
-
-    this.props.fields.interests.onChange(values);
-  }
-
   render() {
-    const {
-      valid,
-      error,
-      filtering,
-      validating,
-      submitting,
-      submitted,
-      onSubmit,
-      fields: {
-        name,
-        email,
-        interests,
-        newsletter
-      }
-    } = this.props;
-
-    const formClassNames = classNames(
-      'form',
-      {
-        'form--valid': valid,
-        'form--invalid': !valid
-      }
-    );
-
     return (
-      <form className={formClassNames} onSubmit={onSubmit(submit)}>
+      <Form name="personal-details" filter={filter} validate={validate} submit={submit} component={props => (
+        <form className={classNames('form', {'form--valid': this.props.valid, 'form--invalid': !this.props.valid})} onSubmit={props.onSubmit}>
 
-        <h1>Personal details</h1>
+          <h1>Personal details</h1>
 
-        {error && <p className="control__error">{error}</p>}
+          {props.error && <p className="control__error">{props.error}</p>}
 
-        <Form name="personal-details">
-          <Field name="name">
-            <input className="control__input"/>
-          </Field>
-        </Form>
+          <Field name="name" component={
+            field => (
+              <div className="control">
+                <label className="control__label">
+                  Full name: <br/>
+                  <input className="control__input" {...field}/>
+                </label>
+                {field.error && <p className="control__error">{field.error}</p>}
+              </div>
+            )}
+          />
 
-        <div className="control">
-          <label className="control__label">
-            Full name: <input className="control__input" {...name}/>
-          </label>
-          {name.error ? <p className="control__error">{name.error}</p> : null}
-        </div>
+          <br/>
+          <br/>
 
-        <br/>
-        <br/>
+          <Field name="email" component={
+            field => (
+              <div className="control">
+                <label className="control__label">
+                  Email: <br/>
+                  <input className="control__input" {...field}/>
+                </label>
+                {field.error && <p className="control__error">{field.error}</p>}
+              </div>
+            )}
+          />
 
-        <div className="control">
-          <label className="control__label">
-            Email: <input className="control__input" {...email}/>
-          </label>
-          {email.error && <p className="control__error">{email.error}</p>}
-        </div>
+          <br/>
+          <br/>
 
-        <br/>
-        <br/>
+          <Field name="interests" component={
+            field => (
+              <div className="control">
+                <div className="control__label">
+                  Interests: <br/>
+                  <label className="control__label">
+                    <input type="checkbox" value="sport"
+                      onChange={handleCheckboxChange(field)}
+                      checked={isCheckboxChecked(field, 'sport')}
+                    /> Sport
+                  </label>
+                  <label className="control__label">
+                    <input type="checkbox" value="computers"
+                      onChange={handleCheckboxChange(field)}
+                      checked={isCheckboxChecked(field, 'computers')}
+                    /> Computers
+                  </label>
+                  <label className="control__label">
+                    <input type="checkbox" value="art"
+                      onChange={handleCheckboxChange(field)}
+                      checked={isCheckboxChecked(field, 'art')}
+                    /> Art
+                  </label>
+                  <label className="control__label">
+                    <input type="checkbox" value="science"
+                      onChange={handleCheckboxChange(field)}
+                      checked={isCheckboxChecked(field, 'science')}
+                    /> Science
+                  </label>
+                </div>
+                {field.error && <p className="control__error">{field.error}</p>}
+              </div>
+            )}
+          />
 
-        <div className="control">
-          Interests:
-          <label className="control__label">
-            <input type="checkbox" {...interests} value="sport"
-              onChange={this.handleCheckboxGroupChange}
-              checked={interests.value && interests.value.indexOf('sport') !== -1}
-            /> Sport
-          </label>
-          <label className="control__label">
-            <input type="checkbox" {...interests} value="computers"
-              onChange={this.handleCheckboxGroupChange}
-              checked={interests.value && interests.value.indexOf('computers') !== -1}
-            /> Computers
-          </label>
-          <label className="control__label">
-            <input type="checkbox" {...interests} value="art"
-              onChange={this.handleCheckboxGroupChange}
-              checked={interests.value && interests.value.indexOf('art') !== -1}
-            /> Art
-          </label>
-          <label className="control__label">
-            <input type="checkbox" {...interests} value="science"
-              onClick={(event) => {
-                if (event.target.checked) {
-                  interests.change([event.target.value]);
-                } else {
-                  interests.change([]);
-                }
-                interests.validate();
-              }}
-              onChange={this.handleCheckboxGroupChange}
-              checked={interests.value && interests.value.indexOf('science') !== -1}
-            /> Science
-          </label>
-          {interests.error && <p className="control__error">{interests.error}</p>}
-        </div>
+          <br/>
+          <br/>
 
-        <br/>
-        <br/>
+          <Field name="newsletter" component={
+            field => (
+              <div className="control">
+                <label className="control__label">
+                  Newsletter: <br/>
+                  <input type="checkbox" {...field} checked={field.checked}/> I want to receive weekly updates
+                </label>
+                {field.error && <p className="control__error">{field.error}</p>}
+              </div>
+            )}
+          />
 
-        <div className="control">
-          <label className="control__label">
-            <input type="checkbox" {...newsletter}/> I want to receive weekly updates
-          </label>
-          {newsletter.error && <p className="control__error">{newsletter.error}</p>}
-        </div>
+          <input
+            type="submit"
+            value={props.submitted ? 'Saved.' : (props.submitting ? 'Saving...' : 'Save')}
+            disabled={props.filtering || props.validating || props.submitting || props.submitted}
+          />
 
-        <br/>
-        <br/>
-
-        <input
-          type="submit"
-          value={submitted ? 'Saved.' : (submitting ? 'Saving...' : 'Save')}
-          disabled={filtering || validating || submitting || submitted}
-        />
-
-        <div>
-          <h4>Values</h4>
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>.defaultValue</th>
-                <th>.value</th>
-                <th>.lastValidValue</th>
-              </tr>
-            </thead>
-            <tbody>
-            {Object.keys(this.props.fields).map(field => {
-              const fieldProps = this.props.fields[field];
-              return (
-                <tr key={fieldProps.name}>
-                  <th>{fieldProps.name}:</th>
-                  <td>{JSON.stringify(fieldProps.defaultValue)}</td>
-                  <td>{JSON.stringify(fieldProps.value)}</td>
-                  <td>{JSON.stringify(fieldProps.lastValidValue)}</td>
-                </tr>
-              );
-            })}
-            </tbody>
-          </table>
-        </div>
-
-      </form>
-
+        </form>
+      )}/>
     );
   }
 
 }
 
-export default form({
-  name: 'personal-details',
-  fields: ['name', 'email', 'interests', 'newsletter'],
-  defaults: {name: 'John', interests: ['sport'], newsletter: true},
-  filter, validate, afterValidate
-})(App);
+export default App;
+
+//<div>
+//  <h4>Values</h4>
+//  <table>
+//    <thead>
+//    <tr>
+//      <th></th>
+//      <th>.defaultValue</th>
+//      <th>.value</th>
+//      <th>.lastValidValue</th>
+//    </tr>
+//    </thead>
+//    <tbody>
+//    {Object.keys(this.props.fields).map(field => {
+//      const fieldProps = this.props.fields[field];
+//      return (
+//        <tr key={fieldProps.name}>
+//          <th>{fieldProps.name}:</th>
+//          <td>{JSON.stringify(fieldProps.defaultValue)}</td>
+//          <td>{JSON.stringify(fieldProps.value)}</td>
+//          <td>{JSON.stringify(fieldProps.lastValidValue)}</td>
+//        </tr>
+//      );
+//    })}
+//    </tbody>
+//  </table>
+//</div>

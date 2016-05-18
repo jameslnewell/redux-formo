@@ -5,12 +5,13 @@ class Field extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.connectedField = createConnectedField(context.formo, props);
+    this.connectedComponent = this.createConnectedComponent();
+    this.connectedComponentInstance = null;
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.name !== nextProps.name) {
-      this.connectedField = createConnectedField(this.context.formo, this.props);
+      this.connectedComponent = this.createConnectedComponent();
     }
   }
 
@@ -22,8 +23,42 @@ class Field extends React.Component {
     this.context.formo.unregister(this.props.name);
   }
 
+  createConnectedComponent() {
+
+    const props = this.props;
+    const context = this.context.formo;
+
+    return createConnectedField({
+      stateKey: context.stateKey,
+      form: context.name,
+      field: props.name,
+      filterFn: context.filter,
+      validateFn: context.validate
+    });
+
+  }
+
+  getConnectedComponentInstance() {
+    return this.connectedComponentInstance.getWrappedInstance(); //FIXME: this is a bit gross :(
+  }
+
+  filter() {
+    this.getConnectedComponentInstance().filter();
+  }
+
+  validate() {
+    this.getConnectedComponentInstance().validate();
+  }
+
   render() {
-    return React.createElement(this.connectedField, this.props);
+
+    console.log(`Field.render(${this.props.name})`);
+
+    return React.createElement(this.connectedComponent, {
+      ...this.props,
+      ref: instance => this.connectedComponentInstance = instance
+    });
+
   }
 
 }

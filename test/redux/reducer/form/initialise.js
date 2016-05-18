@@ -1,4 +1,4 @@
-import initialise from '../../../../src/redux/reducer/form/initialise';
+import initialise from '../../../../src/reducers/form/initialise';
 
 describe('reducer()', () => {
   describe('INITIALISE', () => {

@@ -1,5 +1,5 @@
-import * as constants from '../../constants';
-import mapValues from '../mapValues';
+import * as constants from '../constants';
+import mapValues from '../util/mapValues';
 import initialise from './form/initialise';
 import destroy from './form/destroy';
 
@@ -133,11 +133,12 @@ function startValidating(state) {
  */
 function finishValidating(state, action) {
   const valid = action.payload === true;
+
   const newState = {
     ...state,
     validating: false,
     validated: true,
-    error: valid ? undefined : action.payload,
+    error: valid ? undefined : action.payload, //eslint-disable-line no-undefined
     valid
   };
 
@@ -327,4 +328,4 @@ function reducer(state = {}, action = {}) {
   return state;
 }
 
-export default decorate(reducer)
+export default decorate(reducer);
