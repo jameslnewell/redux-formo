@@ -6,7 +6,6 @@ import Field from '../../src/components/Field';
 import filter from './filter';
 import validate from './validate';
 import submit from './submit';
-import afterValidate from './afterValidate';
 
 const handleCheckboxChange = field => event => {
   let values = field.value || [];
@@ -17,7 +16,7 @@ const handleCheckboxChange = field => event => {
     values = values.filter(value => value !== event.target.value);
   }
 
-  field.change(values);
+  field.onChange(values);
 };
 
 const isCheckboxChecked = (field, value) => field.value && field.value.indexOf(value) !== -1;
@@ -26,8 +25,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <Form name="personal-details" filter={filter} validate={validate} submit={submit} component={props => (
-        <form className={classNames('form', {'form--valid': this.props.valid, 'form--invalid': !this.props.valid})} onSubmit={props.onSubmit}>
+      <Form name="personal-details" fields={['name', 'email', 'interests', 'newsletter']} filter={filter} validate={validate} submit={submit} component={props => (
+        <form className={classNames('form', {'form--valid': props.valid, 'form--invalid': !props.valid})} onSubmit={props.onSubmit}>
 
           <h1>Personal details</h1>
 
@@ -63,7 +62,7 @@ class App extends React.Component {
           <br/>
           <br/>
 
-          <Field name="interests" component={
+          <Field name="interests" filterOn="change" validateOn="change" component={
             field => (
               <div className="control">
                 <div className="control__label">
@@ -101,7 +100,7 @@ class App extends React.Component {
           <br/>
           <br/>
 
-          <Field name="newsletter" component={
+          <Field name="newsletter" filterOn="change" validateOn="change" component={
             field => (
               <div className="control">
                 <label className="control__label">

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {focus, blur, change, filter, validate} from '../actions/index';
+import {initialise, focus, blur, change, filter, validate} from '../actions/index';
 import getFieldFromState from '../util/getFieldFromState';
 
 export const createMapStateToProps = options => state => {
@@ -8,16 +8,6 @@ export const createMapStateToProps = options => state => {
   const formName = options.form;
   const fieldName = options.field;
   const fieldState = getFieldFromState(key, formName, fieldName, state);
-
-  //calculate state
-  let checked;
-  let defaultChecked;
-  if (typeof fieldState.value === 'boolean') {
-    checked = fieldState.value === true;
-  }
-  if (typeof fieldState.defaultValue === 'boolean') {
-    defaultChecked = fieldState.defaultValue === true;
-  }
 
   const props = {
 
@@ -30,15 +20,21 @@ export const createMapStateToProps = options => state => {
     valid: false,
 
     //merge the current state
-    ...fieldState,
+    ...fieldState
 
     //merge the calculated state
-    checked,
-    defaultChecked
 
   };
 
-  //console.log('field', props);
+  //calculate state
+  if (typeof fieldState.value === 'boolean') {
+    props.checked = fieldState.value === true;
+  }
+  if (typeof fieldState.defaultValue === 'boolean') {
+    props.defaultChecked = fieldState.defaultValue === true;
+  }
+
+  //FIXME: use value/defaultValue from ownProps if its the first render for isomorphic rendering
 
   return props;
 };
@@ -47,6 +43,7 @@ export const createMapDispatchToProps = options => dispatch => {
   const {stateKey, form, field, filterFn, validateFn} = options;
 
   return {
+    initialise: value => dispatch(initialise(stateKey, form, field, value)),
     focus: () => dispatch(focus(stateKey, form, field)),
     blur: () => dispatch(blur(stateKey, form, field)),
     change: value => dispatch(change(stateKey, form, field, value)),
@@ -55,6 +52,26 @@ export const createMapDispatchToProps = options => dispatch => {
   };
 
 };
+
+/**
+ * Get the field value from an input event
+ * @param   {*} event
+ * @returns {*}
+ */
+export function getValueFromEvent(event) {
+
+  if (event && event.target) {
+    const {target: {type, value, checked}} = event;
+
+    if (type === 'checkbox') {
+      return checked;
+    }
+
+    return value;
+  }
+
+  return event;
+}
 
 export const filterAndOrValidate = (event, props) => {
   const promise = Promise.resolve();
@@ -83,6 +100,12 @@ class ConnectedField extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
   }
 
+  componentWillMount() {
+    if (!this.props.hasOwnProperty('value')) {
+      this.props.initialise(this.props.value, this.props.defaultValue);
+    }
+  }
+
   filter() {
     return this.props.filter();
   }
@@ -101,7 +124,7 @@ class ConnectedField extends React.Component {
 
   handleChange(event) {
 
-    this.props.change(event.target.value);
+    this.props.change(getValueFromEvent(event));
 
     filterAndOrValidate('change', this.props);
 
@@ -138,11 +161,12 @@ class ConnectedField extends React.Component {
 
     };
 
-    console.log(`ConnectedField.render(${this.props.name})`);
+    console.log(`ConnectedField.render(${childProps.name})`);
 
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
     } else if (children) {
+      console.log('childProps', childProps, React.Children.only(children));
       return React.cloneElement(
         React.Children.only(children),
         childProps
@@ -162,6 +186,8 @@ ConnectedField.contextTypes = {
 ConnectedField.propTypes = {
 
   name: React.PropTypes.string.isRequired,
+  value: React.PropTypes.any,
+  defaultValue: React.PropTypes.any,
 
   filterOn: React.PropTypes.oneOf(['focus', 'change', 'blur']),
   validateOn: React.PropTypes.oneOf(['focus', 'change', 'blur']),

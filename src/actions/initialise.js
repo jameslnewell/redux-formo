@@ -1,16 +1,22 @@
 import {INITIALISE} from '../constants';
 
 /**
- * Initialise a form
+ * Initialise a form field
  * @param   {string}    key           The state subsection
  * @param   {string}    form          The form name
- * @param   {object}    defaults      The default values
- * @returns {{type: INITIALISE, meta: {form: string}}}
+ * @param   {string}    field         The field name
+ * @param   {object}    value         The field value
+ * @param   {object}    defaultValue  The field default value
+ * @returns {object}
  */
-export default function(key, form, defaults) { //TODO: test me!
+export default function(key, form, field, value, defaultValue) {
   return {
     type: INITIALISE,
-    meta: {form},
-    payload: defaults
+    meta: {
+      form,
+      field
+    },
+    value,
+    defaultValue
   };
 }

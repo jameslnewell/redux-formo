@@ -15,14 +15,6 @@ class Field extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this.context.formo.register(this.props.name, this);
-  }
-
-  componentWillUnmount() {
-    this.context.formo.unregister(this.props.name);
-  }
-
   createConnectedComponent() {
 
     const props = this.props;

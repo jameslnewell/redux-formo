@@ -1,6 +1,6 @@
 import * as constants from '../constants';
 import mapValues from '../util/mapValues';
-import initialise from './form/initialise';
+import initialise from './field/initialise';
 import destroy from './form/destroy';
 
 /**
@@ -277,7 +277,7 @@ function createFieldReducer(fn) {
 }
 
 const REDUCERS = {
-  [constants.INITIALISE]: createFormReducer(initialise),
+  [constants.INITIALISE]: createFieldReducer(initialise),
   [constants.FOCUS]: createFieldReducer(focus),
   [constants.BLUR]: createFieldReducer(blur),
   [constants.CHANGE]: createFieldReducer(change),

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {destroy, submit} from '../actions/index';
+import {filter, validate, destroy, submit} from '../actions/index';
 import getFormFromState from '../util/getFormFromState';
 
 export const mapStateToProps = (state, ownProps) => {
@@ -13,18 +13,23 @@ export const mapStateToProps = (state, ownProps) => {
   let filtering = false;
   let validating = false;
   let valid = false;
-  //FIXME: without knowing all the fields we can't validate properly?
+  const fieldNames = [];
   if (formState.fields) {
-    //valid = true;
-    Object.keys(formState.fields || {}).forEach(name => {
-      const field = formState.fields[name];
+    valid = true;
+    Object.keys(formState.fields).forEach(name => {
+      const field = formState.fields[name] || {};
+      fieldNames.push(field.name);
       filtering = filtering || Boolean(field.filtering);
       validating = validating || Boolean(field.validating);
-      //valid = valid && Boolean(field.valid); //FIXME: if there are no fields this is valid from the start and won't work isomorphically
+      valid = valid && Boolean(field.valid);
     });
   }
 
   const props = {
+
+    //rename some props
+    filterFn: ownProps.filter,
+    validateFn: ownProps.validate,
 
     //merge the defaults
     submitting: false,
@@ -36,25 +41,30 @@ export const mapStateToProps = (state, ownProps) => {
     //merge the calculated state
     filtering,
     validating,
-    valid
+    valid,
+
+    //replace the field states with the field names so we don't update the form every time a field changes
+    fields: fieldNames
 
   };
-
-  //remove the fields so we don't update the form every time a field changes
-  delete props.fields;
 
   return props;
 };
 
-export const mapDispatchToProps = (dispatch, props) => {
+export const mapDispatchToProps = (dispatch, ownProps) => {
 
-  const key = props.stateKey || 'form';
-  const formName = props.name;
-  const submitFn = props.submit || (() => {/* do nothing */});
+  const key = ownProps.stateKey || 'form';
+  const formName = ownProps.name;
+  const submitFn = ownProps.submit || (() => {/* do nothing */});
 
   return {
+
+    filter: field => dispatch(filter(key, formName, field, ownProps.filter)),
+    validate: field => dispatch(validate(key, formName, field, ownProps.validate)),
+
     submit: () => dispatch(submit(key, formName, submitFn)),
     destroy: () => dispatch(destroy(key, formName))
+
   };
 
 };
@@ -63,11 +73,6 @@ class Form extends React.Component {
 
   constructor(...args) {
     super(...args);
-
-    this.fields = {};
-
-    this.register = this.register.bind(this);
-    this.unregister = this.unregister.bind(this);
 
     this.filter = this.filter.bind(this);
     this.validate = this.validate.bind(this);
@@ -85,11 +90,8 @@ class Form extends React.Component {
 
         name: this.props.name,
 
-        filter: this.props.filter,
-        validate: this.props.validate,
-
-        register: this.register,
-        unregister: this.unregister
+        filter: this.props.filterFn,
+        validate: this.props.validateFn
 
       }
     };
@@ -101,27 +103,22 @@ class Form extends React.Component {
     }
   }
 
-  register(name, component) {
-    this.fields[name] = component;
-  }
-
-  unregister(name) {
-    delete this.fields[name]; //TODO: if fields are hidden they won't be included in the validation anymore???
-  }
-
   filter() {
+    //FIXME: wrap this in an action creator
     return Promise.all(
-      Object.keys(this.fields).map(name => this.fields[name].filter())
+      this.props.fields.map(name => this.props.filter(name))
     );
   }
 
   validate() {
+    //FIXME: wrap this in an action creator
     return Promise.all(
-      Object.keys(this.fields).map(name => this.fields[name].validate())
+      this.props.fields.map(name => this.props.validate(name))
     );
   }
 
   submit() {
+    //FIXME: wrap this in an action creator
     return Promise.resolve()
       .then(() => this.filter())
       .then(() => this.validate())
