@@ -1,4 +1,4 @@
-import destroy from '../../../../src/reducers/form/destroy';
+import destroy from '../../../../src/Form/reducers/destroy';
 
 describe('reducer()', () => {
   describe('DESTROY', () => {

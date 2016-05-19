@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import form from '../..';
-import Form from '../../src/components/Form';
-import Field from '../../src/components/Field';
+import {Form, Field} from '../..';
 import filter from './filter';
 import validate from './validate';
 import submit from './submit';
@@ -28,89 +27,89 @@ class App extends React.Component {
       <Form name="personal-details" fields={['name', 'email', 'interests', 'newsletter']} filter={filter} validate={validate} submit={submit} component={props => (
         <form className={classNames('form', {'form--valid': props.valid, 'form--invalid': !props.valid})} onSubmit={props.onSubmit}>
 
-          <h1>Personal details</h1>
+        <h1>Personal details</h1>
 
-          {props.error && <p className="control__error">{props.error}</p>}
+        {props.error && <p className="control__error">{props.error}</p>}
 
-          <Field name="name" component={
-            field => (
-              <div className="control">
-                <label className="control__label">
-                  Full name: <br/>
-                  <input className="control__input" {...field}/>
-                </label>
-                {field.error && <p className="control__error">{field.error}</p>}
-              </div>
-            )}
-          />
+        <Field name="name" component={
+          field => (
+            <div className="control">
+              <label className="control__label">
+                Full name: <br/>
+                <input className="control__input" {...field}/>
+              </label>
+              {field.error && <p className="control__error">{field.error}</p>}
+            </div>
+          )}
+        />
 
-          <br/>
-          <br/>
+        <br/>
+        <br/>
 
-          <Field name="email" component={
-            field => (
-              <div className="control">
-                <label className="control__label">
-                  Email: <br/>
-                  <input className="control__input" {...field}/>
-                </label>
-                {field.error && <p className="control__error">{field.error}</p>}
-              </div>
-            )}
-          />
+        <Field name="email" component={
+          field => (
+          <div className="control">
+            <label className="control__label">
+              Email: <br/>
+              <input className="control__input" {...field}/>
+            </label>
+            {field.error && <p className="control__error">{field.error}</p>}
+          </div>
+        )}
+        />
 
-          <br/>
-          <br/>
+        <br/>
+        <br/>
 
-          <Field name="interests" filterOn="change" validateOn="change" component={
-            field => (
-              <div className="control">
-                <div className="control__label">
-                  Interests: <br/>
-                  <label className="control__label">
-                    <input type="checkbox" value="sport"
-                      onChange={handleCheckboxChange(field)}
-                      checked={isCheckboxChecked(field, 'sport')}
-                    /> Sport
-                  </label>
-                  <label className="control__label">
-                    <input type="checkbox" value="computers"
-                      onChange={handleCheckboxChange(field)}
-                      checked={isCheckboxChecked(field, 'computers')}
-                    /> Computers
-                  </label>
-                  <label className="control__label">
-                    <input type="checkbox" value="art"
-                      onChange={handleCheckboxChange(field)}
-                      checked={isCheckboxChecked(field, 'art')}
-                    /> Art
-                  </label>
-                  <label className="control__label">
-                    <input type="checkbox" value="science"
-                      onChange={handleCheckboxChange(field)}
-                      checked={isCheckboxChecked(field, 'science')}
-                    /> Science
-                  </label>
-                </div>
-                {field.error && <p className="control__error">{field.error}</p>}
-              </div>
-            )}
-          />
+        <Field name="interests" filterOn="change" validateOn="change" component={
+          field => (
+          <div className="control">
+            <div className="control__label">
+              Interests: <br/>
+              <label className="control__label">
+                <input type="checkbox" value="sport"
+                       onChange={handleCheckboxChange(field)}
+                       checked={isCheckboxChecked(field, 'sport')}
+                /> Sport
+              </label>
+              <label className="control__label">
+                <input type="checkbox" value="computers"
+                       onChange={handleCheckboxChange(field)}
+                       checked={isCheckboxChecked(field, 'computers')}
+                /> Computers
+              </label>
+              <label className="control__label">
+                <input type="checkbox" value="art"
+                       onChange={handleCheckboxChange(field)}
+                       checked={isCheckboxChecked(field, 'art')}
+                /> Art
+              </label>
+              <label className="control__label">
+                <input type="checkbox" value="science"
+                       onChange={handleCheckboxChange(field)}
+                       checked={isCheckboxChecked(field, 'science')}
+                /> Science
+              </label>
+            </div>
+            {field.error && <p className="control__error">{field.error}</p>}
+          </div>
+        )}
+        />
 
-          <br/>
-          <br/>
+        <br/>
+        <br/>
 
-          <Field name="newsletter" filterOn="change" validateOn="change" component={
-            field => (
-              <div className="control">
-                <label className="control__label">
-                  Newsletter: <br/>
-                  <input type="checkbox" {...field} checked={field.checked}/> I want to receive weekly updates
-                </label>
-                {field.error && <p className="control__error">{field.error}</p>}
-              </div>
-            )}
-          />
+        <Field name="newsletter" filterOn="change" validateOn="change" component={
+          field => (
+          <div className="control">
+            <label className="control__label">
+              Newsletter: <br/>
+              <input type="checkbox" {...field} checked={field.checked}/> I want to receive weekly updates
+            </label>
+            {field.error && <p className="control__error">{field.error}</p>}
+          </div>
+        )}
+        />
 
           <input
             type="submit"
@@ -126,6 +125,7 @@ class App extends React.Component {
 }
 
 export default App;
+
 
 //<div>
 //  <h4>Values</h4>

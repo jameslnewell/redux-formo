@@ -1,0 +1,17 @@
+{
+  "name": "redux-formo-example",
+  "private": "true",
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "classnames": "^2.2.0",
+    "react-dom": "^15.0.2",
+    "redux": "^3.5.2",
+    "watchify": "^3.5.0"
+  },
+  "scripts": {
+    "build": "browserify --debug -t babelify ./index.js -o ./index.bundle.js --debug --extension=.jsx",
+    "watch": "watchify -v --debug -t babelify ./index.js -o ./index.bundle.js --debug --extension=.jsx"
+  },
+  "license": "MIT"
+}
