@@ -24,7 +24,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Form name="personal-details" fields={['name', 'email', 'interests', 'newsletter']} filter={filter} validate={validate} submit={submit} component={props => (
+      <Form name="personal-details" filter={filter} validate={validate} submit={submit} component={props => (
         <form className={classNames('form', {'form--valid': props.valid, 'form--invalid': !props.valid})} onSubmit={props.onSubmit}>
 
         <h1>Personal details</h1>
@@ -110,12 +110,11 @@ class App extends React.Component {
           </div>
         )}
         />
-
-          <input
-            type="submit"
-            value={props.submitted ? 'Saved.' : (props.submitting ? 'Saving...' : 'Save')}
-            disabled={props.filtering || props.validating || props.submitting || props.submitted}
-          />
+        <input
+          type="submit"
+          value={props.submitted ? 'Saved.' : (props.submitting ? 'Saving...' : 'Save')}
+          disabled={props.filtering || props.validating || props.submitting || props.submitted}
+        />
 
         </form>
       )}/>
@@ -125,6 +124,7 @@ class App extends React.Component {
 }
 
 export default App;
+
 
 
 //<div>

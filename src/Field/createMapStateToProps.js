@@ -23,9 +23,6 @@ export default options => (state, ownProps) => {
   if (typeof fieldState.value === 'boolean') {
     props.checked = fieldState.value === true;
   }
-  if (typeof fieldState.defaultValue === 'boolean') {
-    props.defaultChecked = fieldState.defaultValue === true;
-  }
   //FIXME: hack to merge the defaults because the component won't receive the updated props before render() on the server
   if (!fieldState.initialised) {
     props.value = ownProps.defaultValue;

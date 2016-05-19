@@ -45,6 +45,9 @@ class ConnectedField extends React.Component {
     const {
       children,
       component: Component,
+      filterOn,
+      validateOn,
+      defaultValue,
       ...otherProps
       } = this.props;
 
@@ -61,7 +64,7 @@ class ConnectedField extends React.Component {
     };
 
     console.log(`ConnectedField.render(${childProps.name})`);
-console.log(childProps);
+
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
     } else if (children) {
