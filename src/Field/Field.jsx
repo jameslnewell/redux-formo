@@ -25,7 +25,8 @@ class Field extends React.Component {
       form: context.name,
       field: props.name,
       filter: context.filter,
-      validate: context.validate
+      validate: context.validate,
+      defaultValue: context.defaults[props.name]
     });
 
   }

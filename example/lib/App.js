@@ -20,22 +20,27 @@ const handleCheckboxChange = field => event => {
 
 const isCheckboxChecked = (field, value) => field.value && field.value.indexOf(value) !== -1;
 
+const defaultValues = {
+  username: 'jameslnewell',
+  interests: ['sport']
+};
+
 class App extends React.Component {
 
   render() {
     return (
-      <Form name="personal-details" filter={filter} validate={validate} submit={submit} component={props => (
+      <Form name="personal-details" defaultValues={defaultValues} filter={filter} validate={validate} submit={submit} component={props => (
         <form className={classNames('form', {'form--valid': props.valid, 'form--invalid': !props.valid})} onSubmit={props.onSubmit}>
 
         <h1>Personal details</h1>
 
         {props.error && <p className="control__error">{props.error}</p>}
 
-        <Field name="name" component={
+        <Field name="username" component={
           field => (
             <div className="control">
               <label className="control__label">
-                Full name: <br/>
+                Username: <br/>
                 <input className="control__input" {...field}/>
               </label>
               {field.error && <p className="control__error">{field.error}</p>}

@@ -25,9 +25,14 @@ export default options => (state, ownProps) => {
   }
   //FIXME: hack to merge the defaults because the component won't receive the updated props before render() on the server
   if (!fieldState.initialised) {
-    props.value = ownProps.defaultValue;
-    props.defaultValue = ownProps.defaultValue;
+    if (ownProps.defaultValue) {
+      props.value = ownProps.defaultValue;
+    } else if (options.defaultValue) {
+      props.value = options.defaultValue;
+    } else {
+      props.value = '';
+    }
   }
 
   return props;
-};
+}

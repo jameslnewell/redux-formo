@@ -6,17 +6,15 @@ import {INITIALISE} from '../constants';
  * @param   {string}    form          The form name
  * @param   {string}    field         The field name
  * @param   {object}    value         The field value
- * @param   {object}    defaultValue  The field default value
  * @returns {object}
  */
-export default function(key, form, field, value, defaultValue = '') {
+export default function(key, form, field, value) {
   return {
     type: INITIALISE,
     meta: {
       form,
       field
     },
-    value,
-    defaultValue
+    value
   };
 }

@@ -17,7 +17,8 @@ class Form extends React.Component {
         getState: this.props.getState,
         name: this.props.name,
         filter: this.props.filterFn,
-        validate: this.props.validateFn
+        validate: this.props.validateFn,
+        defaults: this.props.defaultValues
       }
     };
   }
@@ -36,11 +37,11 @@ class Form extends React.Component {
       return true;
     }
 
-    const changed = Object.keys(nextProps).some(prop => {
-      return !isEqual(this.props[prop], nextProps[prop]);
-    });
+    //check current properties haven't changed
+    return Object.keys(nextProps).some(
+      prop => !isEqual(this.props[prop], nextProps[prop])
+    );
 
-    return changed;
   }
 
   filter() {
@@ -134,6 +135,7 @@ Form.propTypes = {
 
   getState: React.PropTypes.func.isRequired,
   name: React.PropTypes.string.isRequired,
+  defaultValues: React.PropTypes.object,
 
   children: React.PropTypes.element,
   component: React.PropTypes.func,
@@ -144,6 +146,11 @@ Form.propTypes = {
 
   destroyOnUnmount: React.PropTypes.bool.isRequired
 
+};
+
+Form.defaultProps = {
+  defaultValues: {},
+  destroyOnUnmount: true
 };
 
 export default Form;

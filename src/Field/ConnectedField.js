@@ -13,7 +13,7 @@ class ConnectedField extends React.Component {
 
   componentWillMount() {
     if (!this.props.initialised) {
-      this.props.initialise(this.props.value, this.props.defaultValue);
+      this.props.initialise(this.props.value);
     }
   }
 
@@ -68,7 +68,6 @@ class ConnectedField extends React.Component {
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
     } else if (children) {
-      console.log('childProps', childProps, React.Children.only(children));
       return React.cloneElement(
         React.Children.only(children),
         childProps
