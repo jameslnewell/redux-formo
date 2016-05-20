@@ -14,6 +14,7 @@ export default options => {
     {withRef: true}
   )(ConnectedField);
 
+  //props required by mapStateToProps() and mapDispatchToProps()
   Component.defaultProps = {
     defaultValue: ''
   };

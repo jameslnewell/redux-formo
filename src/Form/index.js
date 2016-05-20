@@ -9,19 +9,16 @@ const defaultGetFormState = getFormState();
 
 const ConnectedForm = connect(mapStateToProps, mapDispatchToProps)(Form);
 
+//props required by mapStateToProps() and mapDispatchToProps()
 ConnectedForm.propTypes = {
 
   name: React.PropTypes.string.isRequired,
-  getState: React.PropTypes.func.isRequired,
 
-  children: React.PropTypes.element,
-  component: React.PropTypes.func,
+  getState: React.PropTypes.func.isRequired,
 
   filter: React.PropTypes.func,
   validate: React.PropTypes.func,
-  submit: React.PropTypes.func,
-
-  destroyOnUnmount: React.PropTypes.bool
+  submit: React.PropTypes.func
 
 };
 
@@ -31,9 +28,7 @@ ConnectedForm.defaultProps = {
 
   filter: ({value}) => value,
   validate: () => true,
-  submit: () => {/*do nothing*/},
-
-  destroyOnUnmount: true
+  submit: () => {/*do nothing*/}
 
 };
 

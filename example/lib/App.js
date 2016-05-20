@@ -110,6 +110,7 @@ class App extends React.Component {
           </div>
         )}
         />
+
         <input
           type="submit"
           value={props.submitted ? 'Saved.' : (props.submitting ? 'Saving...' : 'Save')}

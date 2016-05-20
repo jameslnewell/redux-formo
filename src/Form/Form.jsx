@@ -1,5 +1,5 @@
 import React from 'react';
-import deepEqual from 'lodash.isequal';
+import isEqual from 'lodash.isEqual';
 
 class Form extends React.Component {
 
@@ -26,6 +26,21 @@ class Form extends React.Component {
     if (this.props.destroyOnUnmount) {
       this.props.destroy();
     }
+  }
+
+  //FIXME: this can be removed when we move form filtering/validating/submitting to an action creator
+  shouldComponentUpdate(nextProps) {
+
+    //if there's new properties we should re-render
+    if (Object.keys(nextProps).length !== Object.keys(this.props).length) {
+      return true;
+    }
+
+    const changed = Object.keys(nextProps).some(prop => {
+      return !isEqual(this.props[prop], nextProps[prop]);
+    });
+
+    return changed;
   }
 
   filter() {

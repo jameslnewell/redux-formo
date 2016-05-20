@@ -1,7 +1,6 @@
 import {isFSA, isError} from 'flux-standard-action';
 import {SUBMIT} from '../constants';
-import selectForm from '../getFormState';
-import selectLastValidValues from '../../util/selectLastValidValues';
+import getFieldValues from '../../util/getFieldValues';
 
 function startSubmitting(form) {
   return {
@@ -42,16 +41,16 @@ function errorSubmitting(form, error) {
 
 /**
  * Call the user's submit method with the form field values and dispatch actions when it is completed
- * @param   {string}    key           The state subsection
+ * @param   {string}    getFormState  The state subsection
  * @param   {string}    form          The form name
  * @param   {function}  fn            The submit function
  * @returns {function}
  */
-export default function(key, form, fn) {
+export default function(getFormState, form, fn) {
   return (dispatch, getState) => {
 
-    const state = selectForm(key, form, getState());
-    const values = selectLastValidValues(state);
+    const formState = getFormState(form, getState());
+    const values = getFieldValues(formState);
 
     //enter the submitting state when promise doesn't resolve immediately
     const timeout = setTimeout(() => dispatch(startSubmitting(form)), 0);
