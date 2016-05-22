@@ -6,7 +6,9 @@ import filter from './filter';
 import validate from './validate';
 import submit from './submit';
 
-const handleCheckboxChange = field => event => {
+const logValidationResult = name => ({valid, value}) => console.log('field: ', name, 'valid='+valid, 'value='+value);
+
+const handleCheckboxChangeForField = field => event => {
   let values = field.value || [];
 
   if (event.target.checked) {
@@ -36,7 +38,7 @@ class App extends React.Component {
 
         {props.error && <p className="control__error">{props.error}</p>}
 
-        <Field name="username" component={
+        <Field name="username" afterValidate={logValidationResult('username')} component={
           field => (
             <div className="control">
               <label className="control__label">
@@ -51,7 +53,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <Field name="email" component={
+        <Field name="email" afterValidate={logValidationResult('email')} component={
           field => (
           <div className="control">
             <label className="control__label">
@@ -66,32 +68,32 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <Field name="interests" filterOn="change" validateOn="change" component={
+        <Field name="interests" filterOn="change" validateOn="change" afterValidate={logValidationResult('interests')} component={
           field => (
           <div className="control">
             <div className="control__label">
               Interests: <br/>
               <label className="control__label">
                 <input type="checkbox" value="sport"
-                       onChange={handleCheckboxChange(field)}
+                       onChange={handleCheckboxChangeForField(field)}
                        checked={isCheckboxChecked(field, 'sport')}
                 /> Sport
               </label>
               <label className="control__label">
                 <input type="checkbox" value="computers"
-                       onChange={handleCheckboxChange(field)}
+                       onChange={handleCheckboxChangeForField(field)}
                        checked={isCheckboxChecked(field, 'computers')}
                 /> Computers
               </label>
               <label className="control__label">
                 <input type="checkbox" value="art"
-                       onChange={handleCheckboxChange(field)}
+                       onChange={handleCheckboxChangeForField(field)}
                        checked={isCheckboxChecked(field, 'art')}
                 /> Art
               </label>
               <label className="control__label">
                 <input type="checkbox" value="science"
-                       onChange={handleCheckboxChange(field)}
+                       onChange={handleCheckboxChangeForField(field)}
                        checked={isCheckboxChecked(field, 'science')}
                 /> Science
               </label>
@@ -104,7 +106,7 @@ class App extends React.Component {
         <br/>
         <br/>
 
-        <Field name="newsletter" filterOn="change" validateOn="change" component={
+        <Field name="newsletter" filterOn="change" validateOn="change" afterValidate={logValidationResult('newsletter')} component={
           field => (
           <div className="control">
             <label className="control__label">
@@ -141,7 +143,6 @@ export default App;
 //      <th></th>
 //      <th>.defaultValue</th>
 //      <th>.value</th>
-//      <th>.lastValidValue</th>
 //    </tr>
 //    </thead>
 //    <tbody>
@@ -152,7 +153,6 @@ export default App;
 //          <th>{fieldProps.name}:</th>
 //          <td>{JSON.stringify(fieldProps.defaultValue)}</td>
 //          <td>{JSON.stringify(fieldProps.value)}</td>
-//          <td>{JSON.stringify(fieldProps.lastValidValue)}</td>
 //        </tr>
 //      );
 //    })}
