@@ -21,4 +21,4 @@ export default (key = 'form') => (form, state) => {
   }
 
   return state[key][form];
-}
+};
