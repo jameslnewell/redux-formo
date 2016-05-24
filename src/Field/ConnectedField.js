@@ -63,7 +63,7 @@ class ConnectedField extends React.Component {
 
     };
 
-    console.log(`ConnectedField.render(${childProps.name})`);
+    //console.log(`ConnectedField.render(${childProps.name})`);
 
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
@@ -97,6 +97,8 @@ ConnectedField.propTypes = {
   filter: React.PropTypes.func.isRequired,
   validate: React.PropTypes.func.isRequired,
 
+  afterValidate: React.PropTypes.func.isRequired,
+
   children: React.PropTypes.element,
   component: React.PropTypes.func
 
@@ -105,7 +107,8 @@ ConnectedField.propTypes = {
 ConnectedField.defaultProps = {
   defaultValue: '',
   filterOn: 'blur',
-  validateOn: 'blur'
+  validateOn: 'blur',
+  afterValidate: () => {/*do nothing*/}
 };
 
 export default ConnectedField;

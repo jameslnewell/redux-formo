@@ -45,7 +45,7 @@ class Field extends React.Component {
 
   render() {
 
-    console.log(`Field.render(${this.props.name})`);
+    //console.log(`Field.render(${this.props.name})`);
 
     return React.createElement(this.connectedComponent, {
       ...this.props,

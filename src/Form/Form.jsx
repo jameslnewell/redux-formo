@@ -110,7 +110,7 @@ class Form extends React.Component {
 
     };
 
-    console.log('Form.render()');
+    //console.log('Form.render()');
 
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
