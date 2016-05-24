@@ -139,7 +139,8 @@ function finishValidating(state, action) {
     validating: false,
     validated: true,
     error: valid ? undefined : action.payload, //eslint-disable-line no-undefined
-    valid
+    valid,
+    lastValidValue: state.value
   };
 
   return newState;
