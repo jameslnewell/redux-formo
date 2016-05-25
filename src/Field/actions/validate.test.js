@@ -1,5 +1,5 @@
 import {VALIDATE} from '../constants';
-import {validate} from '../actions';
+import validate from '../actions/validate';
 
 const KEY = 'form';
 const FORM = 'personal-details';

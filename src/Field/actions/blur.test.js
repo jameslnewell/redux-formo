@@ -1,5 +1,5 @@
 import {BLUR} from '../constants';
-import {blur} from '../actions';
+import blur from '../actions/blur';
 
 describe('blur()', () => {
 

@@ -1,5 +1,5 @@
 import {FILTER} from '../constants';
-import {filter} from '../actions';
+import filter from '../actions/filter';
 
 const KEY = 'form';
 const FORM = 'personal-details';

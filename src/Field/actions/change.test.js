@@ -1,5 +1,5 @@
 import {CHANGE} from '../constants';
-import {change} from '../actions';
+import change from '../actions/change';
 
 describe('change()', () => {
 

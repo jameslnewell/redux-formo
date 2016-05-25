@@ -1,5 +1,5 @@
 import {FOCUS} from '../constants';
-import {focus} from '../actions';
+import focus from '../actions/focus';
 
 describe('focus()', () => {
 

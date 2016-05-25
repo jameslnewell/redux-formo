@@ -1,5 +1,5 @@
 import {INITIALISE} from '../constants';
-import {initialise} from '../actions';
+import initialise from '../actions/initialise';
 
 describe.skip('initialise()', () => {
 

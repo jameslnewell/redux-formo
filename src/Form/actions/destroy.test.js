@@ -1,5 +1,5 @@
 import {DESTROY} from '../constants';
-import {destroy} from '../actions';
+import destroy from '../actions/destroy';
 
 
 describe.skip('destroy()', () => {

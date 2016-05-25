@@ -1,5 +1,5 @@
 import {SUBMIT} from '../constants';
-import {submit} from '../actions';
+import submit from '../actions/submit';
 
 const KEY = 'form';
 const FORM = 'personal-details';

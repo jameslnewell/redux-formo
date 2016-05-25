@@ -1,6 +1,6 @@
 {
   "name": "redux-formo",
-  "version": "3.0.0-preview.12",
+  "version": "3.0.0-preview.13",
   "description": "An alternate forms framework for Redux+React.",
   "keywords": [
     "redux-formo",
@@ -47,7 +47,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "lint": "eslint ./index.js ./src/**/* --ext .js --ext .jsx",
-    "test": "mocha --require ./dist/_.test.js ./dist/**/*.test.js",
+    "test": "mocha --require ./dist/_.test.js ./dist/**/*.test.js ./dist/**/**/*.test.js",
     "test.watch": "npm run test -- --watch",
     "build": "babel --source-maps --extensions .js,.jsx --out-dir ./dist ./src",
     "watch": "npm run build -- --watch",
