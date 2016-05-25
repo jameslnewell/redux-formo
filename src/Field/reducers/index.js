@@ -133,8 +133,7 @@ function startValidating(state) {
  */
 function finishValidating(state, action) {
   const valid = action.payload === true;
-
-  const newState = {
+  return {
     ...state,
     validating: false,
     validated: true,
@@ -142,8 +141,6 @@ function finishValidating(state, action) {
     valid,
     lastValidValue: state.value
   };
-
-  return newState;
 }
 
 /**
