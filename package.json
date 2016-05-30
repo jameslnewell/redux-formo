@@ -1,6 +1,6 @@
 {
   "name": "redux-formo",
-  "version": "3.0.0-preview.13",
+  "version": "3.0.0-preview.14",
   "description": "An alternate forms framework for Redux+React.",
   "keywords": [
     "redux-formo",
@@ -40,7 +40,7 @@
     "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0 && ^15.0.0",
+    "react": "^0.14.0 || ^15.0.0",
     "react-redux": "^4.0.0",
     "redux-thunk": "^1.0.0 && ^2.0.0"
   },
