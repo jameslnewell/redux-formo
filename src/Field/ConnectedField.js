@@ -45,11 +45,9 @@ class ConnectedField extends React.Component {
     const {
       children,
       component: Component,
-      filterOn,
-      validateOn,
-      defaultValue,
+      defaultValue, filterOn, validateOn, afterValidate, //unused
       ...otherProps
-      } = this.props;
+      } = this.props; //eslint-disable-line no-unused-vars
 
     const childProps = {
 
