@@ -1,18 +1,18 @@
 
 export default (event, props) => {
-  const promise = Promise.resolve();
+  let promise = Promise.resolve();
   let value = props.value;
 
   if (props.filterOn === event) {
-    promise
+    promise = promise
       .then(() => props.filter())
       .then(val => value = val)
     ;
   }
 
   if (props.validateOn === event) {
-    promise
-      .then(valid => props.validate())
+    promise = promise
+      .then(() => props.validate())
       .then(valid => props.afterValidate({valid, value}))
     ;
   }
