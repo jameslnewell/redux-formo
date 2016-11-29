@@ -27,9 +27,11 @@ class ConnectedField extends React.Component {
 
   handleChange(event) {
 
-    this.props.change(getValueFromEvent(event));
+    const value = getValueFromEvent(event);
 
-    filterAndOrValidate('change', this.props);
+    this.props.change(value);
+
+    filterAndOrValidate('change', {...this.props, value});
 
   }
 
