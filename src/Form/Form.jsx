@@ -115,10 +115,18 @@ class Form extends React.Component {
     if (typeof Component === 'function') {
       return <Component {...childProps}/>;
     } else if (children) {
-      return React.cloneElement(
-        React.Children.only(children),
-        childProps
-      );
+
+      const child = React.Children.only(children);
+
+      if (React.isValidElement(child) && typeof child.type === 'string') {
+        return child;
+      } else {
+        return React.cloneElement(
+          React.Children.only(child),
+          childProps
+        );
+      }
+
     } else {
       throw new Error('No component/children.');
     }
