@@ -1,5 +1,6 @@
 import formReducers from './Form/reducers';
 import fieldReducers from './Field/reducers';
+import mapValues from './util/mapValues';
 
 const REDUCERS = {
   ...formReducers,
